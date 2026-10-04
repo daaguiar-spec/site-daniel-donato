@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Oranienbaum&family=Oswald:wght@300;400;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-html,body{background:#0B0A08}
+html,body{background:#0B0A08;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;overflow-x:hidden}
 a:focus-visible{outline:2px solid #E8CF95;outline-offset:3px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
@@ -83,21 +83,22 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .pq-right .pq-item{padding-left:calc(8 * var(--u));border-radius:0 0 0 100%}
 
 :where(.m) a{color:#C9A45C}
-.m{font-family:'Manrope',system-ui,sans-serif;color:#EDE6D8;background:#0B0A08;width:100%;min-height:100vh;-webkit-text-size-adjust:100%}
+.m{font-family:'Manrope',system-ui,sans-serif;color:#EDE6D8;background:#0B0A08;width:100%;max-width:100vw;min-height:100vh;overflow-x:clip;-webkit-text-size-adjust:100%}
+.m h1,.m h2,.m h3,.m p,.m span,.m a,.m li{overflow-wrap:break-word}
 .m *{box-sizing:border-box}
-.m-wrap{padding:0 22px}
+.m-wrap{padding:0 clamp(18px,5.6vw,22px)}
 .m-eyebrow{font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
-.m-h2{margin:0;font-family:'Cormorant',Georgia,serif;font-weight:500;font-size:44px;line-height:.95;text-transform:uppercase;text-wrap:balance}
+.m-h2{margin:0;font-family:'Cormorant',Georgia,serif;font-weight:500;font-size:clamp(30px,10.2vw,42px);line-height:.95;text-transform:uppercase;text-wrap:balance}
 .m-btn{display:block;text-align:center;text-decoration:none;background:linear-gradient(180deg,#F6E6BE 0%,#E2C58C 50%,#C9A45C 100%);color:#1A140A;padding:18px 20px;border-radius:14px;font-family:'Oswald',sans-serif;font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 10px 30px rgba(201,164,92,.22)}
 .m-ghost{display:block;text-align:center;text-decoration:none;border:1px solid #C9A45C;color:#C9A45C;padding:15px 20px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
 .m-link{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8A6A2E}
 /* header */
 .m-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(11,10,8,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #2A251C}
-.m-head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 22px}
+.m-head-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px clamp(16px,5.6vw,22px)}
 .m-logo-mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:#EDE6D8}
 .m-logo-mark b{width:36px;height:36px;border:1px solid #C9A45C;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant',serif;font-weight:600;font-size:18px;color:#C9A45C}
-.m-logo-mark span{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
-.m-wa{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid #C9A45C;color:#C9A45C;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.m-logo-mark span{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+.m-wa{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid #C9A45C;color:#C9A45C;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
 .m-nav{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;padding:0 22px 12px;-webkit-overflow-scrolling:touch}
 .m-nav::-webkit-scrollbar{display:none}
 .m-nav a{flex:none;color:#EDE6D8;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 0}
@@ -110,15 +111,15 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .m-spark:nth-child(4n){background:#E8CF95}
 .m-glint{border-radius:0;background:#FFF4D6;box-shadow:none;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);filter:drop-shadow(0 0 4px rgba(255,236,190,.9))}
 @keyframes m-tw{0%,100%{opacity:.05;transform:scale(.5)}45%{opacity:1;transform:scale(1.2)}60%{opacity:.85;transform:scale(1)}}
-.m-hero-in{position:relative;z-index:2;padding:30px 22px 0;display:flex;flex-direction:column;gap:20px}
+.m-hero-in{position:relative;z-index:2;padding:30px clamp(18px,5.6vw,22px) 0;display:flex;flex-direction:column;gap:20px}
 .m-chips{list-style:none;margin:0;padding:0;display:flex;gap:16px;flex-wrap:wrap}
 .m-chip{display:flex;align-items:center;gap:8px}
 .m-chip i{width:32px;height:32px;border-radius:50%;border:1px solid #6B5B3A;background:rgba(201,164,92,.08);color:#E8CF95;display:flex;align-items:center;justify-content:center;font-style:normal}
 .m-chip b{display:block;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:#F3EDE1;line-height:1.2}
 .m-chip small{display:block;font-size:11px;color:#9C8F78}
 .m-title{margin:0;display:flex;flex-direction:column;font-family:'Oswald','Arial Narrow',sans-serif;text-transform:uppercase;line-height:1.02}
-.m-t1{font-weight:300;font-size:30px;color:#F3EDE1}
-.m-t2{font-weight:600;font-size:52px;color:#C9A45C}
+.m-t1{font-weight:300;font-size:clamp(24px,7.7vw,30px);color:#F3EDE1}
+.m-t2{font-weight:600;font-size:clamp(40px,13.3vw,52px);color:#C9A45C}
 .m-t3{display:flex;align-items:center;gap:8px}
 .m-spk{display:inline-block;width:34px;height:34px;flex:none;align-self:flex-start;margin-top:6px;filter:drop-shadow(0 0 8px rgba(232,207,149,.7));animation:m-spk 3.2s ease-in-out infinite}
 @keyframes m-spk{0%,100%{opacity:.75;transform:scale(.88)}50%{opacity:1;transform:scale(1.06) rotate(12deg)}}
@@ -127,7 +128,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .m-hero-photo{position:relative;z-index:2;display:block;width:88%;max-width:420px;height:auto;margin:6px auto 0;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,#000 70%,transparent 100%)}
 /* stats */
 .m-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 12px;padding:30px 22px 36px;background:#0F0D0A;border-bottom:1px solid #2A251C;text-align:center}
-.m-stats b{display:block;font-family:'Cormorant',serif;font-weight:500;font-size:44px;line-height:1;color:#C9A45C}
+.m-stats b{display:block;font-family:'Cormorant',serif;font-weight:500;font-size:clamp(32px,10.5vw,44px);line-height:1;color:#C9A45C}
 .m-stats span{display:block;margin-top:6px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;line-height:1.4}
 /* sections */
 .m-sec{padding:64px 0}
@@ -671,7 +672,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
     <img src="img/daniel-equipe.webp" alt="Daniel Donato à frente de uma equipe de profissionais">
     <div class="m-pq-shade" aria-hidden="true"></div>
     <div class="m-pq-head m-stack" style="gap: 6px; align-items: center">
-      <h2 class="m-h2" style="color: #C9A45C; font-size: 40px">Para quem é</h2>
+      <h2 class="m-h2" style="color: #C9A45C; font-size: clamp(30px, 9.6vw, 40px)">Para quem é</h2>
       <span class="m-eyebrow" style="color: #EDE6D8; font-size: 11px">Equipes que querem encantar</span>
     </div>
   </section>
@@ -688,13 +689,13 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
     <div class="m-wrap m-split">
       <div class="m-stack">
         <span class="m-eyebrow" style="color: #8A6A2E">Consultoria em processos</span>
-        <h2 class="m-h2" style="font-size: 38px; color: #1A1712">Operação e cultura com clareza</h2>
+        <h2 class="m-h2" style="font-size: clamp(28px, 9.2vw, 38px); color: #1A1712">Operação e cultura com clareza</h2>
         <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Para empresas que querem melhorar atendimento, operação e performance com processos mais eficientes e estratégicos.</p>
         <a class="m-link" href="https://www.danieldonato.com.br/consultoria">Conhecer a consultoria →</a>
       </div>
       <div class="m-stack">
         <span class="m-eyebrow" style="color: #8A6A2E">Mentoria · A Teia</span>
-        <h2 class="m-h2" style="font-size: 38px; color: #1A1712">Transformação constante</h2>
+        <h2 class="m-h2" style="font-size: clamp(28px, 9.2vw, 38px); color: #1A1712">Transformação constante</h2>
         <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Um ecossistema para empreendedores que querem destravar execução, fortalecer direção e sustentar prosperidade.</p>
         <a class="m-link" href="https://www.sinapseonline.com/a-teia-mentoria">Saiba mais →</a>
       </div>
@@ -715,7 +716,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
   <section id="m-clientes" class="m-sec m-white">
     <div class="m-wrap m-stack" style="gap: 14px; text-align: center; align-items: center">
       <span class="m-eyebrow" style="color: #8A6A2E">Clientes</span>
-      <h2 class="m-h2" style="font-size: 38px; color: #1A1712">Quem já viveu a experiência</h2>
+      <h2 class="m-h2" style="font-size: clamp(28px, 9.2vw, 38px); color: #1A1712">Quem já viveu a experiência</h2>
       <p style="margin: 0 0 14px; font-size: 15px; line-height: 1.65; color: #4A443A">Indústrias, escolas, órgãos públicos, hotéis e varejo que confiaram no Daniel para desenvolver pessoas e transformar o atendimento.</p>
       <div class="m-logos" style="width: 100%">
         <div class="m-logo"><img src="img/clientes/caixa.png" alt="Caixa" loading="lazy"></div>
