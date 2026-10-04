@@ -1,0 +1,15 @@
+SITE DANIEL DONATO — ARQUIVOS PARA HOSPEDAGEM
+
+Conteúdo:
+- index.html ........ a página do site
+- img/ .............. fotos, capa do livro e logos dos clientes (manter esta pasta junto do index.html)
+
+Como publicar:
+1. Envie o index.html e a pasta img para a raiz da hospedagem (ex.: public_html, ou arraste a pasta inteira no Vercel/Netlify).
+2. Mantenha a mesma estrutura de pastas.
+3. Aponte o domínio danieldonato.com.br para essa hospedagem.
+
+Observações:
+- As fontes vêm do Google Fonts e as capas das 3 matérias vêm do portal CX em Foco; precisam de internet (normal em qualquer site).
+- Botões de WhatsApp apontam para (85) 99971-1108.
+- Para trocar as matérias do blog, edite os 3 cartões da seção "Artigos" no index.html (ou peça ao Claude).
