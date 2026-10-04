@@ -81,9 +81,99 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .pq-item{padding-bottom:calc(14 * var(--u));border-bottom:1px solid #C9A45C;font-size:calc(14 * var(--u));font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 .pq-left{text-align:right}.pq-left .pq-item{padding-right:calc(8 * var(--u));border-radius:0 0 100% 0}
 .pq-right .pq-item{padding-left:calc(8 * var(--u));border-radius:0 0 0 100%}
+
+:where(.m) a{color:#C9A45C}
+.m{font-family:'Manrope',system-ui,sans-serif;color:#EDE6D8;background:#0B0A08;width:100%;min-height:100vh;-webkit-text-size-adjust:100%}
+.m *{box-sizing:border-box}
+.m-wrap{padding:0 22px}
+.m-eyebrow{font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+.m-h2{margin:0;font-family:'Cormorant',Georgia,serif;font-weight:500;font-size:44px;line-height:.95;text-transform:uppercase;text-wrap:balance}
+.m-btn{display:block;text-align:center;text-decoration:none;background:linear-gradient(180deg,#F6E6BE 0%,#E2C58C 50%,#C9A45C 100%);color:#1A140A;padding:18px 20px;border-radius:14px;font-family:'Oswald',sans-serif;font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 10px 30px rgba(201,164,92,.22)}
+.m-ghost{display:block;text-align:center;text-decoration:none;border:1px solid #C9A45C;color:#C9A45C;padding:15px 20px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.m-link{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8A6A2E}
+/* header */
+.m-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(11,10,8,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #2A251C}
+.m-head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 22px}
+.m-logo-mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:#EDE6D8}
+.m-logo-mark b{width:36px;height:36px;border:1px solid #C9A45C;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant',serif;font-weight:600;font-size:18px;color:#C9A45C}
+.m-logo-mark span{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+.m-wa{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid #C9A45C;color:#C9A45C;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.m-nav{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;padding:0 22px 12px;-webkit-overflow-scrolling:touch}
+.m-nav::-webkit-scrollbar{display:none}
+.m-nav a{flex:none;color:#EDE6D8;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 0}
+/* hero */
+.m-hero{position:relative;overflow:hidden;background:#060605}
+.m-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:brightness(.35) saturate(.6) sepia(.25)}
+.m-hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,5,.9) 0%,rgba(6,6,5,.55) 45%,rgba(6,6,5,.2) 70%,#0B0A08 100%)}
+.m-sky{position:absolute;inset:0;pointer-events:none}
+.m-spark{position:absolute;border-radius:50%;background:#FFF8E6;box-shadow:0 0 6px 1px rgba(255,244,214,.6);animation:m-tw var(--d) ease-in-out infinite;animation-delay:var(--t)}
+.m-spark:nth-child(4n){background:#E8CF95}
+.m-glint{border-radius:0;background:#FFF4D6;box-shadow:none;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);filter:drop-shadow(0 0 4px rgba(255,236,190,.9))}
+@keyframes m-tw{0%,100%{opacity:.05;transform:scale(.5)}45%{opacity:1;transform:scale(1.2)}60%{opacity:.85;transform:scale(1)}}
+.m-hero-in{position:relative;z-index:2;padding:30px 22px 0;display:flex;flex-direction:column;gap:20px}
+.m-chips{list-style:none;margin:0;padding:0;display:flex;gap:16px;flex-wrap:wrap}
+.m-chip{display:flex;align-items:center;gap:8px}
+.m-chip i{width:32px;height:32px;border-radius:50%;border:1px solid #6B5B3A;background:rgba(201,164,92,.08);color:#E8CF95;display:flex;align-items:center;justify-content:center;font-style:normal}
+.m-chip b{display:block;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:#F3EDE1;line-height:1.2}
+.m-chip small{display:block;font-size:11px;color:#9C8F78}
+.m-title{margin:0;display:flex;flex-direction:column;font-family:'Oswald','Arial Narrow',sans-serif;text-transform:uppercase;line-height:1.02}
+.m-t1{font-weight:300;font-size:30px;color:#F3EDE1}
+.m-t2{font-weight:600;font-size:52px;color:#C9A45C}
+.m-t3{display:flex;align-items:center;gap:8px}
+.m-spk{display:inline-block;width:34px;height:34px;flex:none;align-self:flex-start;margin-top:6px;filter:drop-shadow(0 0 8px rgba(232,207,149,.7));animation:m-spk 3.2s ease-in-out infinite}
+@keyframes m-spk{0%,100%{opacity:.75;transform:scale(.88)}50%{opacity:1;transform:scale(1.06) rotate(12deg)}}
+.m-quote{margin:0;font-size:15px;line-height:1.6;color:#B5AA95}
+.m-quote strong{color:#F3EDE1;font-weight:600}
+.m-hero-photo{position:relative;z-index:2;display:block;width:88%;max-width:420px;height:auto;margin:6px auto 0;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,#000 70%,transparent 100%)}
+/* stats */
+.m-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 12px;padding:30px 22px 36px;background:#0F0D0A;border-bottom:1px solid #2A251C;text-align:center}
+.m-stats b{display:block;font-family:'Cormorant',serif;font-weight:500;font-size:44px;line-height:1;color:#C9A45C}
+.m-stats span{display:block;margin-top:6px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;line-height:1.4}
+/* sections */
+.m-sec{padding:64px 0}
+.m-white{background:#FFFFFF;color:#1A1712}
+.m-dark{background:#0B0A08}
+.m-stack{display:flex;flex-direction:column;gap:16px}
+.m-cred{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px;margin-top:14px}
+.m-cred div{border-top:1px solid #C9A45C;padding-top:12px}
+.m-cred b{display:block;font-family:'Cormorant',serif;font-size:21px;font-weight:600;line-height:1.1;color:#1A1712}
+.m-cred span{display:block;margin-top:6px;font-size:12.5px;line-height:1.5;color:#6B6355}
+.m-card{background:#15130F;border:1px solid #2A251C;border-radius:18px;overflow:hidden}
+.m-card-img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-bottom:1px solid #2A251C}
+.m-card-body{padding:20px;display:flex;flex-direction:column;gap:8px}
+.m-card-kick{font-family:'Cormorant',serif;font-size:17px;color:#C9A45C}
+.m-card-t{margin:0;font-family:'Cormorant',serif;font-weight:600;font-size:25px;line-height:1.1;color:#EDE6D8}
+.m-card-p{margin:0;font-size:14.5px;line-height:1.6;color:#B5AA95}
+.m-pq{position:relative;background:#0B0A08}
+.m-pq img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:50% 25%}
+.m-pq-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,8,.85) 0%,rgba(11,10,8,0) 35%,rgba(11,10,8,0) 70%,#0B0A08 100%)}
+.m-pq-head{position:absolute;left:0;right:0;top:22px;text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.85)}
+.m-list{list-style:none;margin:0;padding:0}
+.m-list li{padding:16px 0;border-bottom:1px solid #3A3226;font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.m-split > div + div{border-top:1px solid #E8E0D0;margin-top:36px;padding-top:36px}
+.m-book{display:block;width:62%;max-width:260px;height:auto;margin:0 auto;border-radius:4px 10px 10px 4px;box-shadow:0 24px 60px rgba(0,0,0,.65),0 0 50px rgba(201,164,92,.18)}
+.m-logos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 14px;margin-top:8px}
+.m-logo{height:58px;min-width:0;display:flex;align-items:center;justify-content:center}
+.m-logo img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.05);opacity:.75}
+.m-art{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;align-items:center;text-decoration:none;color:#EDE6D8;padding:14px 0;border-bottom:1px solid #2A251C}
+.m-art-img{aspect-ratio:1/1;border-radius:12px;border:1px solid #3A3226;background-color:#1A1712;background-size:cover;background-position:center}
+.m-art-1{background-image:url('https://portal-cx-news.vercel.app/api/imagem?id=daniel-donato-participa-de-imersao-inspirada-na-cultura-disn'),linear-gradient(150deg,#2A2116 0%,#14110C 70%)}
+.m-art-2{background-image:url('https://portal-cx-news.vercel.app/api/imagem?id=walt-disney-world-completa-55-anos'),linear-gradient(150deg,#2A2116 0%,#14110C 70%)}
+.m-art-3{background-image:url('https://portal-cx-news.vercel.app/api/imagem?id=por-que-encantar-pessoas-e-o-maior-ativo-de-uma-empresa'),linear-gradient(150deg,#2A2116 0%,#14110C 70%)}
+.m-art-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.m-art-kick{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#C9A45C}
+.m-art-t{font-family:'Cormorant',serif;font-weight:600;font-size:19px;line-height:1.15;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.m-foot{background:#0B0A08;border-top:1px solid #2A251C;padding:36px 22px 110px;display:flex;flex-direction:column;gap:18px;font-size:13px;color:#9C8F78}
+.m-foot nav{display:flex;gap:20px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.m-float{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;width:58px;height:58px;border-radius:50%;background:linear-gradient(180deg,#F6E6BE 0%,#C9A45C 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,0,0,.5);color:#1A140A}
+@media (prefers-reduced-motion: reduce){.m-spark,.m-spk{animation:none}}
+
+.v-mob{display:none}
+@media (max-width: 767px){.v-desk{display:none}.v-mob{display:block}}
 </style>
 </head>
 <body>
+<div class="v-desk">
 <div id="dd-page" style="font-family: 'Manrope', system-ui, sans-serif; color: #EDE6D8; background: #0B0A08; min-height: 100vh; width: 100%; container-type: inline-size; --u: min(1px, calc(100cqw / 1440))">
 
   <!-- HEADER -->
@@ -109,7 +199,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
   <section id="topo" class="hx" style="position: relative; overflow: hidden; background: #060605">
     <div class="hy-wrap">
       <div class="hy-card">
-        <img class="hy-bg" src="img/castelo.webp" alt="">
+        <img loading="lazy" class="hy-bg" src="img/castelo.webp" alt="">
         <div class="hy-bgshade" aria-hidden="true"></div>
         <div class="dd-sky" aria-hidden="true">
           <span class="dd-spark dd-glint" style="left: 45.3%; top: 18.6%; width: calc(9 * var(--u)); height: calc(9 * var(--u)); --d: 2.6s; --t: -3.4s"></span>
@@ -203,8 +293,8 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           <a class="dd-gold hy-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Solicitar proposta</a>
         </div>
         <div class="hy-right">
-          <img class="hy-ghost" src="img/daniel-capa.webp" alt="">
-          <img class="hy-photo" src="img/daniel-capa.webp" alt="Daniel Donato estendendo a mão em direção ao público">
+          <img loading="lazy" class="hy-ghost" src="img/daniel-capa.webp" alt="">
+          <img loading="lazy" class="hy-photo" src="img/daniel-capa.webp" alt="Daniel Donato estendendo a mão em direção ao público">
         </div>
       </div>
     </div>
@@ -252,7 +342,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
       </div>
       <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: calc(20 * var(--u))">
         <article style="background: #15130F; border: 1px solid #2A251C; border-radius: calc(20 * var(--u)); overflow: hidden; display: flex; flex-direction: column">
-          <img src="img/imersao.webp" alt="Daniel Donato conduzindo uma imersão para uma turma" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 45%; border-bottom: 1px solid #2A251C">
+          <img loading="lazy" src="img/imersao.webp" alt="Daniel Donato conduzindo uma imersão para uma turma" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 45%; border-bottom: 1px solid #2A251C">
           <div style="padding: calc(26 * var(--u)); display: flex; flex-direction: column; gap: calc(10 * var(--u))">
             <span style="font-family: 'Cormorant', serif; font-size: calc(18 * var(--u)); color: #C9A45C">I · Imersão</span>
             <h3 style="margin: 0; font-family: 'Cormorant', serif; font-weight: 600; font-size: calc(28 * var(--u)); line-height: 1.1; color: #EDE6D8">MagicDay — Atendimento de Alto Impacto</h3>
@@ -260,7 +350,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           </div>
         </article>
         <article style="background: #15130F; border: 1px solid #2A251C; border-radius: calc(20 * var(--u)); overflow: hidden; display: flex; flex-direction: column">
-          <img src="img/palestra.webp" alt="Daniel Donato no palco durante uma palestra" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 22%; border-bottom: 1px solid #2A251C">
+          <img loading="lazy" src="img/palestra.webp" alt="Daniel Donato no palco durante uma palestra" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 22%; border-bottom: 1px solid #2A251C">
           <div style="padding: calc(26 * var(--u)); display: flex; flex-direction: column; gap: calc(10 * var(--u))">
             <span style="font-family: 'Cormorant', serif; font-size: calc(18 * var(--u)); color: #C9A45C">II · Palestra</span>
             <h3 style="margin: 0; font-family: 'Cormorant', serif; font-weight: 600; font-size: calc(28 * var(--u)); line-height: 1.1; color: #EDE6D8">Atendimento Mágico — Um Case Disney</h3>
@@ -268,7 +358,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           </div>
         </article>
         <article style="background: #15130F; border: 1px solid #2A251C; border-radius: calc(20 * var(--u)); overflow: hidden; display: flex; flex-direction: column">
-          <img src="img/eventos.webp" alt="Plateia lotada em evento com Daniel Donato no palco" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 22%; border-bottom: 1px solid #2A251C">
+          <img loading="lazy" src="img/eventos.webp" alt="Plateia lotada em evento com Daniel Donato no palco" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 22%; border-bottom: 1px solid #2A251C">
           <div style="padding: calc(26 * var(--u)); display: flex; flex-direction: column; gap: calc(10 * var(--u))">
             <span style="font-family: 'Cormorant', serif; font-size: calc(18 * var(--u)); color: #C9A45C">III · Eventos</span>
             <h3 style="margin: 0; font-family: 'Cormorant', serif; font-weight: 600; font-size: calc(28 * var(--u)); line-height: 1.1; color: #EDE6D8">Palestras para eventos e convenções</h3>
@@ -276,7 +366,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           </div>
         </article>
         <article style="background: #15130F; border: 1px solid #2A251C; border-radius: calc(20 * var(--u)); overflow: hidden; display: flex; flex-direction: column">
-          <img src="img/in-company.webp" alt="Daniel Donato com a equipe de uma empresa em treinamento in company" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 40%; border-bottom: 1px solid #2A251C">
+          <img loading="lazy" src="img/in-company.webp" alt="Daniel Donato com a equipe de uma empresa em treinamento in company" style="display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 40%; border-bottom: 1px solid #2A251C">
           <div style="padding: calc(26 * var(--u)); display: flex; flex-direction: column; gap: calc(10 * var(--u))">
             <span style="font-family: 'Cormorant', serif; font-size: calc(18 * var(--u)); color: #C9A45C">IV · In company</span>
             <h3 style="margin: 0; font-family: 'Cormorant', serif; font-weight: 600; font-size: calc(28 * var(--u)); line-height: 1.1; color: #EDE6D8">Treinamentos in company</h3>
@@ -291,7 +381,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
   <!-- PARA QUEM (dark; texto sobre a foto no desktop, foto + lista no celular) -->
   <section class="pq-sec">
     <div class="pq-media">
-      <img class="pq-img" src="img/daniel-equipe.webp" alt="Daniel Donato à frente de uma equipe de profissionais">
+      <img loading="lazy" class="pq-img" src="img/daniel-equipe.webp" alt="Daniel Donato à frente de uma equipe de profissionais">
       <div class="pq-shade" aria-hidden="true"></div>
       <div class="pq-head">
         <h2 style="margin: 0; font-family: 'Cormorant', serif; font-weight: 500; line-height: 0.92; text-transform: uppercase; color: #C9A45C" class="pq-title">Para quem é</h2>
@@ -342,7 +432,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
   <section id="livro" style="background: #0B0A08">
     <div style="max-width: calc(1240 * var(--u)); margin: 0 auto; padding: calc(112 * var(--u)) clamp(calc(28 * var(--u)), calc(86.4 * var(--u)), calc(96 * var(--u))); display: flex; flex-wrap: nowrap; gap: calc(72 * var(--u)); align-items: center; justify-content: center">
       <div style="flex: none; display: flex; justify-content: center">
-        <img src="img/livro-checklist-cliente-feliz.webp" alt="Capa do livro Checklist Cliente Feliz: Atendimento de Alto Impacto, de Daniel Donato" style="width: calc(330 * var(--u)); height: auto; display: block; border-radius: calc(4 * var(--u)) calc(10 * var(--u)) calc(10 * var(--u)) calc(4 * var(--u)); box-shadow: calc(-6 * var(--u)) 0 0 rgba(0,0,0,.35) inset, 0 calc(30 * var(--u)) calc(70 * var(--u)) rgba(0,0,0,.65), 0 0 calc(60 * var(--u)) rgba(201,164,92,.18)">
+        <img loading="lazy" src="img/livro-checklist-cliente-feliz.webp" alt="Capa do livro Checklist Cliente Feliz: Atendimento de Alto Impacto, de Daniel Donato" style="width: calc(330 * var(--u)); height: auto; display: block; border-radius: calc(4 * var(--u)) calc(10 * var(--u)) calc(10 * var(--u)) calc(4 * var(--u)); box-shadow: calc(-6 * var(--u)) 0 0 rgba(0,0,0,.35) inset, 0 calc(30 * var(--u)) calc(70 * var(--u)) rgba(0,0,0,.65), 0 0 calc(60 * var(--u)) rgba(201,164,92,.18)">
       </div>
       <div style="flex: 0 1 calc(560 * var(--u)); min-width: 0; display: flex; flex-direction: column; gap: calc(20 * var(--u))">
         <span style="font-size: calc(15 * var(--u)); font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: #9C8F78">O livro</span>
@@ -363,33 +453,33 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
         <p style="margin: 0; max-width: calc(620 * var(--u)); font-size: calc(17 * var(--u)); line-height: 1.65; color: #4A443A">Indústrias, escolas, órgãos públicos, hotéis e varejo que confiaram no Daniel para desenvolver pessoas e transformar o atendimento.</p>
       </div>
       <div class="cl-grid">
-        <div class="cl-cell"><img src="img/clientes/caixa.png" alt="Caixa" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/tjce.png" alt="Tribunal de Justiça do Ceará" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/cagece.png" alt="Cagece" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/hemoce.png" alt="Hemoce" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/tracbel.png" alt="Tracbel Norte e Nordeste" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/grupo-sh.png" alt="Grupo SH" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/net.png" alt="NET" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/fortes-tecnologia.png" alt="Fortes Tecnologia" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/christus.png" alt="Colégio Christus" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/colegio-lourenco-filho.png" alt="Colégio Lourenço Filho" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/colegio-eca-de-queiros.png" alt="Colégio Eça de Queirós" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/aquaville-resort.png" alt="Aquaville Resort" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/praiano-hotel.png" alt="Praiano Hotel" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/riomar-kennedy.png" alt="RioMar Kennedy" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/trusted-estates.png" alt="Trusted Estates" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/prefeitura-de-japura.png" alt="Prefeitura de Japurá" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/prefeitura-de-labrea.png" alt="Prefeitura de Lábrea" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/semsa.png" alt="SEMSA Secretaria Municipal de Saúde" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/handara.png" alt="Handara" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/kdm-kanto-da-moda.png" alt="KDM Kanto da Moda" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/edr-distribuidora.png" alt="EDR Distribuidora" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/grupo-transloc.png" alt="Grupo Transloc" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/atitude-servicos.png" alt="Atitude Serviços" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/nuths.png" alt="Nuths" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/maxima-saneamento.png" alt="Máxima Saneamento Ambiental" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/jap-roteiros-exclusivos.png" alt="JAP Roteiros Exclusivos" class="cl-logo"></div>
-        <div class="cl-cell"><img src="img/clientes/reforcar.png" alt="Reforçar Acompanhamento Escolar" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/caixa.png" alt="Caixa" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/tjce.png" alt="Tribunal de Justiça do Ceará" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/cagece.png" alt="Cagece" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/hemoce.png" alt="Hemoce" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/tracbel.png" alt="Tracbel Norte e Nordeste" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/grupo-sh.png" alt="Grupo SH" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/net.png" alt="NET" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/fortes-tecnologia.png" alt="Fortes Tecnologia" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/christus.png" alt="Colégio Christus" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/colegio-lourenco-filho.png" alt="Colégio Lourenço Filho" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/colegio-eca-de-queiros.png" alt="Colégio Eça de Queirós" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/aquaville-resort.png" alt="Aquaville Resort" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/praiano-hotel.png" alt="Praiano Hotel" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/riomar-kennedy.png" alt="RioMar Kennedy" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/trusted-estates.png" alt="Trusted Estates" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/prefeitura-de-japura.png" alt="Prefeitura de Japurá" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/prefeitura-de-labrea.png" alt="Prefeitura de Lábrea" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/semsa.png" alt="SEMSA Secretaria Municipal de Saúde" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/handara.png" alt="Handara" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/kdm-kanto-da-moda.png" alt="KDM Kanto da Moda" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/edr-distribuidora.png" alt="EDR Distribuidora" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/grupo-transloc.png" alt="Grupo Transloc" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/atitude-servicos.png" alt="Atitude Serviços" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/nuths.png" alt="Nuths" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/maxima-saneamento.png" alt="Máxima Saneamento Ambiental" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/jap-roteiros-exclusivos.png" alt="JAP Roteiros Exclusivos" class="cl-logo"></div>
+        <div class="cl-cell"><img loading="lazy" src="img/clientes/reforcar.png" alt="Reforçar Acompanhamento Escolar" class="cl-logo"></div>
       </div>
     </div>
   </section>
@@ -452,6 +542,252 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
     </div>
   </footer>
 
+</div>
+</div>
+<div class="v-mob">
+<div class="m">
+
+  <header class="m-head">
+    <div class="m-head-row">
+      <a class="m-logo-mark" href="#m-topo"><b>DD</b><span>Daniel Donato</span></a>
+      <a class="m-wa" href="https://api.whatsapp.com/send?phone=5585999711108">Proposta</a>
+    </div>
+    <nav class="m-nav" aria-label="Seções">
+      <a href="#m-sobre">Sobre</a><a href="#m-palestras">Palestras</a><a href="#m-consultoria">Consultoria</a><a href="#m-livro">Livro</a><a href="#m-clientes">Clientes</a><a href="#m-blog">Blog</a>
+    </nav>
+  </header>
+
+  <section id="m-topo" class="m-hero">
+    <img class="m-hero-bg" src="img/castelo.webp" alt="">
+    <div class="m-hero-shade" aria-hidden="true"></div>
+    <div class="m-sky" aria-hidden="true">
+<span class="m-spark m-glint" style="left: 61.8%; top: 71.0%; width: 7px; height: 9px; --d: 3.3s; --t: -1.0s"></span>
+<span class="m-spark" style="left: 7.0%; top: 16.6%; width: 3px; height: 3px; --d: 3.5s; --t: -1.5s"></span>
+<span class="m-spark" style="left: 11.8%; top: 25.2%; width: 2px; height: 3px; --d: 2.2s; --t: -3.7s"></span>
+<span class="m-spark" style="left: 75.5%; top: 16.8%; width: 2px; height: 2px; --d: 3.0s; --t: -1.8s"></span>
+<span class="m-spark" style="left: 14.7%; top: 92.4%; width: 2px; height: 2px; --d: 3.3s; --t: -3.8s"></span>
+<span class="m-spark" style="left: 17.9%; top: 17.5%; width: 3px; height: 2px; --d: 2.8s; --t: -2.7s"></span>
+<span class="m-spark" style="left: 21.7%; top: 89.5%; width: 2px; height: 3px; --d: 2.3s; --t: -1.4s"></span>
+<span class="m-spark" style="left: 17.9%; top: 15.6%; width: 2px; height: 3px; --d: 2.3s; --t: -2.4s"></span>
+<span class="m-spark m-glint" style="left: 2.3%; top: 65.0%; width: 9px; height: 7px; --d: 2.3s; --t: -3.3s"></span>
+<span class="m-spark" style="left: 48.2%; top: 31.4%; width: 3px; height: 3px; --d: 3.2s; --t: -0.2s"></span>
+<span class="m-spark" style="left: 95.6%; top: 4.1%; width: 3px; height: 3px; --d: 1.6s; --t: -3.2s"></span>
+<span class="m-spark" style="left: 37.2%; top: 55.8%; width: 2px; height: 3px; --d: 1.7s; --t: -0.7s"></span>
+<span class="m-spark" style="left: 93.7%; top: 20.3%; width: 2px; height: 3px; --d: 2.4s; --t: -1.4s"></span>
+<span class="m-spark" style="left: 52.4%; top: 74.1%; width: 2px; height: 4px; --d: 3.2s; --t: -3.2s"></span>
+<span class="m-spark" style="left: 84.5%; top: 5.4%; width: 2px; height: 2px; --d: 2.3s; --t: -2.4s"></span>
+<span class="m-spark" style="left: 90.1%; top: 33.6%; width: 4px; height: 2px; --d: 2.3s; --t: -1.3s"></span>
+<span class="m-spark m-glint" style="left: 19.0%; top: 9.3%; width: 7px; height: 9px; --d: 3.8s; --t: -0.6s"></span>
+<span class="m-spark" style="left: 6.7%; top: 93.8%; width: 4px; height: 3px; --d: 1.7s; --t: -3.0s"></span>
+<span class="m-spark" style="left: 35.0%; top: 25.3%; width: 3px; height: 2px; --d: 1.7s; --t: -3.7s"></span>
+<span class="m-spark" style="left: 5.1%; top: 47.9%; width: 2px; height: 2px; --d: 3.8s; --t: -2.3s"></span>
+<span class="m-spark" style="left: 14.7%; top: 85.4%; width: 3px; height: 2px; --d: 2.0s; --t: -1.5s"></span>
+<span class="m-spark" style="left: 7.6%; top: 41.1%; width: 2px; height: 3px; --d: 3.6s; --t: -2.5s"></span>
+<span class="m-spark" style="left: 18.3%; top: 50.6%; width: 3px; height: 3px; --d: 2.7s; --t: -1.2s"></span>
+<span class="m-spark" style="left: 40.8%; top: 15.6%; width: 3px; height: 4px; --d: 3.7s; --t: -2.5s"></span>
+<span class="m-spark m-glint" style="left: 49.9%; top: 33.5%; width: 7px; height: 9px; --d: 2.2s; --t: -3.1s"></span>
+<span class="m-spark" style="left: 85.3%; top: 35.6%; width: 3px; height: 4px; --d: 3.1s; --t: -3.0s"></span>
+<span class="m-spark" style="left: 36.9%; top: 67.5%; width: 3px; height: 3px; --d: 2.2s; --t: -3.9s"></span>
+<span class="m-spark" style="left: 70.7%; top: 91.0%; width: 3px; height: 2px; --d: 2.9s; --t: -0.0s"></span>
+<span class="m-spark" style="left: 54.5%; top: 25.3%; width: 3px; height: 3px; --d: 2.2s; --t: -2.0s"></span>
+<span class="m-spark" style="left: 66.7%; top: 35.2%; width: 3px; height: 3px; --d: 3.2s; --t: -3.3s"></span>
+<span class="m-spark" style="left: 35.6%; top: 80.4%; width: 3px; height: 3px; --d: 3.7s; --t: -2.1s"></span>
+<span class="m-spark" style="left: 52.8%; top: 17.5%; width: 3px; height: 3px; --d: 2.2s; --t: -0.3s"></span>
+<span class="m-spark m-glint" style="left: 66.4%; top: 40.7%; width: 9px; height: 9px; --d: 3.0s; --t: -3.1s"></span>
+<span class="m-spark" style="left: 63.1%; top: 69.0%; width: 2px; height: 2px; --d: 2.0s; --t: -1.8s"></span>
+<span class="m-spark" style="left: 64.4%; top: 22.4%; width: 2px; height: 2px; --d: 3.8s; --t: -3.9s"></span>
+<span class="m-spark" style="left: 17.9%; top: 84.9%; width: 2px; height: 3px; --d: 3.7s; --t: -1.9s"></span>
+<span class="m-spark" style="left: 54.6%; top: 40.6%; width: 3px; height: 3px; --d: 3.1s; --t: -0.3s"></span>
+<span class="m-spark" style="left: 21.6%; top: 68.8%; width: 3px; height: 2px; --d: 2.4s; --t: -3.8s"></span>
+<span class="m-spark" style="left: 84.2%; top: 82.6%; width: 4px; height: 3px; --d: 3.7s; --t: -2.2s"></span>
+<span class="m-spark" style="left: 30.9%; top: 29.5%; width: 4px; height: 3px; --d: 3.7s; --t: -1.2s"></span>
+    </div>
+    <div class="m-hero-in">
+      <ul class="m-chips" aria-label="Destaques">
+        <li class="m-chip"><i aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z"></path></svg></i><span><b>+20 visitas</b><small>aos parques Disney</small></span></li>
+        <li class="m-chip"><i aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></i><span><b>Todo o Brasil</b><small>presencial e online</small></span></li>
+      </ul>
+      <h1 class="m-title">
+        <span class="m-t1">Encante seus clientes</span>
+        <span class="m-t2">com o Jeito</span>
+        <span class="m-t2 m-t3">Disney <span class="m-spk" aria-hidden="true"><svg viewBox="0 0 64 64" style="width: 100%; height: 100%; display: block"><path d="M32 2 C34 22 42 30 62 32 C42 34 34 42 32 62 C30 42 22 34 2 32 C22 30 30 22 32 2 Z" fill="#E8CF95"></path><path d="M52 6 C52.8 11 55 13.2 60 14 C55 14.8 52.8 17 52 22 C51.2 17 49 14.8 44 14 C49 13.2 51.2 11 52 6 Z" fill="#C9A45C"></path></svg></span></span>
+      </h1>
+      <p class="m-quote"><strong>Palestras, treinamentos e imersões</strong> que levam os bastidores da Disney para a realidade da sua empresa.</p>
+      <a class="m-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Solicitar proposta</a>
+    </div>
+    <img class="m-hero-photo" src="img/daniel-capa.webp" alt="Daniel Donato estendendo a mão em direção ao público">
+  </section>
+
+  <section class="m-stats" aria-label="Números">
+    <div><b>+20</b><span>visitas técnicas à Disney</span></div>
+    <div><b>+50 mil</b><span>profissionais transformados</span></div>
+    <div><b>20 anos</b><span>de consultoria empresarial</span></div>
+    <div><b>10 anos</b><span>no palco</span></div>
+  </section>
+
+  <section id="m-sobre" class="m-sec m-white">
+    <div class="m-wrap m-stack">
+      <span class="m-eyebrow" style="color: #8A6A2E">Conheça o Daniel</span>
+      <h2 class="m-h2" style="color: #1A1712">Experiências<br>que <em style="color: #8A6A2E">transformam</em></h2>
+      <p style="margin: 6px 0 0; font-size: 17px; line-height: 1.6; color: #1A1712">Empresário, mentor e palestrante, à frente da <strong>Sinapse Consultoria</strong> e da <strong>Seja UAU Academy</strong>. Especialista em Experiência do Cliente, Experiência do Colaborador e Liderança.</p>
+      <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Com mais de 20 visitas de estudo aos parques e lojas da Disney, criou uma forma única de traduzir os conceitos de uma das maiores empresas de entretenimento do mundo para a rotina de qualquer negócio.</p>
+      <div class="m-cred">
+        <div><b>Guestologia Business</b><span>Certificação internacional pelo Seeds of Dreams Institute</span></div>
+        <div><b>Disney Institute</b><span>Backstage Magic e Keys to the Kingdom Tour</span></div>
+        <div><b>Formação</b><span>Administração, MBA em Marketing Estratégico e Marketing de Relacionamento</span></div>
+        <div><b>Autor</b><span>“Checklist Cliente Feliz: Atendimento de Alto Impacto”</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="m-palestras" class="m-sec m-dark">
+    <div class="m-wrap m-stack" style="gap: 20px">
+      <div class="m-stack" style="gap: 12px; text-align: center; align-items: center">
+        <span class="m-eyebrow" style="color: #9C8F78">Palestras e treinamentos</span>
+        <h2 class="m-h2" style="color: #C9A45C">Mais que palestras</h2>
+        <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #B5AA95">Encontros que provocam movimento, crescimento e transformação humana e empresarial.</p>
+      </div>
+      <article class="m-card">
+        <img src="img/imersao.webp" alt="Daniel Donato conduzindo uma imersão para uma turma" style="object-position: 50% 45%" class="m-card-img" loading="lazy">
+        <div class="m-card-body"><span class="m-card-kick">I · Imersão</span><h3 class="m-card-t">MagicDay — Atendimento de Alto Impacto</h3><p class="m-card-p">Um dia inteiro para viver, na prática, o padrão de encantamento que fideliza.</p></div>
+      </article>
+      <article class="m-card">
+        <img src="img/palestra.webp" alt="Daniel Donato no palco durante uma palestra" style="object-position: 50% 22%" class="m-card-img" loading="lazy">
+        <div class="m-card-body"><span class="m-card-kick">II · Palestra</span><h3 class="m-card-t">Atendimento Mágico — Um Case Disney</h3><p class="m-card-p">Como transformar visitantes em fãs, traduzido para o seu negócio.</p></div>
+      </article>
+      <article class="m-card">
+        <img src="img/eventos.webp" alt="Plateia lotada em evento com Daniel Donato no palco" style="object-position: 50% 22%" class="m-card-img" loading="lazy">
+        <div class="m-card-body"><span class="m-card-kick">III · Eventos</span><h3 class="m-card-t">Palestras para eventos e convenções</h3><p class="m-card-p">Conteúdo sob medida para abrir ou fechar seu evento com energia.</p></div>
+      </article>
+      <article class="m-card">
+        <img src="img/in-company.webp" alt="Daniel Donato com a equipe de uma empresa em treinamento in company" style="object-position: 50% 40%" class="m-card-img" loading="lazy">
+        <div class="m-card-body"><span class="m-card-kick">IV · In company</span><h3 class="m-card-t">Treinamentos in company</h3><p class="m-card-p">Programas desenhados para a realidade e os desafios da sua equipe.</p></div>
+      </article>
+      <a class="m-ghost" href="https://www.danieldonato.com.br/palestras-e-treinamentos">Ver todos os temas</a>
+    </div>
+  </section>
+
+  <section class="m-pq" aria-label="Para quem é">
+    <img src="img/daniel-equipe.webp" alt="Daniel Donato à frente de uma equipe de profissionais">
+    <div class="m-pq-shade" aria-hidden="true"></div>
+    <div class="m-pq-head m-stack" style="gap: 6px; align-items: center">
+      <h2 class="m-h2" style="color: #C9A45C; font-size: 40px">Para quem é</h2>
+      <span class="m-eyebrow" style="color: #EDE6D8; font-size: 11px">Equipes que querem encantar</span>
+    </div>
+  </section>
+  <section class="m-dark" style="padding: 8px 0 56px">
+    <div class="m-wrap">
+      <ul class="m-list">
+        <li>Times de vendas</li><li>Gestores e líderes</li><li>Equipes de atendimento</li><li>Marketing e RH</li><li>Empresários e empreendedores</li><li>Profissionais da saúde</li>
+      </ul>
+      <p style="margin: 22px 0 0; text-align: center; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #C9C1B0">CE · SP · PR · DF · AM · SE · SC · RN · PI</p>
+    </div>
+  </section>
+
+  <section id="m-consultoria" class="m-sec m-white">
+    <div class="m-wrap m-split">
+      <div class="m-stack">
+        <span class="m-eyebrow" style="color: #8A6A2E">Consultoria em processos</span>
+        <h2 class="m-h2" style="font-size: 38px; color: #1A1712">Operação e cultura com clareza</h2>
+        <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Para empresas que querem melhorar atendimento, operação e performance com processos mais eficientes e estratégicos.</p>
+        <a class="m-link" href="https://www.danieldonato.com.br/consultoria">Conhecer a consultoria →</a>
+      </div>
+      <div class="m-stack">
+        <span class="m-eyebrow" style="color: #8A6A2E">Mentoria · A Teia</span>
+        <h2 class="m-h2" style="font-size: 38px; color: #1A1712">Transformação constante</h2>
+        <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Um ecossistema para empreendedores que querem destravar execução, fortalecer direção e sustentar prosperidade.</p>
+        <a class="m-link" href="https://www.sinapseonline.com/a-teia-mentoria">Saiba mais →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="m-livro" class="m-sec m-dark">
+    <div class="m-wrap m-stack" style="gap: 18px">
+      <img class="m-book" src="img/livro-checklist-cliente-feliz.webp" alt="Capa do livro Checklist Cliente Feliz: Atendimento de Alto Impacto, de Daniel Donato" loading="lazy">
+      <span class="m-eyebrow" style="margin-top: 18px; color: #9C8F78">O livro</span>
+      <h2 class="m-h2" style="color: #C9A45C">Checklist Cliente Feliz</h2>
+      <p style="margin: 0; font-family: 'Cormorant', serif; font-style: italic; font-size: 22px; color: #EDE6D8">Atendimento de Alto Impacto</p>
+      <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #B5AA95">Um guia prático, item por item, para revisar o atendimento da sua empresa e transformar cada contato em uma experiência memorável.</p>
+      <a class="m-btn" href="https://www.danieldonato.com.br/checklist-feliz-livro-digital">Quero o livro digital</a>
+    </div>
+  </section>
+
+  <section id="m-clientes" class="m-sec m-white">
+    <div class="m-wrap m-stack" style="gap: 14px; text-align: center; align-items: center">
+      <span class="m-eyebrow" style="color: #8A6A2E">Clientes</span>
+      <h2 class="m-h2" style="font-size: 38px; color: #1A1712">Quem já viveu a experiência</h2>
+      <p style="margin: 0 0 14px; font-size: 15px; line-height: 1.65; color: #4A443A">Indústrias, escolas, órgãos públicos, hotéis e varejo que confiaram no Daniel para desenvolver pessoas e transformar o atendimento.</p>
+      <div class="m-logos" style="width: 100%">
+        <div class="m-logo"><img src="img/clientes/caixa.png" alt="Caixa" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/tjce.png" alt="Tribunal de Justiça do Ceará" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/cagece.png" alt="Cagece" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/hemoce.png" alt="Hemoce" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/tracbel.png" alt="Tracbel Norte e Nordeste" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/grupo-sh.png" alt="Grupo SH" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/net.png" alt="NET" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/fortes-tecnologia.png" alt="Fortes Tecnologia" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/christus.png" alt="Colégio Christus" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/colegio-lourenco-filho.png" alt="Colégio Lourenço Filho" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/colegio-eca-de-queiros.png" alt="Colégio Eça de Queirós" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/aquaville-resort.png" alt="Aquaville Resort" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/praiano-hotel.png" alt="Praiano Hotel" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/riomar-kennedy.png" alt="RioMar Kennedy" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/trusted-estates.png" alt="Trusted Estates" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/prefeitura-de-japura.png" alt="Prefeitura de Japurá" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/prefeitura-de-labrea.png" alt="Prefeitura de Lábrea" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/semsa.png" alt="SEMSA Secretaria Municipal de Saúde" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/handara.png" alt="Handara" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/kdm-kanto-da-moda.png" alt="KDM Kanto da Moda" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/edr-distribuidora.png" alt="EDR Distribuidora" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/grupo-transloc.png" alt="Grupo Transloc" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/atitude-servicos.png" alt="Atitude Serviços" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/nuths.png" alt="Nuths" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/maxima-saneamento.png" alt="Máxima Saneamento Ambiental" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/jap-roteiros-exclusivos.png" alt="JAP Roteiros Exclusivos" loading="lazy"></div>
+        <div class="m-logo"><img src="img/clientes/reforcar.png" alt="Reforçar Acompanhamento Escolar" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="m-blog" class="m-sec m-dark">
+    <div class="m-wrap">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 10px">
+        <div class="m-stack" style="gap: 8px"><span class="m-eyebrow" style="color: #9C8F78">Portal CX inFoco</span><h2 class="m-h2" style="color: #C9A45C">Artigos</h2></div>
+        <a href="https://www.cxinfoco.com.br" target="_blank" rel="noopener" style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; padding-bottom: 6px">Ver o blog →</a>
+      </div>
+      <a class="m-art" href="https://portal-cx-news.vercel.app/materia/daniel-donato-participa-de-imersao-inspirada-na-cultura-disn" target="_blank" rel="noopener">
+        <div class="m-art-img m-art-1" role="img" aria-label="Foto da matéria: Daniel Donato participa de imersão inspirada na cultura Disney e aprofunda estudos sobre experiência do cliente e encantamento"></div>
+        <div class="m-art-body"><span class="m-art-kick">Atendimento · 02 out 2026</span><span class="m-art-t">Daniel Donato participa de imersão inspirada na cultura Disney e aprofunda estudos sobre experiência do cliente e encantamento</span></div>
+      </a>
+      <a class="m-art" href="https://portal-cx-news.vercel.app/materia/walt-disney-world-completa-55-anos" target="_blank" rel="noopener">
+        <div class="m-art-img m-art-2" role="img" aria-label="Foto da matéria: O Walt Disney World Resort celebrou oficialmente o seu 55º aniversário (do Magic Kingdom) no dia 1º de outubro de 2026"></div>
+        <div class="m-art-body"><span class="m-art-kick">Experiência do Cliente · 01 out 2026</span><span class="m-art-t">O Walt Disney World Resort celebrou oficialmente o seu 55º aniversário (do Magic Kingdom) no dia 1º de outubro de 2026</span></div>
+      </a>
+      <a class="m-art" href="https://portal-cx-news.vercel.app/materia/por-que-encantar-pessoas-e-o-maior-ativo-de-uma-empresa" target="_blank" rel="noopener">
+        <div class="m-art-img m-art-3" role="img" aria-label="Foto da matéria: Por que Encantar Pessoas é o Maior Ativo de uma Empresa"></div>
+        <div class="m-art-body"><span class="m-art-kick">Atendimento · 30 set 2026</span><span class="m-art-t">Por que Encantar Pessoas é o Maior Ativo de uma Empresa</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="m-sec m-white">
+    <div class="m-wrap m-stack" style="gap: 18px; text-align: center; align-items: center">
+      <h2 class="m-h2" style="color: #1A1712">Leve essa experiência para sua equipe</h2>
+      <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4A443A">Conte sobre seu evento ou desafio e receba uma proposta personalizada.</p>
+      <a class="m-btn" href="https://api.whatsapp.com/send?phone=5585999711108" style="width: 100%">Falar no WhatsApp</a>
+    </div>
+  </section>
+
+  <footer class="m-foot">
+    <span style="font-family: 'Cormorant', serif; font-size: 26px; font-weight: 600; color: #C9A45C; text-transform: uppercase">Daniel Donato</span>
+    <span>WhatsApp (85) 99971-1108<br>comercial@sinapseonline.com</span>
+    <nav aria-label="Redes sociais"><a href="https://instagram.com/danieldonato.com.br">Instagram</a><a href="http://www.facebook.com/danieldonato.com.br">Facebook</a><a href="https://www.youtube.com/channel/UCGXZ9_fECgopOlwj3yzHtbg">YouTube</a></nav>
+    <span style="font-size: 12px; color: #7D725F">© 2026 Daniel Donato · Conteúdo independente, sem vínculo oficial com The Walt Disney Company.</span>
+  </footer>
+
+  <a class="m-float" href="https://api.whatsapp.com/send?phone=5585999711108" aria-label="Falar no WhatsApp"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>
+
+</div>
 </div>
 </body>
 </html>
