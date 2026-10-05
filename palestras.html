@@ -14,10 +14,11 @@
 <style>
 html,body{margin:0;background:#0B0A08;overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 a:focus-visible{outline:2px solid #E8CF95;outline-offset:3px}
-.pg{font-family:'Manrope',system-ui,sans-serif;color:#EDE6D8;background:#0B0A08;min-height:100vh;overflow-x:clip}
+.pg{font-family:'Manrope',system-ui,sans-serif;color:#EDE6D8;background:#0B0A08;min-height:100vh;overflow-x:clip;container-type:inline-size;--u:min(1px,calc(100cqw / 1440))}
 .pg *{box-sizing:border-box}
 :where(.pg) a{color:#C9A45C}
-.pg-c{max-width:1240px;margin:0 auto;padding:0 clamp(20px,6vw,96px)}
+.pg-c{max-width:calc(1240 * var(--u));margin:0 auto;padding:0 calc(86.4 * var(--u));box-sizing:border-box}
+@media (max-width:767px){.pg-c{max-width:none;padding:0 22px}}
 .pg-eyebrow{font-size:clamp(12px,1.1vw,15px);font-weight:700;letter-spacing:.26em;text-transform:uppercase}
 .pg-h2{margin:0;font-family:'Cormorant',Georgia,serif;font-weight:500;font-size:clamp(36px,5.5vw,72px);line-height:.95;text-transform:uppercase;text-wrap:balance}
 /* header */
@@ -48,7 +49,7 @@ a:focus-visible{outline:2px solid #E8CF95;outline-offset:3px}
 .pg-jump a{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border:1px solid #3A3226;border-radius:999px;background:rgba(11,10,8,.6);text-decoration:none;color:#EDE6D8;font-size:13px;font-weight:600}
 .pg-jump a b{font-family:'Cormorant',serif;font-size:16px;color:#C9A45C}
 /* temas */
-.pg-temas{padding:clamp(40px,6vw,80px) 0 clamp(64px,8vw,112px);display:flex;flex-direction:column;gap:clamp(48px,7vw,96px)}
+.pg-temas{padding-top:clamp(40px,6vw,80px);padding-bottom:clamp(64px,8vw,112px);display:flex;flex-direction:column;gap:clamp(48px,7vw,96px)}
 .pg-tema{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center;scroll-margin-top:96px}
 .pg-rev .pg-tema-media{order:2}
 .pg-tema-media{position:relative}
@@ -288,9 +289,9 @@ a:focus-visible{outline:2px solid #E8CF95;outline-offset:3px}
     </div>
   </footer>
 
-  <a class="pg-float" href="https://api.whatsapp.com/send?phone=5585999711108" aria-label="Falar no WhatsApp"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>
 
 </div>
+<a class="pg-float" href="https://api.whatsapp.com/send?phone=5585999711108" aria-label="Falar no WhatsApp"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>
 
 </body>
 </html>
