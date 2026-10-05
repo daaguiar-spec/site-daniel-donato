@@ -3,6 +3,7 @@ SITE DANIEL DONATO — ARQUIVOS PARA HOSPEDAGEM
 Conteúdo:
 - index.html ........ página inicial (versão computador/tablet e versão celular no mesmo arquivo)
 - palestras.html .... página "Palestras e treinamentos" (aberta pelo botão "Ver todos os temas")
+- consultoria.html .. página "Consultoria em processos" (aberta pelo menu "Consultoria" e por "Conhecer a consultoria")
 - img/ .............. fotos, capa do livro e logos dos clientes (manter esta pasta junto do index.html)
 
 Como funciona:
@@ -10,7 +11,7 @@ Como funciona:
 - Telas menores que 768 px (celulares) mostram automaticamente a versão mobile.
 
 Como publicar:
-1. Envie o index.html, o palestras.html e a pasta img para a raiz da hospedagem (ex.: public_html, ou arraste a pasta inteira no Vercel/Netlify).
+1. Envie o index.html, o palestras.html, o consultoria.html e a pasta img para a raiz da hospedagem (ex.: public_html, ou arraste a pasta inteira no Vercel/Netlify).
 2. Mantenha a mesma estrutura de pastas.
 3. Aponte o domínio danieldonato.com.br para essa hospedagem.
 
