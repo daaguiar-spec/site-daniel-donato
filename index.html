@@ -39,7 +39,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .hy-card{position:relative;overflow:hidden;border-radius:0;background:#0B0A08;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);min-height:calc(600 * var(--u));box-shadow:0 calc(30 * var(--u)) calc(80 * var(--u)) rgba(0,0,0,.6)}
 .hy-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 40%;filter:brightness(.42) saturate(.6) sepia(.25);z-index:0}
 .hy-bgshade{position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(8,7,6,.94) 0%,rgba(8,7,6,.78) 42%,rgba(8,7,6,.25) 70%,rgba(8,7,6,.55) 100%),linear-gradient(0deg,rgba(8,7,6,.8) 0%,rgba(8,7,6,0) 35%)}
-.hy-left{position:relative;z-index:2;padding:calc(56 * var(--u)) clamp(calc(24 * var(--u)),calc(43.2 * var(--u)),calc(48 * var(--u))) calc(56 * var(--u)) clamp(calc(32 * var(--u)),calc(100.8 * var(--u)),calc(110 * var(--u)));display:flex;flex-direction:column;justify-content:center;gap:calc(26 * var(--u))}
+.hy-left{position:relative;z-index:2;padding:calc(56 * var(--u)) calc(84.75 * var(--u)) calc(56 * var(--u)) calc(59.25 * var(--u));display:flex;flex-direction:column;justify-content:center;gap:calc(26 * var(--u))}
 .hy-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:nowrap;gap:calc(22 * var(--u))}
 .hy-chip{display:flex;align-items:center;gap:calc(10 * var(--u))}
 .hy-ico{width:calc(40 * var(--u));height:calc(40 * var(--u));border-radius:50%;border:1px solid #6B5B3A;background:rgba(201,164,92,.08);color:#E8CF95;display:flex;align-items:center;justify-content:center;flex:none}
@@ -68,13 +68,23 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .dd-glint{border-radius:0;background:#FFF4D6;box-shadow:none;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);filter:drop-shadow(0 0 calc(4 * var(--u)) rgba(255,236,190,.9))}
 @keyframes dd-fade{0%,100%{opacity:.08}50%{opacity:1}}
 @media (prefers-reduced-motion: reduce){.dd-spark{animation-name:dd-fade}}
+.pq-ufs{display:flex;flex-direction:column;align-items:center;gap:calc(18 * var(--u));text-shadow:none}
+.pq-ufs-head{display:flex;align-items:center;gap:calc(12 * var(--u))}
+.pq-ufs-ico{width:calc(34 * var(--u));height:calc(34 * var(--u));border-radius:50%;border:1px solid #6B5B3A;background:rgba(201,164,92,.1);color:#E8CF95;display:flex;align-items:center;justify-content:center}
+.pq-ufs-ico svg{width:calc(16 * var(--u));height:calc(16 * var(--u))}
+.pq-ufs-k{font-size:calc(13 * var(--u));font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#C9C1B0}
+.pq-ufs-k strong{color:#E8CF95}
+.pq-ufs-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:nowrap;justify-content:center;gap:calc(16 * var(--u))}
+.pq-uf{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(4 * var(--u));min-width:calc(92 * var(--u));padding:calc(12 * var(--u)) calc(12 * var(--u)) calc(11 * var(--u));border:1px solid #6B5B3A;border-radius:calc(14 * var(--u));background:linear-gradient(180deg,rgba(201,164,92,.14),rgba(11,10,8,.75))}
+.pq-uf b{font-family:'Cormorant',serif;font-weight:600;font-size:calc(30 * var(--u));line-height:1;color:#E8CF95}
+.pq-uf span{font-size:calc(11 * var(--u));font-weight:600;letter-spacing:.04em;color:#C9C1B0;white-space:nowrap}
 .pq-sec{position:relative;overflow:hidden;background:#0B0A08;border-top:1px solid #2A251C}
 .pq-media{position:absolute;inset:0}
-.pq-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.pq-img{position:absolute;top:calc(36 * var(--u));left:50%;transform:translateX(-50%);height:100%;width:auto;max-width:none;display:block;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 9%,#000 91%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0%,#000 9%,#000 91%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 10%);mask-composite:intersect}
 .pq-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,10,8,.82) 0%,rgba(11,10,8,.15) 30%,rgba(11,10,8,0) 55%,rgba(11,10,8,.9) 88%,#0B0A08 100%)}
 .pq-head{position:absolute;left:0;right:0;top:calc(72 * var(--u));z-index:2;display:flex;flex-direction:column;align-items:center;gap:calc(12 * var(--u));text-align:center;padding:0 calc(24 * var(--u));text-shadow:0 2px calc(12 * var(--u)) rgba(0,0,0,.85)}
 .pq-title{font-size:clamp(calc(40 * var(--u)),calc(79.2 * var(--u)),calc(80 * var(--u)))}
-.pq-body{position:relative;z-index:2;max-width:calc(1240 * var(--u));min-height:clamp(calc(640 * var(--u)),calc(892.8 * var(--u)),calc(900 * var(--u)));margin:0 auto;padding:calc(72 * var(--u)) clamp(calc(28 * var(--u)),calc(86.4 * var(--u)),calc(96 * var(--u))) calc(56 * var(--u));box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;gap:calc(40 * var(--u));text-shadow:0 2px calc(12 * var(--u)) rgba(0,0,0,.85)}
+.pq-body{position:relative;z-index:2;max-width:calc(1240 * var(--u));min-height:calc(780 * var(--u));margin:0 auto;padding:calc(72 * var(--u)) clamp(calc(28 * var(--u)),calc(86.4 * var(--u)),calc(96 * var(--u))) calc(100 * var(--u));box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;gap:calc(40 * var(--u));text-shadow:0 2px calc(12 * var(--u)) rgba(0,0,0,.85)}
 .pq-labels{width:100%;display:flex;flex-wrap:nowrap;align-items:flex-end;justify-content:center;gap:calc(32 * var(--u))}
 .pq-spacer{flex:0 1 calc(380 * var(--u))}
 .pq-list{flex:1 1 calc(260 * var(--u));list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:calc(22 * var(--u))}
@@ -182,6 +192,16 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .m-foot nav{display:flex;gap:20px;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
 .m-float{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;width:58px;height:58px;border-radius:50%;background:linear-gradient(180deg,#F6E6BE 0%,#C9A45C 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,0,0,.5);color:#1A140A}
 @media (prefers-reduced-motion: reduce){.m-spark,.m-spk{animation:none}}
+.m-ufs{margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.m-ufs-head{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.m-ufs-ico{width:30px;height:30px;flex:none;border-radius:50%;border:1px solid #6B5B3A;background:rgba(201,164,92,.1);color:#E8CF95;display:flex;align-items:center;justify-content:center}
+.m-ufs-ico svg{width:15px;height:15px}
+.m-ufs-k{font-size:11px;line-height:1.6;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#C9C1B0}
+.m-ufs-k strong{color:#E8CF95}
+.m-ufs-list{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.m-uf{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 9px;border:1px solid #6B5B3A;border-radius:12px;background:linear-gradient(180deg,rgba(201,164,92,.14),rgba(11,10,8,.75));text-align:center}
+.m-uf b{font-family:'Cormorant',serif;font-weight:600;font-size:26px;line-height:1;color:#E8CF95}
+.m-uf span{font-size:10px;font-weight:600;line-height:1.2;color:#C9C1B0}
 
 .v-mob{display:none}
 @media (max-width: 767px){.v-desk{display:none}.v-mob{display:block}}
@@ -317,7 +337,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 
   <!-- STATS (dark) -->
   <section aria-label="Números" class="dd-stats" style="background: #060605; border-bottom: 1px solid #2A251C">
-    <div style="max-width: calc(1112 * var(--u)); margin: 0 auto; padding: calc(40 * var(--u)) clamp(calc(20 * var(--u)), calc(43.2 * var(--u)), calc(48 * var(--u))) calc(48 * var(--u)); box-sizing: border-box; background: #0F0D0A; text-align: center" class="dd-statgrid">
+    <div style="max-width: calc(1112 * var(--u)); margin: 0 auto; padding: calc(40 * var(--u)) clamp(calc(20 * var(--u)), calc(43.2 * var(--u)), calc(48 * var(--u))) calc(80 * var(--u)); box-sizing: border-box; background: #0F0D0A; text-align: center" class="dd-statgrid">
       <div style="display: flex; flex-direction: column; gap: calc(6 * var(--u))"><span style="font-family: 'Cormorant', serif; font-weight: 500; font-size: clamp(calc(40 * var(--u)), calc(63.4 * var(--u)), calc(64 * var(--u))); line-height: 1; color: #C9A45C">+20</span><span style="font-size: calc(12 * var(--u)); font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #9C8F78">visitas técnicas à Disney</span></div>
       <div style="display: flex; flex-direction: column; gap: calc(6 * var(--u))"><span style="font-family: 'Cormorant', serif; font-weight: 500; font-size: clamp(calc(40 * var(--u)), calc(63.4 * var(--u)), calc(64 * var(--u))); line-height: 1; color: #C9A45C">+50 mil</span><span style="font-size: calc(12 * var(--u)); font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #9C8F78">profissionais transformados</span></div>
       <div style="display: flex; flex-direction: column; gap: calc(6 * var(--u))"><span style="font-family: 'Cormorant', serif; font-weight: 500; font-size: clamp(calc(40 * var(--u)), calc(63.4 * var(--u)), calc(64 * var(--u))); line-height: 1; color: #C9A45C">20 anos</span><span style="font-size: calc(12 * var(--u)); font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #9C8F78">de consultoria empresarial</span></div>
@@ -417,7 +437,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           <li class="pq-item">Profissionais da saúde</li>
         </ul>
       </div>
-      <p style="margin: 0; text-align: center; font-size: calc(13 * var(--u)); letter-spacing: 0.12em; text-transform: uppercase; color: #C9C1B0">CE · SP · PR · DF · AM · SE · SC · RN · PI</p>
+      <div class="pq-ufs"><div class="pq-ufs-head"><span class="pq-ufs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></span><span class="pq-ufs-k">Treinamentos já realizados em <strong>9 estados</strong></span></div><ul class="pq-ufs-list" aria-label="Estados onde Daniel já realizou treinamentos"><li class="pq-uf"><b>CE</b><span>Ceará</span></li><li class="pq-uf"><b>SP</b><span>São Paulo</span></li><li class="pq-uf"><b>PR</b><span>Paraná</span></li><li class="pq-uf"><b>DF</b><span>Distrito Federal</span></li><li class="pq-uf"><b>AM</b><span>Amazonas</span></li><li class="pq-uf"><b>SE</b><span>Sergipe</span></li><li class="pq-uf"><b>SC</b><span>Santa Catarina</span></li><li class="pq-uf"><b>RN</b><span>Rio Grande do Norte</span></li><li class="pq-uf"><b>PI</b><span>Piauí</span></li></ul></div>
     </div>
   </section>
 
@@ -715,7 +735,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
       <ul class="m-list">
         <li>Times de vendas</li><li>Gestores e líderes</li><li>Equipes de atendimento</li><li>Marketing e RH</li><li>Empresários e empreendedores</li><li>Profissionais da saúde</li>
       </ul>
-      <p style="margin: 22px 0 0; text-align: center; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #C9C1B0">CE · SP · PR · DF · AM · SE · SC · RN · PI</p>
+      <div class="m-ufs"><div class="m-ufs-head"><span class="m-ufs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></span><span class="m-ufs-k">Treinamentos já realizados<br>em <strong>9 estados</strong></span></div><ul class="m-ufs-list" aria-label="Estados onde Daniel já realizou treinamentos"><li class="m-uf"><b>CE</b><span>Ceará</span></li><li class="m-uf"><b>SP</b><span>São Paulo</span></li><li class="m-uf"><b>PR</b><span>Paraná</span></li><li class="m-uf"><b>DF</b><span>Distrito Federal</span></li><li class="m-uf"><b>AM</b><span>Amazonas</span></li><li class="m-uf"><b>SE</b><span>Sergipe</span></li><li class="m-uf"><b>SC</b><span>Santa Catarina</span></li><li class="m-uf"><b>RN</b><span>Rio Grande do Norte</span></li><li class="m-uf"><b>PI</b><span>Piauí</span></li></ul></div>
     </div>
   </section>
 
