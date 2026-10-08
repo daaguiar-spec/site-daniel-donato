@@ -68,6 +68,16 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .dd-glint{border-radius:0;background:#FFF4D6;box-shadow:none;clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);filter:drop-shadow(0 0 calc(4 * var(--u)) rgba(255,236,190,.9))}
 @keyframes dd-fade{0%,100%{opacity:.08}50%{opacity:1}}
 @media (prefers-reduced-motion: reduce){.dd-spark{animation-name:dd-fade}}
+.jd-sec{position:relative;overflow:hidden;background:#060605;border-top:1px solid #2A251C}
+.jd-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(201,164,92,.13) 0%,rgba(201,164,92,0) 70%)}
+.jd-in{position:relative;max-width:calc(1240 * var(--u));margin:0 auto;padding:calc(112 * var(--u)) clamp(calc(28 * var(--u)),calc(86.4 * var(--u)),calc(96 * var(--u)));box-sizing:border-box;display:flex;flex-direction:column;gap:calc(64 * var(--u))}
+.jd-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:calc(14 * var(--u))}
+.jd-steps{list-style:none;margin:0;padding:0;position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:calc(28 * var(--u))}
+.jd-steps::before{content:"";position:absolute;left:10%;right:10%;top:calc(36 * var(--u));height:1px;background:linear-gradient(90deg,rgba(201,164,92,0),#C9A45C 12%,#C9A45C 88%,rgba(201,164,92,0))}
+.jd-step{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:calc(14 * var(--u))}
+.jd-num{width:calc(72 * var(--u));height:calc(72 * var(--u));border-radius:50%;border:1px solid #C9A45C;background:#060605;box-shadow:0 0 0 calc(8 * var(--u)) #060605,0 0 calc(30 * var(--u)) rgba(201,164,92,.25);display:flex;align-items:center;justify-content:center;font-family:'Cormorant',serif;font-weight:500;font-size:calc(38 * var(--u));line-height:1;color:#E8CF95;font-variant-numeric:lining-nums}
+.jd-t{margin:calc(8 * var(--u)) 0 0;font-family:'Cormorant',serif;font-weight:600;font-size:calc(30 * var(--u));line-height:1.1;color:#EDE6D8}
+.jd-p{margin:0;font-size:calc(15 * var(--u));line-height:1.65;color:#B5AA95}
 .pq-ufs{display:flex;flex-direction:column;align-items:center;gap:calc(18 * var(--u));text-shadow:none}
 .pq-ufs-head{display:flex;align-items:center;gap:calc(12 * var(--u))}
 .pq-ufs-ico{width:calc(34 * var(--u));height:calc(34 * var(--u));border-radius:50%;border:1px solid #6B5B3A;background:rgba(201,164,92,.1);color:#E8CF95;display:flex;align-items:center;justify-content:center}
@@ -202,6 +212,14 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .m-uf{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 9px;border:1px solid #6B5B3A;border-radius:12px;background:linear-gradient(180deg,rgba(201,164,92,.14),rgba(11,10,8,.75));text-align:center}
 .m-uf b{font-family:'Cormorant',serif;font-weight:600;font-size:26px;line-height:1;color:#E8CF95}
 .m-uf span{font-size:10px;font-weight:600;line-height:1.2;color:#C9C1B0}
+.m-jd{position:relative;background:#060605;border-top:1px solid #2A251C;overflow:hidden}
+.m-jd::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 90% 40% at 50% 0%,rgba(201,164,92,.14) 0%,rgba(201,164,92,0) 70%)}
+.m-jd-steps{list-style:none;margin:8px 0 0;padding:0;position:relative;display:flex;flex-direction:column;gap:26px}
+.m-jd-steps::before{content:"";position:absolute;left:25px;top:26px;bottom:26px;width:1px;background:linear-gradient(180deg,#C9A45C,rgba(201,164,92,.25))}
+.m-jd-step{position:relative;display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;align-items:start}
+.m-jd-num{width:52px;height:52px;border-radius:50%;border:1px solid #C9A45C;background:#060605;box-shadow:0 0 22px rgba(201,164,92,.22);display:flex;align-items:center;justify-content:center;font-family:'Cormorant',serif;font-weight:500;font-size:28px;line-height:1;color:#E8CF95;font-variant-numeric:lining-nums}
+.m-jd-t{margin:4px 0 4px;font-family:'Cormorant',serif;font-weight:600;font-size:26px;line-height:1.1;color:#EDE6D8}
+.m-jd-p{margin:0;font-size:15px;line-height:1.6;color:#B5AA95}
 
 .v-mob{display:none}
 @media (max-width: 767px){.v-desk{display:none}.v-mob{display:block}}
@@ -354,12 +372,13 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
       </div>
       <div style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: calc(72 * var(--u)); align-items: start">
         <div style="display: flex; flex-direction: column; gap: calc(20 * var(--u))">
-          <p style="margin: 0; font-size: calc(20 * var(--u)); line-height: 1.6; color: #1A1712">Empresário, mentor e palestrante, à frente da <strong>Sinapse Consultoria</strong> e da <strong>Seja UAU Academy</strong>. Especialista em Experiência do Cliente, Experiência do Colaborador e Liderança.</p>
-          <p style="margin: 0; font-size: calc(16 * var(--u)); line-height: 1.75; color: #4A443A">Com mais de 20 visitas de estudo aos parques e lojas da Disney, criou uma forma única de traduzir os conceitos de uma das maiores empresas de entretenimento do mundo para a rotina de qualquer negócio.</p>
+          <p style="margin: 0; font-size: calc(20 * var(--u)); line-height: 1.6; color: #1A1712">Daniel Donato é palestrante e consultor especialista em <strong>Experiência do Cliente, Cultura Disney e Desenvolvimento de Pessoas</strong>.</p>
+          <p style="margin: 0; font-size: calc(16 * var(--u)); line-height: 1.75; color: #4A443A">Com mais de 20 visitas técnicas aos parques e lojas da Disney, criou uma forma única de traduzir os conceitos de uma das maiores empresas de entretenimento do mundo para a rotina de qualquer negócio.</p>
+          <p style="margin: 0; font-size: calc(16 * var(--u)); line-height: 1.75; color: #4A443A">Sua metodologia reúne experiência empresarial, estudos realizados diretamente nos parques e operações Disney e aplicação prática à realidade de cada empresa.</p>
         </div>
         <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(40 * var(--u)) calc(40 * var(--u))">
           <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Guestologia Business</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Certificação internacional pelo Seeds of Dreams Institute</span></div>
-          <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Disney Institute</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Backstage Magic e Keys to the Kingdom Tour</span></div>
+          <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Disney Institute</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Backstage Magic e Keys to the Kingdom</span></div>
           <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Formação</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Administração, MBA em Marketing Estratégico e Marketing de Relacionamento</span></div>
           <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Autor</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">“Checklist Cliente Feliz: Atendimento de Alto Impacto”</span></div>
         </div>
@@ -367,8 +386,21 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
     </div>
   </section>
 
+  <!-- O JEITO DISNEY, NA PRÁTICA (dark) -->
+  <section id="metodo" class="jd-sec" aria-labelledby="jd-title">
+    <div class="jd-glow" aria-hidden="true"></div>
+    <div class="jd-in">
+      <div class="jd-head">
+        <span style="font-size: calc(15 * var(--u)); font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: #9C8F78">Metodologia</span>
+        <h2 id="jd-title" style="margin: 0; font-family: 'Cormorant', serif; font-weight: 500; font-size: clamp(calc(48 * var(--u)), calc(86.4 * var(--u)), calc(88 * var(--u))); line-height: 0.92; text-transform: uppercase; color: #C9A45C">O jeito Disney,<br><em style="color: #EDE6D8">na prática</em></h2>
+        <p style="margin: 0; max-width: calc(600 * var(--u)); font-size: calc(16 * var(--u)); line-height: 1.7; color: #B5AA95">Cinco frentes que se conectam para transformar cultura em experiência.</p>
+      </div>
+      <ol class="jd-steps"><li class="jd-step"><span class="jd-num">1</span><h3 class="jd-t">Cultura</h3><p class="jd-p">Criamos clareza sobre o padrão de experiência que a empresa quer entregar.</p></li><li class="jd-step"><span class="jd-num">2</span><h3 class="jd-t">Pessoas</h3><p class="jd-p">Desenvolvemos comportamentos e atitudes que sustentam esse padrão.</p></li><li class="jd-step"><span class="jd-num">3</span><h3 class="jd-t">Atendimento</h3><p class="jd-p">Transformamos princípios em comportamentos aplicáveis na jornada do cliente.</p></li><li class="jd-step"><span class="jd-num">4</span><h3 class="jd-t">Liderança</h3><p class="jd-p">Preparamos líderes para sustentar a cultura no dia a dia.</p></li><li class="jd-step"><span class="jd-num">5</span><h3 class="jd-t">Experiência</h3><p class="jd-p">Conectamos tudo para transformar cada contato em uma oportunidade de criar valor.</p></li></ol>
+    </div>
+  </section>
+
   <!-- PALESTRAS (dark) -->
-  <section id="palestras" style="background: #0B0A08">
+  <section id="palestras" style="background: #0B0A08; border-top: 1px solid #2A251C">
     <div style="max-width: calc(1320 * var(--u)); margin: 0 auto; padding: calc(112 * var(--u)) calc(64 * var(--u)); box-sizing: border-box; display: flex; flex-direction: column; gap: calc(56 * var(--u))">
       <div style="display: flex; flex-direction: column; align-items: center; gap: calc(14 * var(--u)); text-align: center">
         <span style="font-size: calc(15 * var(--u)); font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: #9C8F78">Palestras e treinamentos</span>
@@ -684,18 +716,30 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
     <div class="m-wrap m-stack">
       <span class="m-eyebrow" style="color: #8A6A2E">Conheça o Daniel</span>
       <h2 class="m-h2" style="color: #1A1712; font-size: min(42px, calc((100vw - 48px) / 10.2)); white-space: nowrap">Experiências<br>que <em style="color: #8A6A2E">transformam</em></h2>
-      <p style="margin: 6px 0 0; font-size: 17px; line-height: 1.6; color: #1A1712">Empresário, mentor e palestrante, à frente da <strong>Sinapse Consultoria</strong> e da <strong>Seja UAU Academy</strong>. Especialista em Experiência do Cliente, Experiência do Colaborador e Liderança.</p>
-      <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Com mais de 20 visitas de estudo aos parques e lojas da Disney, criou uma forma única de traduzir os conceitos de uma das maiores empresas de entretenimento do mundo para a rotina de qualquer negócio.</p>
+      <p style="margin: 6px 0 0; font-size: 17px; line-height: 1.6; color: #1A1712">Daniel Donato é palestrante e consultor especialista em <strong>Experiência do Cliente, Cultura Disney e Desenvolvimento de Pessoas</strong>.</p>
+      <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Com mais de 20 visitas técnicas aos parques e lojas da Disney, criou uma forma única de traduzir os conceitos de uma das maiores empresas de entretenimento do mundo para a rotina de qualquer negócio.</p>
+      <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Sua metodologia reúne experiência empresarial, estudos realizados diretamente nos parques e operações Disney e aplicação prática à realidade de cada empresa.</p>
       <div class="m-cred">
         <div><b>Guestologia Business</b><span>Certificação internacional pelo Seeds of Dreams Institute</span></div>
-        <div><b>Disney Institute</b><span>Backstage Magic e Keys to the Kingdom Tour</span></div>
+        <div><b>Disney Institute</b><span>Backstage Magic e Keys to the Kingdom</span></div>
         <div><b>Formação</b><span>Administração, MBA em Marketing Estratégico e Marketing de Relacionamento</span></div>
         <div><b>Autor</b><span>“Checklist Cliente Feliz: Atendimento de Alto Impacto”</span></div>
       </div>
     </div>
   </section>
 
-  <section id="m-palestras" class="m-sec m-dark">
+  <section id="m-metodo" class="m-sec m-jd" aria-labelledby="m-jd-title">
+    <div class="m-wrap m-stack" style="position: relative; gap: 20px">
+      <div class="m-stack" style="gap: 12px; text-align: center; align-items: center">
+        <span class="m-eyebrow" style="color: #9C8F78">Metodologia</span>
+        <h2 id="m-jd-title" class="m-h2" style="color: #C9A45C">O jeito Disney,<br><em style="color: #EDE6D8">na prática</em></h2>
+        <p style="margin: 0; font-size: 15px; line-height: 1.65; color: #B5AA95">Cinco frentes que se conectam para transformar cultura em experiência.</p>
+      </div>
+      <ol class="m-jd-steps"><li class="m-jd-step"><span class="m-jd-num">1</span><div><h3 class="m-jd-t">Cultura</h3><p class="m-jd-p">Criamos clareza sobre o padrão de experiência que a empresa quer entregar.</p></div></li><li class="m-jd-step"><span class="m-jd-num">2</span><div><h3 class="m-jd-t">Pessoas</h3><p class="m-jd-p">Desenvolvemos comportamentos e atitudes que sustentam esse padrão.</p></div></li><li class="m-jd-step"><span class="m-jd-num">3</span><div><h3 class="m-jd-t">Atendimento</h3><p class="m-jd-p">Transformamos princípios em comportamentos aplicáveis na jornada do cliente.</p></div></li><li class="m-jd-step"><span class="m-jd-num">4</span><div><h3 class="m-jd-t">Liderança</h3><p class="m-jd-p">Preparamos líderes para sustentar a cultura no dia a dia.</p></div></li><li class="m-jd-step"><span class="m-jd-num">5</span><div><h3 class="m-jd-t">Experiência</h3><p class="m-jd-p">Conectamos tudo para transformar cada contato em uma oportunidade de criar valor.</p></div></li></ol>
+    </div>
+  </section>
+
+  <section id="m-palestras" class="m-sec m-dark" style="border-top: 1px solid #2A251C">
     <div class="m-wrap m-stack" style="gap: 20px">
       <div class="m-stack" style="gap: 12px; text-align: center; align-items: center">
         <span class="m-eyebrow" style="color: #9C8F78">Palestras e treinamentos</span>
