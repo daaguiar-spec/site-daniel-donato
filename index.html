@@ -49,6 +49,11 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .hy-title{margin:0;display:flex;flex-direction:column;font-family:'Oswald','Arial Narrow',sans-serif;text-transform:uppercase;line-height:1.02;letter-spacing:.005em}
 .hy-t1{font-weight:300;font-size:clamp(calc(30 * var(--u)),calc(49 * var(--u)),calc(48 * var(--u)));color:#F3EDE1}
 .hy-t2{font-weight:600;font-size:clamp(calc(40 * var(--u)),calc(72 * var(--u)),calc(72 * var(--u)))}
+.hy-t1x{font-size:calc(30 * var(--u));line-height:1.12;max-width:calc(440 * var(--u));margin-bottom:calc(6 * var(--u))}
+.hy-t2x{font-size:calc(56 * var(--u));line-height:1}
+.hy-l{white-space:nowrap;font-weight:300;font-size:calc(33 * var(--u));line-height:1.12;color:#F3EDE1}
+.hy-lg{font-family:'Cormorant',Georgia,serif;font-style:italic;font-weight:600;text-transform:none;font-size:calc(42.3 * var(--u));line-height:1;margin-top:calc(4 * var(--u));letter-spacing:-.005em;background:linear-gradient(180deg,#F6E6BE 0%,#E2C58C 45%,#C9A45C 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hy-lg .hy-spark{width:calc(30 * var(--u));height:calc(30 * var(--u));margin-top:0;align-self:center}
 .hy-t3{display:flex;align-items:center;gap:calc(16 * var(--u))}
 .hy-quote{margin:0;display:flex;gap:calc(10 * var(--u));align-items:flex-start;max-width:calc(440 * var(--u));font-size:calc(15 * var(--u));line-height:1.55;color:#B5AA95}
 .hy-quote strong{color:#F3EDE1;font-weight:600}
@@ -156,6 +161,12 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .m-title{margin:0;display:flex;flex-direction:column;font-family:'Oswald','Arial Narrow',sans-serif;text-transform:uppercase;line-height:1.02}
 .m-t1{font-weight:300;font-size:clamp(24px,7.7vw,30px);color:#F3EDE1}
 .m-t2{font-weight:600;font-size:clamp(40px,13.3vw,52px);color:#C9A45C}
+.m-t1x{font-size:clamp(20px,6.2vw,26px);line-height:1.12;margin-bottom:4px}
+.m-t2x{font-size:clamp(32px,10.4vw,42px);line-height:1}
+.m-hero-in .m-btn{font-size:clamp(12px,3.85vw,15px);letter-spacing:.1em;padding-left:12px;padding-right:12px;white-space:nowrap}
+.m-l{white-space:nowrap;font-weight:300;font-size:calc((100vw - 44px) / 13.3);line-height:1.12;color:#F3EDE1}
+.m-lg{font-family:'Cormorant',Georgia,serif;font-style:italic;font-weight:600;text-transform:none;font-size:calc((100vw - 44px) / 10.8);line-height:1;margin-top:4px;background:linear-gradient(180deg,#F6E6BE 0%,#E2C58C 45%,#C9A45C 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.m-lg .m-spk{width:22px;height:22px;margin-top:0;align-self:center}
 .m-t3{display:flex;align-items:center;gap:8px}
 .m-spk{display:inline-block;width:34px;height:34px;flex:none;align-self:flex-start;margin-top:6px;filter:drop-shadow(0 0 8px rgba(232,207,149,.7));animation:m-spk 3.2s ease-in-out infinite}
 @keyframes m-spk{0%,100%{opacity:.75;transform:scale(.88)}50%{opacity:1;transform:scale(1.06) rotate(12deg)}}
@@ -340,12 +351,12 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
             </li>
           </ul>
           <h1 class="hy-title">
-            <span class="hy-t1">Encante seus clientes</span>
-            <span class="hy-t2" style="color: #C9A45C">com o Jeito</span>
-            <span class="hy-t2 hy-t3" style="color: #C9A45C">Disney <span class="hy-spark" aria-hidden="true"><svg viewBox="0 0 64 64" style="width: 100%; height: 100%; display: block"><path d="M32 2 C34 22 42 30 62 32 C42 34 34 42 32 62 C30 42 22 34 2 32 C22 30 30 22 32 2 Z" fill="#E8CF95"></path><path d="M52 6 C52.8 11 55 13.2 60 14 C55 14.8 52.8 17 52 22 C51.2 17 49 14.8 44 14 C49 13.2 51.2 11 52 6 Z" fill="#C9A45C"></path></svg></span></span>
+            <span class="hy-t1 hy-l">Transforme o atendimento da</span>
+            <span class="hy-t1 hy-l">sua empresa em uma experiência</span>
+            <span class="hy-t2 hy-l hy-lg hy-t3" style="color: #C9A45C">que faz o cliente querer voltar.</span>
           </h1>
-          <p class="hy-quote"><span class="hy-qm" aria-hidden="true">“</span><span><strong>Palestras, treinamentos e imersões</strong> que levam os bastidores da Disney para a realidade da sua empresa.</span></p>
-          <a class="dd-gold hy-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Solicitar proposta</a>
+          <p class="hy-quote"><span class="hy-qm" aria-hidden="true">“</span><span><strong>Palestras, treinamentos e imersões</strong> que desenvolvem pessoas e traduzem os princípios da Disney em práticas para a realidade da sua empresa.</span></p>
+          <a class="dd-gold hy-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Quero transformar minha equipe</a>
         </div>
         <div class="hy-right">
           <img loading="lazy" class="hy-ghost" src="img/daniel-capa-4.webp" alt="">
@@ -697,12 +708,12 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
         <li class="m-chip"><i aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></i><span><b>Todo o Brasil</b><small>presencial e online</small></span></li>
       </ul>
       <h1 class="m-title">
-        <span class="m-t1">Encante seus clientes</span>
-        <span class="m-t2">com o Jeito</span>
-        <span class="m-t2 m-t3">Disney <span class="m-spk" aria-hidden="true"><svg viewBox="0 0 64 64" style="width: 100%; height: 100%; display: block"><path d="M32 2 C34 22 42 30 62 32 C42 34 34 42 32 62 C30 42 22 34 2 32 C22 30 30 22 32 2 Z" fill="#E8CF95"></path><path d="M52 6 C52.8 11 55 13.2 60 14 C55 14.8 52.8 17 52 22 C51.2 17 49 14.8 44 14 C49 13.2 51.2 11 52 6 Z" fill="#C9A45C"></path></svg></span></span>
+        <span class="m-t1 m-l">Transforme o atendimento da</span>
+            <span class="m-t1 m-l">sua empresa em uma experiência</span>
+        <span class="m-t2 m-l m-lg m-t3">que faz o cliente querer voltar.</span>
       </h1>
-      <p class="m-quote"><strong>Palestras, treinamentos e imersões</strong> que levam os bastidores da Disney para a realidade da sua empresa.</p>
-      <a class="m-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Solicitar proposta</a>
+      <p class="m-quote"><strong>Palestras, treinamentos e imersões</strong> que desenvolvem pessoas e traduzem os princípios da Disney em práticas para a realidade da sua empresa.</p>
+      <a class="m-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Quero transformar minha equipe</a>
     </div>
     <img class="m-hero-photo" src="img/daniel-capa-4.webp" alt="Daniel Donato estendendo a mão em um gesto de boas-vindas">
   </section>
