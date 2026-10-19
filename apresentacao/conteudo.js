@@ -15,7 +15,7 @@ window.CONTEUDO = {
   capa: {
     titulo: "Transforme o atendimento da sua empresa em uma experiência que faz o cliente",
     destaque: "querer voltar.",
-    subtitulo: "Palestras, treinamentos e imersões que traduzem os princípios da Disney para a realidade da sua empresa.",
+    subtitulo: "Palestras, treinamentos e imersões que traduzem os princípios da Disney para a realidade do seu negócio.",
     foto: "img/daniel-capa.webp",       // foto recortada, fica dentro da pasta apresentacao/img
     fundo: "/img/castelo.webp"
   },
