@@ -9,7 +9,7 @@ window.CONTEUDO = {
   /* ---------- CONTATO PADRÃO (usado quando o link não traz vendedor) ---------- */
   whatsapp: "559292383440",            // só números, com 55 + DDD
   email: "comercial@sinapseonline.com",
-  telefoneExibido: "+55 (92) 9238-3440",
+  telefoneExibido: "+55 92 98238-3440",
 
   /* ---------- 1 · CAPA ---------- */
   capa: {
