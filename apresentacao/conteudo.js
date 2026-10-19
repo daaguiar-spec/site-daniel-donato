@@ -59,20 +59,17 @@ window.CONTEUDO = {
     shortsTitulo: "Momentos rápidos"
   },
   videos: [
-    { link: "", titulo: "Best of · Daniel Donato no palco", detalhe: "Melhores momentos", formato: "Palestras", duracao: "", destaque: true },
-    { link: "", titulo: "Atendimento Mágico · Um case Disney", detalhe: "Evento · cidade · ano", formato: "Palestras", duracao: "" },
-    { link: "", titulo: "Imersão MagicDay", detalhe: "Empresa · cidade · ano", formato: "Imersões", duracao: "" },
-    { link: "", titulo: "Treinamento in company", detalhe: "Empresa · cidade · ano", formato: "In company", duracao: "" },
-    { link: "", titulo: "Liderança que Inspira", detalhe: "Evento · cidade · ano", formato: "Eventos", duracao: "" }
+    { link: "https://youtu.be/VIqY_5ZzdS4", titulo: "Daniel Donato no palco", detalhe: "Palestras, treinamentos e imersões", formato: "Palestras", duracao: "", destaque: true }
   ],
-  /* Vídeos curtos em pé (YouTube Shorts). Aparecem na faixa "Momentos rápidos". */
+  /* Vídeos curtos em pé. Use "arquivo" para vídeos da pasta apresentacao/videos (com "capa" = imagem de capa)
+     ou "link" para um YouTube Shorts. Aparecem na faixa "Momentos rápidos". */
   shorts: [
-    { link: "", titulo: "A plateia em pé no final" },
-    { link: "", titulo: "O efeito UAU em 30 segundos" },
-    { link: "", titulo: "Dinâmica do MagicDay" },
-    { link: "", titulo: "Depoimento de cliente" },
-    { link: "", titulo: "Bastidores da Disney" },
-    { link: "", titulo: "Visita técnica" }
+    { arquivo: "videos/atendimento-magico.mp4", capa: "videos/atendimento-magico.jpg", titulo: "Atendimento Mágico · Um case Disney" },
+    { arquivo: "videos/imersao-magicday.mp4", capa: "videos/imersao-magicday.jpg", titulo: "Imersão MagicDay" },
+    { arquivo: "videos/praiano-hotel.mp4", capa: "videos/praiano-hotel.jpg", titulo: "Treinamento Praiano Hotel" },
+    { arquivo: "videos/jap-ribeirao-preto.mp4", capa: "videos/jap-ribeirao-preto.jpg", titulo: "Experiência JAP · Ribeirão Preto (SP)" },
+    { arquivo: "videos/crie-empreendedores.mp4", capa: "videos/crie-empreendedores.jpg", titulo: "CRIE · Clube de Empreendedores" },
+    { arquivo: "videos/mickey-advogado.mp4", capa: "videos/mickey-advogado.jpg", titulo: "Se o Mickey fosse Advogado · Renan Azevedo" }
   ],
 
   /* ---------- 4 · SOLUÇÕES ---------- */

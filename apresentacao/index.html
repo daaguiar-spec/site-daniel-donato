@@ -153,6 +153,7 @@ em{color:var(--gold);font-style:italic}
 .abas button.on{background:var(--gold);color:#0B0A08;border-color:var(--gold)}
 .videos-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;align-items:start}
 .videos-grid.so{grid-template-columns:1fr}
+.videos-grid.so .player{width:100%;max-width:980px;margin:0 auto}
 .player{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--bg3)}
 .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .player button{position:absolute;inset:0;width:100%;border:0;padding:0;cursor:pointer;background:#000}
@@ -185,7 +186,8 @@ em{color:var(--gold);font-style:italic}
 .short span{position:absolute;left:12px;right:12px;bottom:12px;z-index:2;font-size:13px;font-weight:600;line-height:1.3}
 .modal-v{position:fixed;inset:0;z-index:100;background:rgba(5,5,4,.88);display:flex;align-items:center;justify-content:center;padding:24px}
 .modal-v .caixa{position:relative;height:min(86vh,760px);aspect-ratio:9/16;max-width:100%;border-radius:12px;overflow:hidden;background:#000}
-.modal-v iframe{width:100%;height:100%;border:0}
+.modal-v iframe,.modal-v video{width:100%;height:100%;border:0;display:block;object-fit:contain;background:#000}
+.short video.prev{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .modal-v .fechar{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:calc(16px + env(safe-area-inset-right,0px));width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--bg2);color:var(--txt);font-size:24px;cursor:pointer}
 @media (max-width:900px){
   .videos-grid{grid-template-columns:1fr} .item-v .th{width:120px} .lista{max-height:none}
@@ -538,7 +540,7 @@ em{color:var(--gold);font-style:italic}
   var todos = (C.videos || []).map(function(v){ return {id:ytId(v.link), titulo:v.titulo, detalhe:v.detalhe, formato:v.formato||'', duracao:v.duracao||'', destaque:!!v.destaque}; })
                      .filter(function(v){ return v.id; });
   todos.sort(function(a,b){ return (b.destaque?1:0) - (a.destaque?1:0); });
-  var curtos = (C.shorts || []).map(function(v){ return {id:ytId(v.link), titulo:v.titulo}; }).filter(function(v){ return v.id; });
+  var curtos = (C.shorts || []).map(function(v){ return {id:ytId(v.link), arquivo:v.arquivo||'', capa:v.capa||'', titulo:v.titulo}; }).filter(function(v){ return v.id || v.arquivo; });
   var vids = todos;
   function thumb(id){ return 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'; }
   var PLAY = '<svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="#0B0A08"><path d="M8 5v14l11-7z"/></svg>';
@@ -597,9 +599,17 @@ em{color:var(--gold);font-style:italic}
       $('blocoShorts').classList.remove('hidden');
       curtos.forEach(function(v){
         var b = el('button','short'); b.type='button'; b.setAttribute('aria-label','Assistir: ' + v.titulo);
-        var im = img('https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg', '', true);
-        im.onerror = function(){ this.onerror = null; this.src = thumb(v.id); };
+        var im = img(v.arquivo ? (v.capa || '') : 'https://i.ytimg.com/vi/' + v.id + '/oardefault.jpg', '', true);
+        if (!v.arquivo) im.onerror = function(){ this.onerror = null; this.src = thumb(v.id); };
         b.appendChild(im);
+        if (v.arquivo && window.matchMedia('(hover: hover)').matches && !reduz){
+          var pv = null;
+          b.addEventListener('mouseenter', function(){
+            if (!pv){ pv = document.createElement('video'); pv.className = 'prev'; pv.src = v.arquivo; pv.muted = true; pv.loop = true; pv.playsInline = true; pv.setAttribute('aria-hidden','true'); b.insertBefore(pv, b.children[1]); }
+            pv.play().catch(function(){});
+          });
+          b.addEventListener('mouseleave', function(){ if (pv){ pv.pause(); } });
+        }
         var pl = el('div','p'); pl.innerHTML = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="#0B0A08"><path d="M8 5v14l11-7z"/></svg>'; b.appendChild(pl);
         b.appendChild(el('span',null,v.titulo));
         b.onclick = function(){ abreCurto(v); };
@@ -612,9 +622,15 @@ em{color:var(--gold);font-style:italic}
   function abreCurto(v){
     fechaCurto();
     var m = el('div','modal-v'); m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true'); m.setAttribute('aria-label', v.titulo);
-    var cx = el('div','caixa'); var f = document.createElement('iframe');
-    f.src = 'https://www.youtube-nocookie.com/embed/' + v.id + '?autoplay=1&rel=0';
-    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true; f.title = v.titulo;
+    var cx = el('div','caixa'), f;
+    if (v.arquivo){
+      f = document.createElement('video'); f.src = v.arquivo; f.controls = true; f.autoplay = true; f.playsInline = true;
+      if (v.capa) f.poster = v.capa;
+    } else {
+      f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + v.id + '?autoplay=1&rel=0';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true; f.title = v.titulo;
+    }
     cx.appendChild(f); m.appendChild(cx);
     var x = el('button','fechar','×'); x.type='button'; x.setAttribute('aria-label','Fechar vídeo'); x.onclick = fechaCurto; m.appendChild(x);
     m.addEventListener('click', function(e){ if (e.target === m) fechaCurto(); });
