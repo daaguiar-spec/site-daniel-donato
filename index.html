@@ -147,6 +147,14 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .hx .hy-right::before{left:calc(1310 * var(--h));top:calc(420 * var(--h));width:calc(780 * var(--h))}
 .hx .hy-photo{left:calc(1310 * var(--h));bottom:calc(-60 * var(--h));height:calc(880 * var(--h));transform:translateX(-50%)}
 
+/* Conheça o Daniel: centralizado */
+#sobre > div{align-items:center;text-align:center}
+#sobre > div > div:first-child{align-items:center}
+#sobre > div > div:nth-child(2){display:flex !important;flex-direction:column;align-items:center;gap:calc(64 * var(--u)) !important;width:100%;align-self:stretch}
+#sobre > div > div:nth-child(2) > div:first-child{align-items:center;max-width:calc(760 * var(--u));margin:0 auto}
+#sobre > div > div:nth-child(2) > div:nth-child(2){grid-template-columns:1.25fr 1fr 1fr !important;width:100%;max-width:calc(1060 * var(--u));margin:0 auto;text-align:center;gap:calc(48 * var(--u)) !important}
+#sobre > div > div:nth-child(2) > div:nth-child(2) > div{grid-column:auto !important;align-items:center}
+
 :where(.m) a{color:#C9A45C}
 .m{padding-top:calc(71px + env(safe-area-inset-top,0px));font-family:'Manrope',system-ui,sans-serif;color:#EDE6D8;background:#0B0A08;width:100%;max-width:100vw;min-height:100vh;overflow-x:clip;-webkit-text-size-adjust:100%}
 .m h1,.m h2,.m h3,.m p,.m span,.m a,.m li{overflow-wrap:break-word}
@@ -282,6 +290,10 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .m-hero .m-sky{display:none}
 .m-hero .dd-magia{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .m-hero .m-hero-photo{filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));-webkit-mask-image:linear-gradient(180deg,#000 55%,rgba(0,0,0,.6) 72%,transparent 95%);mask-image:linear-gradient(180deg,#000 55%,rgba(0,0,0,.6) 72%,transparent 95%)}
+#m-sobre .m-stack{align-items:center;text-align:center}
+#m-sobre .m-h2{text-align:center}
+#m-sobre .m-cred{grid-template-columns:1fr;gap:22px;width:100%}
+#m-sobre .m-cred div{text-align:center}
 
 .v-mob{display:none}
 @media (max-width: 767px){.v-desk{display:none}.v-mob{display:block}}
