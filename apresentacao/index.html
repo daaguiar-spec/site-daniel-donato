@@ -177,6 +177,24 @@ em{color:var(--gold);font-style:italic}
 .mural .logo{width:auto;height:80px;opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s;transition-delay:var(--d)}
 .on .mural .logo{opacity:1;transform:none}
 .on .mural .logo:hover{transform:translateY(-4px);transition-delay:0s}
+/* estilo "vitrine": faixa clara, logos em cinza que ganham cor ao passar o mouse */
+#clientes.claro{background:#F4EFE6;color:#15130F}
+#clientes.claro .cab{flex-direction:column;align-items:center;text-align:center;gap:22px}
+#clientes.claro .kicker{color:#86651F}
+#clientes.claro h2{color:#15130F}
+#clientes.claro em{color:#93701F}
+#clientes.claro .cli-sub{color:#5A5246;margin-left:auto;margin-right:auto}
+#clientes.claro .cli-sub b{color:#86651F}
+#clientes.claro .estados{justify-content:center}
+#clientes.claro .estados .aux{color:#6B6255}
+#clientes.claro .estados i{border-color:#A9832E;color:#86651F}
+.vitrine{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:34px 30px;align-items:center;margin-top:16px}
+.vitrine .cel{height:84px;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s;transition-delay:var(--d)}
+.on .vitrine .cel{opacity:1;transform:none}
+.vitrine img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.05);opacity:.72;transition:filter .3s,opacity .3s,transform .3s}
+.vitrine .cel:hover img{filter:none;opacity:1;transform:scale(1.06)}
+@media (max-width:1100px){.vitrine{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media (max-width:700px){.vitrine{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 16px}.vitrine .cel{height:64px}}
 @media (max-width:600px){.mural{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.mural .logo{height:60px;padding:8px 10px}}
 .deps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:40px}
 .dep{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:18px}
@@ -215,7 +233,7 @@ em{color:var(--gold);font-style:italic}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
-  .r,.estados i,.mural .logo{opacity:1;transform:none}
+  .r,.estados i,.mural .logo,.vitrine .cel{opacity:1;transform:none}
   html{scroll-behavior:auto}
 }
 </style>
@@ -450,7 +468,11 @@ em{color:var(--gold);font-style:italic}
     var d = el('div','logo'); if (oculto) d.setAttribute('aria-hidden','true');
     d.appendChild(img(c.logo, oculto ? '' : c.nome, true)); return d;
   }
-  if (C.clientesEstilo === 'mural'){
+  if (C.clientesEstilo === 'vitrine'){
+    $('faixas').classList.add('hidden'); $('clientes').classList.add('claro');
+    var v = $('mural'); v.className = 'vitrine';
+    C.clientes.forEach(function(c, i){ var d = el('div','cel'); d.style.setProperty('--d', (.03*i+.2)+'s'); d.appendChild(img(c.logo, c.nome, true)); v.appendChild(d); });
+  } else if (C.clientesEstilo === 'mural'){
     $('faixas').classList.add('hidden'); $('mural').classList.remove('hidden');
     C.clientes.forEach(function(c, i){ var d = logo(c); d.style.setProperty('--d', (.03*i+.2)+'s'); $('mural').appendChild(d); });
   } else {

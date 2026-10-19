@@ -87,8 +87,8 @@ window.CONTEUDO = {
   ],
 
   /* ---------- 5 · QUEM CONFIA ---------- */
-  /* Como mostrar os logos: "faixas" (duas faixas deslizando) ou "mural" (todos visíveis de uma vez). */
-  clientesEstilo: "faixas",
+  /* Como mostrar os logos: "vitrine" (faixa clara, logos em cinza), "mural" (cartões) ou "faixas" (deslizando). */
+  clientesEstilo: "vitrine",
 
   estados: ["CE", "SP", "PR", "DF", "AM", "SE", "SC", "RN", "PI"],
 
