@@ -13,8 +13,8 @@ window.CONTEUDO = {
 
   /* ---------- 1 · CAPA ---------- */
   capa: {
-    titulo: "Transforme o atendimento da sua empresa em uma experiência que faz o cliente",
-    destaque: "querer voltar.",
+    titulo: "Transforme o atendimento da sua empresa em uma experiência que o seu cliente",
+    destaque: "nunca esquecerá.",
     subtitulo: "Palestras, treinamentos e imersões que traduzem os princípios da Disney para a realidade do seu negócio.",
     foto: "img/daniel-capa.webp",       // foto recortada, fica dentro da pasta apresentacao/img
     fundo: "/img/castelo.webp"
