@@ -40,6 +40,18 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .hy-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 40%;filter:brightness(.42) saturate(.6) sepia(.25);z-index:0}
 .hy-bgshade{position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(8,7,6,.94) 0%,rgba(8,7,6,.78) 42%,rgba(8,7,6,.25) 70%,rgba(8,7,6,.55) 100%),linear-gradient(0deg,rgba(8,7,6,.8) 0%,rgba(8,7,6,0) 35%)}
 .hy-left{position:relative;z-index:2;padding:calc(56 * var(--u)) calc(84.75 * var(--u)) calc(56 * var(--u)) calc(59.25 * var(--u));display:flex;flex-direction:column;justify-content:center;gap:calc(26 * var(--u))}
+.hy-kick{display:flex;align-items:center;gap:calc(14 * var(--u));font-size:calc(12 * var(--u));font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#C9A45C}
+.hy-kick::before{content:"";width:calc(36 * var(--u));height:1px;background:#C9A45C}
+.hy-title.hy-title2{display:block;font-family:'Cormorant',Georgia,serif;text-transform:none;font-weight:500;font-size:calc(50 * var(--u));line-height:1.04;letter-spacing:-.005em;color:#F3EDE1;max-width:calc(470 * var(--u))}
+.hy-title.hy-title2 em{font-style:italic;font-weight:600;background:linear-gradient(180deg,#F6E6BE 0%,#E2C58C 45%,#C9A45C 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hy-sub{margin:0;max-width:calc(440 * var(--u));font-size:calc(15 * var(--u));line-height:1.6;color:#B5AA95}
+.hy-sub strong{color:#EDE6D8;font-weight:600}
+.hy-btns{display:flex;align-items:center;gap:calc(12 * var(--u));flex-wrap:nowrap}
+.hy-btn.hy-btn2{align-self:auto;padding:calc(17 * var(--u)) calc(28 * var(--u));border-radius:calc(999 * var(--u));font-size:calc(12.5 * var(--u));white-space:nowrap}
+.hy-ghostbtn{display:inline-flex;align-items:center;padding:calc(16 * var(--u)) calc(26 * var(--u));border:1px solid #6B5B3A;border-radius:calc(999 * var(--u));color:#EDE6D8 !important;text-decoration:none;font-family:'Oswald',sans-serif;font-size:calc(12.5 * var(--u));letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.hy-logos{grid-column:1/-1;position:relative;z-index:3;display:flex;align-items:center;gap:calc(28 * var(--u));padding:calc(22 * var(--u)) calc(59.25 * var(--u)) calc(24 * var(--u));border-top:1px solid rgba(201,164,92,.18);background:linear-gradient(0deg,rgba(6,6,5,.95),rgba(6,6,5,.55))}
+.hy-logos span{flex:none;font-size:calc(11 * var(--u));font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#9C8F78}
+.hy-logos img{display:block;min-width:0;flex:1;height:calc(34 * var(--u));object-fit:contain;object-position:left center;opacity:.72}
 .hy-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:nowrap;gap:calc(22 * var(--u))}
 .hy-chip{display:flex;align-items:center;gap:calc(10 * var(--u))}
 .hy-ico{width:calc(40 * var(--u));height:calc(40 * var(--u));border-radius:50%;border:1px solid #6B5B3A;background:rgba(201,164,92,.08);color:#E8CF95;display:flex;align-items:center;justify-content:center;flex:none}
@@ -61,7 +73,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .hy-btn{align-self:flex-start;text-decoration:none;background:linear-gradient(180deg,#F6E6BE 0%,#E2C58C 50%,#C9A45C 100%);color:#1A140A;padding:calc(24 * var(--u)) calc(56 * var(--u));border-radius:calc(16 * var(--u));font-family:'Oswald',sans-serif;font-size:calc(16 * var(--u));font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 0 0 1px rgba(255,240,200,.35) inset,0 calc(14 * var(--u)) calc(40 * var(--u)) rgba(201,164,92,.25);transition:filter .2s}
 .hy-right{position:relative;z-index:1;min-height:calc(600 * var(--u))}
 .hy-right::after{content:"";position:absolute;top:0;bottom:0;right:0;width:45%;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(8,7,6,0) 0%,rgba(8,7,6,.55) 55%,rgba(8,7,6,.92) 100%)}
-.hy-ghost{position:absolute;right:-18%;top:-10%;height:150%;width:auto;max-width:none;opacity:.3;filter:sepia(1) saturate(.7) brightness(.85) contrast(1.05);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 45%);mask-image:linear-gradient(90deg,transparent 0%,#000 45%)}
+.hy-ghost{position:absolute;right:-6%;top:-10%;height:150%;width:auto;max-width:none;opacity:.45;filter:sepia(1) saturate(.7) brightness(.95) contrast(1.05);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 45%),linear-gradient(180deg,#000 30%,transparent 55%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0%,#000 45%),linear-gradient(180deg,#000 30%,transparent 55%);mask-composite:intersect}
 .hy-photo{position:absolute;left:33%;bottom:-6%;transform:translateX(-50%);height:100%;width:auto;max-width:none;z-index:2;filter:sepia(.14) saturate(.9) brightness(.95) contrast(1.03) drop-shadow(0 0 1.5px rgba(240,214,160,.55));-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 98%);mask-image:linear-gradient(180deg,#000 70%,transparent 98%)}
 .hy-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22%;z-index:3;pointer-events:none;background:linear-gradient(180deg,rgba(8,7,6,0),rgba(8,7,6,.55))}
 .hy-tag{position:absolute;left:36%;bottom:22%;z-index:3;display:flex;align-items:center;gap:calc(10 * var(--u));padding:calc(8 * var(--u)) calc(14 * var(--u)) calc(8 * var(--u)) calc(8 * var(--u));border-radius:calc(12 * var(--u));background:rgba(12,11,9,.72);border:1px solid #3A3226;backdrop-filter:blur(calc(8 * var(--u)));-webkit-backdrop-filter:blur(calc(8 * var(--u)));max-width:calc(280 * var(--u))}
@@ -233,6 +245,11 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .m-jd-num{width:52px;height:52px;border-radius:50%;border:1px solid #C9A45C;background:#060605;box-shadow:0 0 22px rgba(201,164,92,.22);display:flex;align-items:center;justify-content:center;font-family:'Cormorant',serif;font-weight:500;font-size:28px;line-height:1;color:#E8CF95;font-variant-numeric:lining-nums}
 .m-jd-t{margin:4px 0 4px;font-family:'Cormorant',serif;font-weight:600;font-size:26px;line-height:1.1;color:#EDE6D8}
 .m-jd-p{margin:0;font-size:15px;line-height:1.6;color:#B5AA95}
+.m-kick{display:flex;align-items:center;gap:10px;font-size:clamp(9.5px,2.85vw,11px);font-weight:700;letter-spacing:.2em;white-space:nowrap;text-transform:uppercase;color:#C9A45C}
+.m-kick::before{content:"";width:28px;height:1px;background:#C9A45C}
+.m-title.m-title2{display:block;font-family:'Cormorant',Georgia,serif;text-transform:none;font-weight:500;font-size:clamp(34px,10.4vw,44px);line-height:1.04;color:#F3EDE1}
+.m-title.m-title2 em{font-style:italic;font-weight:600;background:linear-gradient(180deg,#F6E6BE 0%,#E2C58C 45%,#C9A45C 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.m-ghostbtn{display:block;text-align:center;margin-top:-8px;padding:15px 20px;border:1px solid #6B5B3A;border-radius:14px;color:#EDE6D8 !important;text-decoration:none;font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
 
 .v-mob{display:none}
 @media (max-width: 767px){.v-desk{display:none}.v-mob{display:block}}
@@ -340,28 +357,16 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           <span class="dd-spark" style="left: 57.7%; top: 15.4%; width: calc(3 * var(--u)); height: calc(3 * var(--u)); --d: 2.8s; --t: -1.2s"></span>
         </div>
         <div class="hy-left">
-          <ul class="hy-chips" aria-label="Destaques">
-            <li class="hy-chip">
-              <span class="hy-ico" aria-hidden="true"><svg style="width: calc(18 * var(--u)); height: calc(18 * var(--u))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z"></path></svg></span>
-              <span class="hy-chiptxt"><strong>+20 visitas</strong><span>aos parques Disney</span></span>
-            </li>
-            <li class="hy-chip">
-              <span class="hy-ico" aria-hidden="true"><svg style="width: calc(18 * var(--u)); height: calc(18 * var(--u))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span>
-              <span class="hy-chiptxt"><strong>Todo o Brasil</strong><span>presencial e online</span></span>
-            </li>
-          </ul>
-          <h1 class="hy-title">
-            <span class="hy-t1 hy-l">Transforme o atendimento da</span>
-            <span class="hy-t1 hy-l">sua empresa em uma experiência</span>
-            <span class="hy-t2 hy-l hy-lg hy-t3" style="color: #C9A45C">que faz o cliente querer voltar.</span>
-          </h1>
-          <p class="hy-quote"><span class="hy-qm" aria-hidden="true">“</span><span><strong>Palestras, treinamentos e imersões</strong> que desenvolvem pessoas e traduzem os princípios da Disney em práticas para a realidade da sua empresa.</span></p>
-          <a class="dd-gold hy-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Quero transformar minha equipe</a>
+          <span class="hy-kick">Palestrante · Metodologia Disney</span>
+          <h1 class="hy-title hy-title2">Transforme o atendimento da sua empresa em uma experiência <em>que faz o cliente querer voltar.</em></h1>
+          <p class="hy-sub"><strong>Palestras, treinamentos e imersões</strong> que desenvolvem pessoas e traduzem os princípios da Disney em práticas para a realidade da sua empresa.</p>
+          <div class="hy-btns"><a class="dd-gold hy-btn hy-btn2" href="https://api.whatsapp.com/send?phone=5585999711108">Quero transformar minha equipe</a><a class="hy-ghostbtn" href="palestras.html">Ver palestras</a></div>
         </div>
         <div class="hy-right">
           <img loading="lazy" class="hy-ghost" src="img/daniel-capa-4.webp" alt="">
           <img loading="lazy" class="hy-photo" src="img/daniel-capa-4.webp" alt="Daniel Donato estendendo a mão em um gesto de boas-vindas">
         </div>
+        <div class="hy-logos"><span>Quem já viveu a experiência</span><img loading="lazy" src="img/logos-clientes.webp" alt="Clientes: Caixa, TJCE, Cagece, Hemoce, Tracbel, Grupo SH, Fortes, Christus, Colégio Lourenço Filho, Aquaville, Praiano Hotel, Prefeitura de Japurá, Prefeitura de Lábrea e JAP"></div>
       </div>
     </div>
   </section>
@@ -703,17 +708,11 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 <span class="m-spark" style="left: 30.9%; top: 29.5%; width: 4px; height: 3px; --d: 3.7s; --t: -1.2s"></span>
     </div>
     <div class="m-hero-in">
-      <ul class="m-chips" aria-label="Destaques">
-        <li class="m-chip"><i aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z"></path></svg></i><span><b>+20 visitas</b><small>aos parques Disney</small></span></li>
-        <li class="m-chip"><i aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></i><span><b>Todo o Brasil</b><small>presencial e online</small></span></li>
-      </ul>
-      <h1 class="m-title">
-        <span class="m-t1 m-l">Transforme o atendimento da</span>
-            <span class="m-t1 m-l">sua empresa em uma experiência</span>
-        <span class="m-t2 m-l m-lg m-t3">que faz o cliente querer voltar.</span>
-      </h1>
+      <span class="m-kick">Palestrante · Metodologia Disney</span>
+      <h1 class="m-title m-title2">Transforme o atendimento da sua empresa em uma experiência <em>que faz o cliente querer voltar.</em></h1>
       <p class="m-quote"><strong>Palestras, treinamentos e imersões</strong> que desenvolvem pessoas e traduzem os princípios da Disney em práticas para a realidade da sua empresa.</p>
       <a class="m-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Quero transformar minha equipe</a>
+      <a class="m-ghostbtn" href="palestras.html">Ver palestras</a>
     </div>
     <img class="m-hero-photo" src="img/daniel-capa-4.webp" alt="Daniel Donato estendendo a mão em um gesto de boas-vindas">
   </section>
