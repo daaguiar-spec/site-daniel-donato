@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Gerar link | Apresentação Daniel Donato</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Manrope:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#0B0A08;--bg2:#15130F;--line:#2E2A22;--txt:#F3EDE2;--txt2:#C7BFB2;--txt3:#A79F92;--gold:#C9A24A}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--txt);font-family:'Manrope',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.box{width:100%;max-width:520px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:32px;display:flex;flex-direction:column;gap:18px}
+h1{margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:30px}
+p{margin:0;color:var(--txt2);font-size:15px;line-height:1.5}
+label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--txt3)}
+input{min-height:46px;padding:0 14px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--txt);font:16px 'Manrope',sans-serif}
+input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.saida{padding:14px;border:1px dashed var(--gold);border-radius:6px;font-size:13px;word-break:break-all;color:var(--txt2);min-height:48px}
+.acoes{display:flex;gap:10px;flex-wrap:wrap}
+.acoes a,.acoes button{flex:1 1 140px;min-height:46px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold);font:700 14px 'Manrope',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.acoes .forte{background:var(--gold);color:var(--bg)}
+small{color:var(--txt3);font-size:12px}
+</style>
+</head>
+<body>
+<main class="box">
+  <h1>Gerar link da apresentação</h1>
+  <p>Preencha e copie. Deixe tudo em branco para a versão geral.</p>
+  <label>Nome do cliente (aparece na capa)<input id="cliente" placeholder="Ex.: Hotel Praiano"></label>
+  <label>Nome do vendedor<input id="vendedor" placeholder="Ex.: João Silva"></label>
+  <label>WhatsApp do vendedor (opcional)<input id="fone" inputmode="tel" placeholder="Ex.: (85) 98888-7777"></label>
+  <small>Com o WhatsApp do vendedor preenchido, o botão da apresentação leva para ele. Sem ele, vai para o comercial do Daniel.</small>
+  <div class="saida" id="saida" aria-live="polite"></div>
+  <div class="acoes">
+    <button type="button" class="forte" id="copiar">Copiar link</button>
+    <a id="abrir" target="_blank" rel="noopener">Ver apresentação</a>
+    <a id="enviar" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+  </div>
+</main>
+<script>
+(function(){
+  var base = location.href.replace(/gerar-link\.html.*$/, '');
+  var ids = ['cliente','vendedor','fone'];
+  function link(){
+    var q = new URLSearchParams();
+    ids.forEach(function(k){ var v = document.getElementById(k).value.trim(); if (v) q.set(k, v); });
+    var s = q.toString(); return base + (s ? '?' + s : '');
+  }
+  function atualiza(){
+    var l = link(), c = document.getElementById('cliente').value.trim();
+    document.getElementById('saida').textContent = l;
+    document.getElementById('abrir').href = l;
+    var m = 'Olá' + (c ? ', equipe ' + c : '') + '! Segue a apresentação do Daniel Donato, com palestras, treinamentos e imersões para a sua equipe: ' + l;
+    document.getElementById('enviar').href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(m);
+  }
+  ids.forEach(function(k){ document.getElementById(k).addEventListener('input', atualiza); });
+  document.getElementById('copiar').onclick = function(){
+    var b = this, l = link();
+    (navigator.clipboard ? navigator.clipboard.writeText(l) : Promise.reject()).then(function(){
+      b.textContent = 'Copiado!'; setTimeout(function(){ b.textContent = 'Copiar link'; }, 1800);
+    }).catch(function(){ prompt('Copie o link:', l); });
+  };
+  atualiza();
+})();
+</script>
+</body>
+</html>
