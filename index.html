@@ -40,6 +40,15 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .hy-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 40%;filter:brightness(.42) saturate(.6) sepia(.25);z-index:0}
 .hy-bgshade{position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,rgba(8,7,6,.94) 0%,rgba(8,7,6,.78) 42%,rgba(8,7,6,.25) 70%,rgba(8,7,6,.55) 100%),linear-gradient(0deg,rgba(8,7,6,.8) 0%,rgba(8,7,6,0) 35%)}
 .hy-left{position:relative;z-index:2;padding:calc(56 * var(--u)) calc(84.75 * var(--u)) calc(56 * var(--u)) calc(59.25 * var(--u));display:flex;flex-direction:column;justify-content:center;gap:calc(26 * var(--u))}
+.hx .hy-bg{filter:none;opacity:.55;object-position:center}
+.hx .hy-bgshade{background:linear-gradient(90deg,#0B0A08 22%,rgba(11,10,8,.4) 60%,rgba(11,10,8,.05)),linear-gradient(0deg,#0B0A08 0%,rgba(11,10,8,0) 30%)}
+.hx .dd-sky{display:none}
+.dd-magia{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.hx .hy-right::after{display:none}
+.hx .hy-right::before{content:"";position:absolute;left:33%;top:42%;width:120%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(227,196,122,.28) 0%,rgba(201,162,74,.10) 35%,rgba(201,162,74,0) 65%);animation:dd-holofote 7s ease-in-out infinite;pointer-events:none;z-index:1}
+@keyframes dd-holofote{50%{opacity:.55;transform:translate(-50%,-50%) scale(1.08)}}
+.hx .hy-photo{filter:drop-shadow(0 calc(30 * var(--u)) calc(60 * var(--u)) rgba(0,0,0,.6));-webkit-mask-image:linear-gradient(180deg,#000 55%,rgba(0,0,0,.6) 72%,transparent 92%);mask-image:linear-gradient(180deg,#000 55%,rgba(0,0,0,.6) 72%,transparent 92%)}
+@media (prefers-reduced-motion: reduce){.hx .hy-right::before{animation:none}}
 .hy-kick{display:flex;align-items:center;gap:calc(14 * var(--u));font-size:calc(12 * var(--u));font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#C9A45C}
 .hy-kick::before{content:"";width:calc(36 * var(--u));height:1px;background:#C9A45C}
 .hy-title.hy-title2{display:block;font-family:'Cormorant',Georgia,serif;text-transform:none;font-weight:500;font-size:calc(50 * var(--u));line-height:1.04;letter-spacing:-.005em;color:#F3EDE1;max-width:calc(470 * var(--u))}
@@ -250,6 +259,12 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .m-title.m-title2{display:block;font-family:'Cormorant',Georgia,serif;text-transform:none;font-weight:500;font-size:clamp(34px,10.4vw,44px);line-height:1.04;color:#F3EDE1}
 .m-title.m-title2 em{font-style:italic;font-weight:600;background:linear-gradient(180deg,#F6E6BE 0%,#E2C58C 45%,#C9A45C 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .m-ghostbtn{display:block;text-align:center;margin-top:-8px;padding:15px 20px;border:1px solid #6B5B3A;border-radius:14px;color:#EDE6D8 !important;text-decoration:none;font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+.m-cred .m-cred-full{grid-column:1/-1}
+.m-hero .m-hero-bg{filter:none;opacity:.55;object-position:center}
+.m-hero .m-hero-shade{background:linear-gradient(180deg,rgba(11,10,8,.85) 0%,rgba(11,10,8,.45) 45%,rgba(11,10,8,.2) 70%,#0B0A08 100%)}
+.m-hero .m-sky{display:none}
+.m-hero .dd-magia{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.m-hero .m-hero-photo{filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));-webkit-mask-image:linear-gradient(180deg,#000 55%,rgba(0,0,0,.6) 72%,transparent 95%);mask-image:linear-gradient(180deg,#000 55%,rgba(0,0,0,.6) 72%,transparent 95%)}
 
 .v-mob{display:none}
 @media (max-width: 767px){.v-desk{display:none}.v-mob{display:block}}
@@ -284,6 +299,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
       <div class="hy-card">
         <img loading="lazy" class="hy-bg" src="img/castelo.webp" alt="">
         <div class="hy-bgshade" aria-hidden="true"></div>
+        <canvas class="dd-magia" aria-hidden="true"></canvas>
         <div class="dd-sky" aria-hidden="true">
           <span class="dd-spark dd-glint" style="left: 45.3%; top: 18.6%; width: calc(9 * var(--u)); height: calc(9 * var(--u)); --d: 2.6s; --t: -3.4s"></span>
           <span class="dd-spark" style="left: 19.6%; top: 60.5%; width: calc(3 * var(--u)); height: calc(3 * var(--u)); --d: 3.0s; --t: -3.2s"></span>
@@ -363,10 +379,8 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           <div class="hy-btns"><a class="dd-gold hy-btn hy-btn2" href="https://api.whatsapp.com/send?phone=5585999711108">Quero transformar minha equipe</a><a class="hy-ghostbtn" href="palestras.html">Ver palestras</a></div>
         </div>
         <div class="hy-right">
-          <img loading="lazy" class="hy-ghost" src="img/daniel-capa-4.webp" alt="">
-          <img loading="lazy" class="hy-photo" src="img/daniel-capa-4.webp" alt="Daniel Donato estendendo a mão em um gesto de boas-vindas">
+          <img loading="lazy" class="hy-photo" src="img/daniel-palco.webp" alt="Daniel Donato no palco durante uma palestra">
         </div>
-        <div class="hy-logos"><span>Quem já viveu a experiência</span><img loading="lazy" src="img/logos-clientes.webp" alt="Clientes: Caixa, TJCE, Cagece, Hemoce, Tracbel, Grupo SH, Fortes, Christus, Colégio Lourenço Filho, Aquaville, Praiano Hotel, Prefeitura de Japurá, Prefeitura de Lábrea e JAP"></div>
       </div>
     </div>
   </section>
@@ -395,10 +409,10 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           <p style="margin: 0; font-size: calc(16 * var(--u)); line-height: 1.75; color: #4A443A">Sua metodologia reúne experiência empresarial, estudos realizados diretamente nos parques e operações Disney e aplicação prática à realidade de cada empresa.</p>
         </div>
         <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(40 * var(--u)) calc(40 * var(--u))">
-          <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Guestologia Business</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Certificação internacional pelo Seeds of Dreams Institute</span></div>
-          <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Disney Institute</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Backstage Magic e Keys to the Kingdom</span></div>
+          <div style="grid-column: 1 / -1; border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Certificação Internacional</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Guestologia Business pelo Seeds of Dreams Institute</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Backstage Magic e Keys to the Kingdom pelo Disney Institute</span></div>
           <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Formação</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">Administração, MBA em Marketing Estratégico e Marketing de Relacionamento</span></div>
           <div style="border-top: 1px solid #C9A45C; padding-top: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(8 * var(--u))"><span style="font-family: 'Cormorant', serif; font-size: calc(27 * var(--u)); font-weight: 600; line-height: 1.1; color: #1A1712">Autor</span><span style="font-size: calc(14 * var(--u)); line-height: 1.55; color: #6B6355">“Checklist Cliente Feliz: Atendimento de Alto Impacto”</span></div>
+        </div>
         </div>
       </div>
     </div>
@@ -665,6 +679,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
   <section id="m-topo" class="m-hero">
     <img class="m-hero-bg" src="img/castelo.webp" alt="">
     <div class="m-hero-shade" aria-hidden="true"></div>
+    <canvas class="dd-magia" aria-hidden="true"></canvas>
     <div class="m-sky" aria-hidden="true">
 <span class="m-spark m-glint" style="left: 61.8%; top: 71.0%; width: 7px; height: 9px; --d: 3.3s; --t: -1.0s"></span>
 <span class="m-spark" style="left: 7.0%; top: 16.6%; width: 3px; height: 3px; --d: 3.5s; --t: -1.5s"></span>
@@ -714,7 +729,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
       <a class="m-btn" href="https://api.whatsapp.com/send?phone=5585999711108">Quero transformar minha equipe</a>
       <a class="m-ghostbtn" href="palestras.html">Ver palestras</a>
     </div>
-    <img class="m-hero-photo" src="img/daniel-capa-4.webp" alt="Daniel Donato estendendo a mão em um gesto de boas-vindas">
+    <img class="m-hero-photo" src="img/daniel-palco.webp" alt="Daniel Donato no palco durante uma palestra">
   </section>
 
   <section class="m-stats" aria-label="Números">
@@ -732,8 +747,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
       <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Com mais de 20 visitas técnicas aos parques e lojas da Disney, criou uma forma única de traduzir os conceitos de uma das maiores empresas de entretenimento do mundo para a rotina de qualquer negócio.</p>
       <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4A443A">Sua metodologia reúne experiência empresarial, estudos realizados diretamente nos parques e operações Disney e aplicação prática à realidade de cada empresa.</p>
       <div class="m-cred">
-        <div><b>Guestologia Business</b><span>Certificação internacional pelo Seeds of Dreams Institute</span></div>
-        <div><b>Disney Institute</b><span>Backstage Magic e Keys to the Kingdom</span></div>
+        <div class="m-cred-full"><b>Certificação Internacional</b><span>Guestologia Business pelo Seeds of Dreams Institute</span><span>Backstage Magic e Keys to the Kingdom pelo Disney Institute</span></div>
         <div><b>Formação</b><span>Administração, MBA em Marketing Estratégico e Marketing de Relacionamento</span></div>
         <div><b>Autor</b><span>“Checklist Cliente Feliz: Atendimento de Alto Impacto”</span></div>
       </div>
@@ -902,6 +916,18 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 </div>
 <script>
 (function(){var m=document.getElementById('m-menu'),b=document.querySelector('.m-burger');function set(o){if(!m)return;m.classList.toggle('is-open',o);if(b)b.setAttribute('aria-expanded',o?'true':'false');document.documentElement.style.overflow=o?'hidden':'';}document.addEventListener('click',function(e){var t=e.target.closest('[data-menu]');if(t)set(t.getAttribute('data-menu')==='open');});document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});})();
+</script><script>
+(function(){var reduz=window.matchMedia('(prefers-reduced-motion: reduce)').matches;var cores=['255,236,190','227,196,122','201,162,74','255,250,235'];
+document.querySelectorAll('canvas.dd-magia').forEach(function(cv){var box=cv.parentElement,ctx=cv.getContext('2d'),W,H,pts=[],com=[],vis=true,ult=0,prox=1500;
+function novo(ini){var f=W>900?.62:.6;var x=Math.random()<.55?W*(f+(Math.random()-.5)*.5):Math.random()*W;return{x:x,y:ini?Math.random()*H:H+10,r:Math.random()*1.8+.4,v:Math.random()*.35+.12,osc:Math.random()*6.28,amp:Math.random()*.6+.2,cor:cores[(Math.random()*4)|0],fase:Math.random()*6.28,pisca:Math.random()*.04+.015,est:Math.random()<.12}}
+function tam(){var d=Math.min(window.devicePixelRatio||1,2);W=box.clientWidth;H=box.clientHeight;if(!W||!H)return;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);var n=Math.round(Math.min(140,W*H/9000));pts=[];for(var i=0;i<n;i++)pts.push(novo(true))}
+function est(x,y,r,a,c){ctx.fillStyle='rgba('+c+','+a+')';ctx.beginPath();ctx.moveTo(x,y-r*3);ctx.quadraticCurveTo(x,y,x+r*3,y);ctx.quadraticCurveTo(x,y,x,y+r*3);ctx.quadraticCurveTo(x,y,x-r*3,y);ctx.quadraticCurveTo(x,y,x,y-r*3);ctx.fill()}
+function q(t){if(!vis||!W){if(!reduz)requestAnimationFrame(q);return}var dt=Math.min(t-(ult||t),50);ult=t;ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
+for(var i=0;i<pts.length;i++){var p=pts[i];if(p.c){p.fase+=.03;if(p.fase>3.1){pts.splice(i,1);i--;continue}}p.y-=p.v*dt/16;p.osc+=.01*dt/16;p.fase+=p.pisca*dt/16;var x=p.x+Math.sin(p.osc)*14*p.amp;var a=(.35+.65*Math.abs(Math.sin(p.fase)))*Math.min(1,p.y/(H*.25));if(p.y<-10){pts[i]=novo(false);continue}if(p.est)est(x,p.y,p.r,a*.9,p.cor);var g=ctx.createRadialGradient(x,p.y,0,x,p.y,p.r*4);g.addColorStop(0,'rgba('+p.cor+','+a+')');g.addColorStop(1,'rgba('+p.cor+',0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,p.y,p.r*4,0,6.283);ctx.fill()}
+prox-=dt;if(prox<=0){var e=Math.random()<.5;com.push({x:e?-50:W*(.3+Math.random()*.4),y:H*(.08+Math.random()*.3),vx:W/140+4,vy:H/700+.8,r:[]});prox=4000+Math.random()*4000}
+for(var k=com.length-1;k>=0;k--){var c=com[k];c.x+=c.vx*dt/16;c.y+=c.vy*dt/16;c.vy+=.02*dt/16;c.r.push({x:c.x,y:c.y});if(c.r.length>38)c.r.shift();for(var j=0;j<c.r.length;j++){var s=c.r[j],f=j/c.r.length;ctx.fillStyle='rgba(255,236,190,'+(f*.55)+')';ctx.beginPath();ctx.arc(s.x,s.y,f*2.2,0,6.283);ctx.fill();if(Math.random()<.06&&pts.length<220)pts.push({x:s.x,y:s.y,r:Math.random()+.3,v:-.25,osc:0,amp:.2,cor:cores[0],fase:1.5,pisca:.05,est:false,c:true})}est(c.x,c.y,2.2,.95,'255,250,235');if(c.x>W+80||c.y>H*.9)com.splice(k,1)}
+ctx.globalCompositeOperation='source-over';if(!reduz)requestAnimationFrame(q)}
+tam();window.addEventListener('resize',tam);new IntersectionObserver(function(e){vis=e[0].isIntersecting;if(vis&&!W)tam()}).observe(box);if(reduz)q(16);else requestAnimationFrame(q)})})();
 </script>
 </body>
 </html>
