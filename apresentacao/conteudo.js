@@ -47,15 +47,32 @@ window.CONTEUDO = {
       ]}
     ]  },
 
-  /* ---------- 3 · VÍDEOS ----------
-     Cole o link do YouTube (qualquer formato: youtube.com/watch?v=..., youtu.be/..., shorts).
-     O PRIMEIRO da lista é o destaque. Linhas com link vazio não aparecem.
-     Se nenhum vídeo tiver link, a seção inteira fica escondida. */
+  /* ---------- 3 · PORTFÓLIO EM VÍDEO ----------
+     Cole o link do YouTube (qualquer formato: youtube.com/watch?v=..., youtu.be/..., shorts/...).
+     formato: "Palestras", "Imersões", "In company" ou "Eventos" (vira as abas de filtro).
+     destaque: true no vídeo principal. Linhas com link vazio não aparecem.
+     Sem nenhum link (vídeos e shorts), a seção inteira fica escondida. */
+  videosSecao: {
+    etiqueta: "Portfólio em vídeo",
+    titulo: "Veja a experiência",
+    destaque: "acontecendo.",
+    shortsTitulo: "Momentos rápidos"
+  },
   videos: [
-    { link: "", titulo: "Best of · Daniel Donato no palco", detalhe: "Evento · cidade · ano" },
-    { link: "", titulo: "Atendimento Mágico · Um case Disney", detalhe: "Evento · cidade · ano" },
-    { link: "", titulo: "Liderança que Inspira", detalhe: "Evento · cidade · ano" },
-    { link: "", titulo: "Imersão MagicDay", detalhe: "Evento · cidade · ano" }
+    { link: "", titulo: "Best of · Daniel Donato no palco", detalhe: "Melhores momentos", formato: "Palestras", duracao: "", destaque: true },
+    { link: "", titulo: "Atendimento Mágico · Um case Disney", detalhe: "Evento · cidade · ano", formato: "Palestras", duracao: "" },
+    { link: "", titulo: "Imersão MagicDay", detalhe: "Empresa · cidade · ano", formato: "Imersões", duracao: "" },
+    { link: "", titulo: "Treinamento in company", detalhe: "Empresa · cidade · ano", formato: "In company", duracao: "" },
+    { link: "", titulo: "Liderança que Inspira", detalhe: "Evento · cidade · ano", formato: "Eventos", duracao: "" }
+  ],
+  /* Vídeos curtos em pé (YouTube Shorts). Aparecem na faixa "Momentos rápidos". */
+  shorts: [
+    { link: "", titulo: "A plateia em pé no final" },
+    { link: "", titulo: "O efeito UAU em 30 segundos" },
+    { link: "", titulo: "Dinâmica do MagicDay" },
+    { link: "", titulo: "Depoimento de cliente" },
+    { link: "", titulo: "Bastidores da Disney" },
+    { link: "", titulo: "Visita técnica" }
   ],
 
   /* ---------- 4 · SOLUÇÕES ---------- */
