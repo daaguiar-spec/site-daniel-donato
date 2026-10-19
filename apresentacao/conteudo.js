@@ -89,6 +89,11 @@ window.CONTEUDO = {
   /* ---------- 5 · QUEM CONFIA ---------- */
   /* Como mostrar os logos: "vitrine" (faixa clara, logos em cinza), "mural" (cartões) ou "faixas" (deslizando). */
   clientesEstilo: "vitrine",
+  clientesVitrine: {
+    etiqueta: "Clientes",
+    titulo: "Quem já viveu a experiência",
+    texto: "Indústrias, escolas, órgãos públicos, hotéis e varejo que confiaram no Daniel para desenvolver pessoas e transformar o atendimento."
+  },
 
   estados: ["CE", "SP", "PR", "DF", "AM", "SE", "SC", "RN", "PI"],
 

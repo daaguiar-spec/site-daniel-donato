@@ -12,7 +12,7 @@
 <meta property="og:image" content="https://site-daniel-donato.vercel.app/img/daniel-capa-4.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
 :root{
   --bg:#0B0A08; --bg2:#15130F; --bg3:#1F1B15; --line:#2E2A22;
@@ -177,24 +177,20 @@ em{color:var(--gold);font-style:italic}
 .mural .logo{width:auto;height:80px;opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s;transition-delay:var(--d)}
 .on .mural .logo{opacity:1;transform:none}
 .on .mural .logo:hover{transform:translateY(-4px);transition-delay:0s}
-/* estilo "vitrine": faixa clara, logos em cinza que ganham cor ao passar o mouse */
-#clientes.claro{background:#F4EFE6;color:#15130F}
-#clientes.claro .cab{flex-direction:column;align-items:center;text-align:center;gap:22px}
-#clientes.claro .kicker{color:#86651F}
-#clientes.claro h2{color:#15130F}
-#clientes.claro em{color:#93701F}
-#clientes.claro .cli-sub{color:#5A5246;margin-left:auto;margin-right:auto}
-#clientes.claro .cli-sub b{color:#86651F}
-#clientes.claro .estados{justify-content:center}
-#clientes.claro .estados .aux{color:#6B6255}
-#clientes.claro .estados i{border-color:#A9832E;color:#86651F}
-.vitrine{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:34px 30px;align-items:center;margin-top:16px}
+/* estilo "vitrine": idêntico à seção Clientes do site (fundo branco, logos em cinza) */
+#clientes.claro{background:#FFFFFF;color:#1A1712;padding-top:clamp(64px,7.8vw,112px);padding-bottom:clamp(64px,7.8vw,112px);min-height:0}
+#clientes.claro .wrap{display:flex;flex-direction:column;gap:clamp(32px,3.4vw,48px)}
+.vit-cab{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.vit-cab span{font-size:clamp(14px,1.32vw,19px);font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#8A6A2E}
+.vit-cab h2{margin:0;font-family:'Cormorant',Georgia,serif;font-weight:500;font-size:clamp(38px,5.5vw,79px);line-height:.92;text-transform:uppercase;color:#1A1712;text-wrap:balance}
+.vit-cab p{margin:0;max-width:620px;font-size:clamp(15px,1.18vw,17px);line-height:1.65;color:#4A443A}
+.vitrine{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));column-gap:20px;row-gap:28px;align-items:center}
 .vitrine .cel{height:84px;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s;transition-delay:var(--d)}
 .on .vitrine .cel{opacity:1;transform:none}
-.vitrine img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.05);opacity:.72;transition:filter .3s,opacity .3s,transform .3s}
-.vitrine .cel:hover img{filter:none;opacity:1;transform:scale(1.06)}
+.vitrine img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.05);opacity:.72;transition:filter .25s,opacity .25s}
+.vitrine .cel:hover img{filter:none;opacity:1}
 @media (max-width:1100px){.vitrine{grid-template-columns:repeat(6,minmax(0,1fr))}}
-@media (max-width:700px){.vitrine{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 16px}.vitrine .cel{height:64px}}
+@media (max-width:700px){.vitrine{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:14px;row-gap:22px}.vitrine .cel{height:64px}}
 @media (max-width:600px){.mural{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.mural .logo{height:60px;padding:8px 10px}}
 .deps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:40px}
 .dep{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:18px}
@@ -324,7 +320,14 @@ em{color:var(--gold);font-style:italic}
       <div class="faixa"><div class="trilho" id="trilho"></div></div>
       <div class="faixa"><div class="trilho volta" id="trilho2"></div></div>
     </div>
-    <div class="wrap"><div class="mural hidden" id="mural"></div></div>
+    <div class="wrap">
+      <div class="vit-cab r hidden" id="vitCab">
+        <span id="vitEtiqueta"></span>
+        <h2 id="vitTitulo"></h2>
+        <p id="vitTexto"></p>
+      </div>
+      <div class="mural hidden" id="mural"></div>
+    </div>
     <div class="wrap"><div class="deps" id="deps"></div></div>
   </section>
 
@@ -470,6 +473,9 @@ em{color:var(--gold);font-style:italic}
   }
   if (C.clientesEstilo === 'vitrine'){
     $('faixas').classList.add('hidden'); $('clientes').classList.add('claro');
+    document.querySelector('#clientes .cab').classList.add('hidden'); $('vitCab').classList.remove('hidden');
+    var V = C.clientesVitrine || {};
+    txt('vitEtiqueta', V.etiqueta); txt('vitTitulo', V.titulo); txt('vitTexto', V.texto);
     var v = $('mural'); v.className = 'vitrine';
     C.clientes.forEach(function(c, i){ var d = el('div','cel'); d.style.setProperty('--d', (.03*i+.2)+'s'); d.appendChild(img(c.logo, c.nome, true)); v.appendChild(d); });
   } else if (C.clientesEstilo === 'mural'){
