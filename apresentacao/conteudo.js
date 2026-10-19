@@ -90,8 +90,8 @@ window.CONTEUDO = {
      Os estados atendidos são a lista "estados" logo abaixo (siglas). {n} vira "9 estados" automaticamente. */
   presenca: {
     etiqueta: "Onde já atuamos",
-    titulo: "Presença em todo",
-    destaque: "o Brasil.",
+    titulo: "Presença",
+    destaque: "Nacional.",
     texto: "Treinamentos já realizados em {n}, presencial e online."
   },
 
