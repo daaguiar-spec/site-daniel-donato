@@ -85,6 +85,16 @@ em{color:var(--gold);font-style:italic}
 .convite .mouse i{width:4px;height:9px;border-radius:2px;background:var(--gold);animation:roda 1.8s ease-in-out infinite}
 @keyframes roda{0%{transform:translateY(0);opacity:1}70%{transform:translateY(13px);opacity:0}100%{transform:translateY(0);opacity:0}}
 @keyframes surge{from{opacity:0;transform:translate(-50%,16px)}}
+/* botão "próximo" no fim de cada seção */
+.seguir{position:relative;z-index:2;align-self:center;margin-top:clamp(40px,6vh,72px);display:inline-flex;align-items:center;gap:14px;padding:10px 22px 10px 10px;border:1px solid rgba(201,162,74,.45);border-radius:999px;text-decoration:none;color:var(--txt);background:rgba(11,10,8,.35);transition:border-color .3s,background .3s,transform .3s}
+.seguir:hover{border-color:var(--gold);background:rgba(201,162,74,.12);transform:translateY(3px)}
+.seguir .seta{width:42px;height:42px;border-radius:50%;background:var(--gold);color:#0B0A08;display:flex;align-items:center;justify-content:center;animation:desce 2s ease-in-out infinite}
+@keyframes desce{50%{transform:translateY(4px)}}
+.seguir-txt{display:flex;flex-direction:column;line-height:1.2;text-align:left}
+.seguir-txt small{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2)}
+.seguir-txt b{font-size:15px;font-weight:600}
+#clientes.claro .seguir{color:#1A1712;background:#fff;border-color:rgba(138,106,46,.45)}
+#clientes.claro .seguir-txt small{color:#8A6A2E}
 /* botão próxima tela */
 .proximo{position:fixed;right:calc(24px + env(safe-area-inset-right,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:60;width:60px;height:60px;border-radius:50%;border:0;background:var(--gold);color:#0B0A08;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 0 rgba(201,162,74,.55);animation:chama 2.4s ease-out infinite;transition:transform .3s,background .3s}
 .proximo:hover{transform:scale(1.08);background:var(--gold2)}
@@ -363,7 +373,7 @@ em{color:var(--gold);font-style:italic}
   </section>
 
   <!-- 5 PRESENÇA -->
-  <section class="tela" id="presenca" data-nome="Presença no Brasil">
+  <section class="tela" id="presenca" data-nome="Presença Nacional">
     <div class="wrap pres-grid">
       <div class="pres-mapa r esq">
         <svg id="mapaBR" role="img" aria-label="Mapa do Brasil com os estados atendidos destacados"></svg>
@@ -620,6 +630,16 @@ em{color:var(--gold);font-style:italic}
 
   /* ---------- navegação e animações ---------- */
   var telas = [].slice.call(document.querySelectorAll('.tela')).filter(function(t){ return !t.classList.contains('hidden'); });
+  /* botão "próxima seção" no fim de cada tela (menos a capa, que tem o convite, e a última) */
+  telas.forEach(function(t, i){
+    if (i === 0 || i === telas.length - 1) return;
+    var prox = telas[i + 1], a = el('a', 'seguir r');
+    a.href = '#' + prox.id; a.style.setProperty('--d', '.6s');
+    a.innerHTML = '<span class="seta" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></span>';
+    var tx = el('span', 'seguir-txt'); tx.appendChild(el('small', null, 'Próximo')); tx.appendChild(el('b', null, prox.dataset.nome)); a.appendChild(tx);
+    a.addEventListener('click', function(e){ e.preventDefault(); prox.scrollIntoView({behavior: reduz ? 'auto' : 'smooth'}); });
+    t.appendChild(a);
+  });
   telas.forEach(function(t){
     var a = el('a'); a.href = '#' + t.id; a.setAttribute('aria-label', t.dataset.nome); a.title = t.dataset.nome;
     $('pontos').appendChild(a);
