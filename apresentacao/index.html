@@ -115,7 +115,8 @@ em{color:var(--gold);font-style:italic}
 .cred li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold)}
 @media (max-width:900px){
   .sobre-grid{grid-template-columns:1fr}
-  .sobre-foto{aspect-ratio:16/11}
+  .sobre-foto{aspect-ratio:4/5;max-height:72svh;width:100%;max-width:520px;margin:0 auto}
+  .sobre-foto img{object-position:center top}
   .numeros{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
