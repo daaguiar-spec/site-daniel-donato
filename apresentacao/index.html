@@ -236,6 +236,8 @@ em{color:var(--gold);font-style:italic}
 
 /* ---------- 6 como funciona ---------- */
 #como .cab{justify-content:center;text-align:center}
+.br-mob{display:none}
+@media (max-width:700px){.br-mob{display:inline}#como h2 em{display:block}#como h2{white-space:nowrap}}
 .passos{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;margin-top:24px}
 .linha{position:absolute;left:16.6%;right:16.6%;top:38px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 1.6s .3s ease}
 .on .linha{transform:scaleX(1)}
@@ -389,7 +391,7 @@ em{color:var(--gold);font-style:italic}
   <!-- 6 COMO FUNCIONA -->
   <section class="tela" id="como" data-nome="Como funciona">
     <div class="wrap">
-      <div class="cab r"><div><div class="kicker">Como funciona</div><h2>Simples, do primeiro contato <em>ao palco.</em></h2></div></div>
+      <div class="cab r"><div><div class="kicker">Como funciona</div><h2>Simples, do<br class="br-mob"> primeiro contato <em>ao palco.</em></h2></div></div>
       <div class="passos" id="passos"><div class="linha"></div></div>
     </div>
   </section>
