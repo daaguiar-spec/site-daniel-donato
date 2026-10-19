@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#0B0A08">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500;1,600&family=Oranienbaum&family=Oswald:wght@300;400;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500;1,600&family=Playfair+Display:ital,wght@0,500;1,500&family=Oranienbaum&family=Oswald:wght@300;400;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 html,body{background:#0B0A08;overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;overflow-x:clip}
@@ -129,6 +129,23 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
 .pq-item{padding-bottom:calc(14 * var(--u));border-bottom:1px solid #C9A45C;font-size:calc(14 * var(--u));font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 .pq-left{text-align:right}.pq-left .pq-item{padding-right:calc(8 * var(--u));border-radius:0 0 100% 0}
 .pq-right .pq-item{padding-left:calc(8 * var(--u));border-radius:0 0 0 100%}
+
+/* ===== abertura em tela cheia, proporcional (base 1920) ===== */
+.hx{--h:calc(100vw / 1920)}
+.hx .hy-wrap{max-width:none;padding:0}
+.hx .hy-card{display:block;min-height:calc(860 * var(--h));box-shadow:none;background:#0B0A08}
+.hx .hy-left{position:absolute;left:calc(332 * var(--h));top:0;bottom:calc(30 * var(--h));width:calc(700 * var(--h));padding:0;display:flex;flex-direction:column;justify-content:center;gap:calc(30 * var(--h))}
+.hx .hy-kick{font-size:calc(14 * var(--h));gap:calc(16 * var(--h))}
+.hx .hy-kick::before{width:calc(44 * var(--h))}
+.hx .hy-title.hy-title2{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:calc(74 * var(--h));line-height:1.06;letter-spacing:0;max-width:calc(640 * var(--h))}
+.hx .hy-title.hy-title2 em{font-weight:500}
+.hx .hy-sub{font-size:calc(20 * var(--h));line-height:1.55;max-width:calc(560 * var(--h))}
+.hx .hy-btns{gap:calc(14 * var(--h));margin-top:calc(6 * var(--h))}
+.hx .hy-btn.hy-btn2{padding:calc(20 * var(--h)) calc(34 * var(--h));font-size:calc(15 * var(--h));border-radius:calc(999 * var(--h))}
+.hx .hy-ghostbtn{padding:calc(19 * var(--h)) calc(32 * var(--h));font-size:calc(15 * var(--h))}
+.hx .hy-right{position:absolute;inset:0;min-height:0;z-index:1}
+.hx .hy-right::before{left:calc(1310 * var(--h));top:calc(420 * var(--h));width:calc(780 * var(--h))}
+.hx .hy-photo{left:calc(1310 * var(--h));bottom:calc(-60 * var(--h));height:calc(880 * var(--h));transform:translateX(-50%)}
 
 :where(.m) a{color:#C9A45C}
 .m{padding-top:calc(71px + env(safe-area-inset-top,0px));font-family:'Manrope',system-ui,sans-serif;color:#EDE6D8;background:#0B0A08;width:100%;max-width:100vw;min-height:100vh;overflow-x:clip;-webkit-text-size-adjust:100%}
