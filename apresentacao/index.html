@@ -168,7 +168,16 @@ em{color:var(--gold);font-style:italic}
 .faixa:hover .trilho{animation-play-state:paused}
 @keyframes desliza{to{transform:translateX(-50%)}}
 .logo{flex:none;height:84px;width:170px;background:#F6F2EA;border-radius:6px;display:flex;align-items:center;justify-content:center;padding:14px 20px}
-.logo img{max-height:100%;max-width:100%;object-fit:contain}
+.logo img{max-height:100%;max-width:100%;object-fit:contain;mix-blend-mode:multiply}
+.cli-sub{margin:14px 0 0;color:var(--txt2);font-size:16px;line-height:1.5;max-width:560px}
+.cli-sub b{color:var(--gold2);font-weight:700}
+.faixas{display:flex;flex-direction:column;gap:16px}
+.trilho.volta{animation-direction:reverse;animation-duration:75s}
+.mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.mural .logo{width:auto;height:80px;opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s;transition-delay:var(--d)}
+.on .mural .logo{opacity:1;transform:none}
+.on .mural .logo:hover{transform:translateY(-4px);transition-delay:0s}
+@media (max-width:600px){.mural{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.mural .logo{height:60px;padding:8px 10px}}
 .deps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:40px}
 .dep{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:18px}
 .dep blockquote{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:#E8E1D4;flex:1}
@@ -206,7 +215,7 @@ em{color:var(--gold);font-style:italic}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
-  .r,.estados i{opacity:1;transform:none}
+  .r,.estados i,.mural .logo{opacity:1;transform:none}
   html{scroll-behavior:auto}
 }
 </style>
@@ -288,11 +297,16 @@ em{color:var(--gold);font-style:italic}
   <section class="tela" id="clientes" data-nome="Quem confia">
     <div class="wrap">
       <div class="cab r">
-        <div><div class="kicker">Quem confia</div><h2>Quem já viveu <em>a experiência.</em></h2></div>
+        <div><div class="kicker">Quem confia</div><h2>Quem já viveu <em>a experiência.</em></h2>
+          <p class="cli-sub"><b id="qtdClientes"></b> empresas e instituições de indústria, saúde, educação, hotelaria, varejo e setor público.</p></div>
         <div class="estados" id="estados"><span class="aux">Presente em <span id="qtdEstados"></span> estados</span></div>
       </div>
     </div>
-    <div class="faixa r" style="--d:.2s"><div class="trilho" id="trilho"></div></div>
+    <div class="faixas r" style="--d:.2s" id="faixas">
+      <div class="faixa"><div class="trilho" id="trilho"></div></div>
+      <div class="faixa"><div class="trilho volta" id="trilho2"></div></div>
+    </div>
+    <div class="wrap"><div class="mural hidden" id="mural"></div></div>
     <div class="wrap"><div class="deps" id="deps"></div></div>
   </section>
 
@@ -431,12 +445,20 @@ em{color:var(--gold);font-style:italic}
   /* ---------- 5 clientes ---------- */
   txt('qtdEstados', String(C.estados.length));
   C.estados.forEach(function(s, i){ var e = el('i',null,s); e.style.setProperty('--d', (.08*i+.3)+'s'); $('estados').appendChild(e); });
-  [0,1].forEach(function(rodada){
-    C.clientes.forEach(function(c){
-      var d = el('div','logo'); if (rodada) d.setAttribute('aria-hidden','true');
-      d.appendChild(img(c.logo, rodada ? '' : c.nome, true)); $('trilho').appendChild(d);
+  txt('qtdClientes', '+' + C.clientes.length);
+  function logo(c, oculto){
+    var d = el('div','logo'); if (oculto) d.setAttribute('aria-hidden','true');
+    d.appendChild(img(c.logo, oculto ? '' : c.nome, true)); return d;
+  }
+  if (C.clientesEstilo === 'mural'){
+    $('faixas').classList.add('hidden'); $('mural').classList.remove('hidden');
+    C.clientes.forEach(function(c, i){ var d = logo(c); d.style.setProperty('--d', (.03*i+.2)+'s'); $('mural').appendChild(d); });
+  } else {
+    var meio = Math.ceil(C.clientes.length / 2);
+    [[C.clientes.slice(0, meio), 'trilho'], [C.clientes.slice(meio), 'trilho2']].forEach(function(par){
+      [0,1].forEach(function(rodada){ par[0].forEach(function(c){ $(par[1]).appendChild(logo(c, rodada)); }); });
     });
-  });
+  }
   var deps = C.depoimentos.filter(function(d){ return d.texto && d.texto.trim(); });
   deps.forEach(function(d, i){
     var c = el('figure','dep r'); c.style.margin='0'; c.style.setProperty('--d', (.12*i+.3)+'s');
