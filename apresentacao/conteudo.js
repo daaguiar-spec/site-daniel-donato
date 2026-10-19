@@ -86,6 +86,15 @@ window.CONTEUDO = {
     }
   ],
 
+  /* ---------- 5 · PRESENÇA NO BRASIL ----------
+     Os estados atendidos são a lista "estados" logo abaixo (siglas). {n} vira "9 estados" automaticamente. */
+  presenca: {
+    etiqueta: "Onde já atuamos",
+    titulo: "Presença em todo",
+    destaque: "o Brasil.",
+    texto: "Treinamentos já realizados em {n}, presencial e online."
+  },
+
   /* ---------- 5 · QUEM CONFIA ---------- */
   /* Como mostrar os logos: "vitrine" (faixa clara, logos em cinza), "mural" (cartões) ou "faixas" (deslizando). */
   clientesEstilo: "vitrine",

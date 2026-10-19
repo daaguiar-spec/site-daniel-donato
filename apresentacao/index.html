@@ -158,7 +158,38 @@ em{color:var(--gold);font-style:italic}
 .card li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
 @media (max-width:900px){ .cards{grid-template-columns:1fr} }
 
-/* ---------- 5 clientes ---------- */
+/* ---------- 5 presença (mapa) ---------- */
+.pres-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
+.pres-mapa{position:relative}
+.pres-mapa svg{display:block;width:100%;height:auto;max-height:74vh;overflow:visible}
+.pres-mapa path{fill:#1A1712;stroke:#3A342A;stroke-width:.7;stroke-linejoin:round;transition:fill .8s ease,filter .8s ease}
+.pres-mapa path.atende{transition-delay:var(--d)}
+.on .pres-mapa path.atende{fill:#C9A24A;filter:drop-shadow(0 0 6px rgba(227,196,122,.55))}
+.on .pres-mapa path.atende.foco,.pres-mapa path.atende.foco{fill:#F3D892;filter:drop-shadow(0 0 12px rgba(243,216,146,.9));transition-delay:0s}
+.pres-credito{position:absolute;left:0;bottom:-22px;font-size:10px;color:#5E574C}
+.pres-txt{display:flex;flex-direction:column;gap:28px;min-width:0}
+.pres-txt h2{font-size:clamp(32px,3.6vw,48px);line-height:1.12;margin-top:12px}
+.pres-txt p{margin:14px 0 0;font-size:17px;line-height:1.6;color:var(--txt2)}
+.pres-txt p b{color:var(--gold2)}
+.uf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.uf{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--bg2);opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s,border-color .3s,background .3s;transition-delay:var(--d)}
+.on .uf{opacity:1;transform:none}
+.uf:hover,.uf.foco{border-color:var(--gold);background:#1C1810;transition-delay:0s}
+.uf svg{flex:none;width:52px;height:52px;overflow:visible}
+.uf svg path{fill:rgba(201,162,74,0);stroke:var(--gold);stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s ease,fill .8s ease;transition-delay:var(--d)}
+.on .uf svg path{stroke-dashoffset:0;fill:rgba(201,162,74,.85);transition-delay:var(--d),calc(var(--d) + 1.2s)}
+.uf b{display:block;font-family:var(--serif);font-weight:500;font-size:22px;color:var(--gold);line-height:1}
+.uf span{display:block;font-size:13px;color:var(--txt2);margin-top:4px;line-height:1.3}
+@media (max-width:900px){
+  .pres-grid{grid-template-columns:1fr}
+  .pres-mapa{max-width:420px;margin:0 auto;width:100%}
+}
+@media (max-width:520px){
+  .uf-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .uf{flex-direction:column;text-align:center;padding:12px 6px;gap:8px}.uf svg{width:40px;height:40px}.uf b{font-size:19px}.uf span{font-size:12px}
+}
+
+/* ---------- 6 clientes ---------- */
 .estados{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .estados .aux{margin-right:8px}
 .estados i{font-style:normal;width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--gold2);opacity:0;transform:scale(.4);transition:.5s cubic-bezier(.3,1.6,.5,1);transition-delay:var(--d)}
@@ -229,7 +260,9 @@ em{color:var(--gold);font-style:italic}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
-  .r,.estados i,.mural .logo,.vitrine .cel{opacity:1;transform:none}
+  .r,.estados i,.mural .logo,.vitrine .cel,.uf{opacity:1;transform:none}
+  .uf svg path{stroke-dashoffset:0;fill:rgba(201,162,74,.85)}
+  .pres-mapa path.atende{fill:#C9A24A}
   html{scroll-behavior:auto}
 }
 </style>
@@ -307,7 +340,25 @@ em{color:var(--gold);font-style:italic}
     </div>
   </section>
 
-  <!-- 5 CLIENTES -->
+  <!-- 5 PRESENÇA -->
+  <section class="tela" id="presenca" data-nome="Presença no Brasil">
+    <div class="wrap pres-grid">
+      <div class="pres-mapa r esq">
+        <svg id="mapaBR" role="img" aria-label="Mapa do Brasil com os estados atendidos destacados"></svg>
+        <div class="pres-credito">Mapa: @svg-maps/brazil, CC BY 4.0</div>
+      </div>
+      <div class="pres-txt">
+        <div class="r" style="--d:.1s">
+          <div class="kicker" id="presEtiqueta"></div>
+          <h2><span id="presTitulo"></span> <em id="presDestaque"></em></h2>
+          <p id="presTexto"></p>
+        </div>
+        <div class="uf-grid" id="ufGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 CLIENTES -->
   <section class="tela" id="clientes" data-nome="Quem confia">
     <div class="wrap">
       <div class="cab r">
@@ -362,6 +413,7 @@ em{color:var(--gold);font-style:italic}
   </section>
 </main>
 
+<script src="mapa-brasil.js"></script>
 <script src="conteudo.js"></script>
 <script>
 (function(){
@@ -463,7 +515,42 @@ em{color:var(--gold);font-style:italic}
     c.appendChild(b); $('cards').appendChild(c);
   });
 
-  /* ---------- 5 clientes ---------- */
+  /* ---------- 5 presença ---------- */
+  (function(){
+    var M = window.MAPA_BR, P = C.presenca || {}, NS = 'http://www.w3.org/2000/svg';
+    if (!M || !C.estados || !C.estados.length){ $('presenca').classList.add('hidden'); return; }
+    txt('presEtiqueta', P.etiqueta); txt('presTitulo', P.titulo); txt('presDestaque', P.destaque);
+    var t = (P.texto || '').split('{n}'), pt = $('presTexto');
+    pt.appendChild(document.createTextNode(t[0] || ''));
+    if (t.length > 1){ pt.appendChild(el('b', null, C.estados.length + ' estados')); pt.appendChild(document.createTextNode(t[1])); }
+    var svg = $('mapaBR'); svg.setAttribute('viewBox', M.viewBox);
+    var ufs = C.estados.map(function(s){ return String(s).toLowerCase(); }), noMapa = {};
+    Object.keys(M.estados).forEach(function(id){
+      var p = document.createElementNS(NS, 'path'); p.setAttribute('d', M.estados[id].path);
+      var i = ufs.indexOf(id);
+      if (i > -1){ p.setAttribute('class', 'atende'); p.style.setProperty('--d', (.18*i+.3)+'s'); noMapa[id] = p;
+        var tt = document.createElementNS(NS, 'title'); tt.textContent = M.estados[id].nome; p.appendChild(tt); }
+      svg.appendChild(p);
+    });
+    ufs.forEach(function(id, i){
+      var e = M.estados[id]; if (!e) return;
+      var c = el('div', 'uf'); c.style.setProperty('--d', (.18*i+.3)+'s');
+      var s = document.createElementNS(NS, 'svg'); s.setAttribute('aria-hidden', 'true');
+      var p = document.createElementNS(NS, 'path'); p.setAttribute('d', e.path); p.setAttribute('pathLength', '1');
+      s.appendChild(p); c.appendChild(s);
+      var tx = el('div'); tx.appendChild(el('b', null, id.toUpperCase())); tx.appendChild(el('span', null, e.nome)); c.appendChild(tx);
+      $('ufGrid').appendChild(c);
+      var bb = p.getBBox(), m = Math.max(bb.width, bb.height), pad = m * .08;
+      s.setAttribute('viewBox', (bb.x - pad) + ' ' + (bb.y - pad) + ' ' + (bb.width + 2*pad) + ' ' + (bb.height + 2*pad));
+      p.style.strokeWidth = (m / 34) + 'px';
+      function liga(on){ c.classList.toggle('foco', on); if (noMapa[id]) noMapa[id].classList.toggle('foco', on); }
+      c.addEventListener('mouseenter', function(){ liga(true); }); c.addEventListener('mouseleave', function(){ liga(false); });
+      c.addEventListener('touchstart', function(){ liga(true); setTimeout(function(){ liga(false); }, 1500); }, {passive:true});
+      if (noMapa[id]){ noMapa[id].addEventListener('mouseenter', function(){ liga(true); }); noMapa[id].addEventListener('mouseleave', function(){ liga(false); }); }
+    });
+  })();
+
+  /* ---------- 6 clientes ---------- */
   txt('qtdEstados', String(C.estados.length));
   C.estados.forEach(function(s, i){ var e = el('i',null,s); e.style.setProperty('--d', (.08*i+.3)+'s'); $('estados').appendChild(e); });
   txt('qtdClientes', '+' + C.clientes.length);
