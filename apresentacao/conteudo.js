@@ -65,10 +65,10 @@ window.CONTEUDO = {
   /* Vídeos curtos em pé. Use "arquivo" para vídeos da pasta apresentacao/videos (com "capa" = imagem de capa)
      ou "link" para um YouTube Shorts. Aparecem na faixa "Momentos rápidos". */
   shorts: [
-    { arquivo: "videos/atendimento-magico.mp4", capa: "videos/atendimento-magico.jpg", titulo: "Atendimento Mágico · Um case Disney" },
+    { arquivo: "videos/jap-ribeirao-preto.mp4", capa: "videos/jap-ribeirao-preto.jpg", titulo: "Experiência JAP · Ribeirão Preto (SP)" },
     { arquivo: "videos/imersao-magicday.mp4", capa: "videos/imersao-magicday.jpg", titulo: "Imersão MagicDay" },
     { arquivo: "videos/praiano-hotel.mp4", capa: "videos/praiano-hotel.jpg", titulo: "Treinamento Praiano Hotel" },
-    { arquivo: "videos/jap-ribeirao-preto.mp4", capa: "videos/jap-ribeirao-preto.jpg", titulo: "Experiência JAP · Ribeirão Preto (SP)" },
+    { arquivo: "videos/atendimento-magico.mp4", capa: "videos/atendimento-magico.jpg", titulo: "Atendimento Mágico · Um case Disney" },
     { arquivo: "videos/crie-empreendedores.mp4", capa: "videos/crie-empreendedores.jpg", titulo: "CRIE · Clube de Empreendedores" },
     { arquivo: "videos/mickey-advogado.mp4", capa: "videos/mickey-advogado.jpg", titulo: "Se o Mickey fosse Advogado · Renan Azevedo" }
   ],
