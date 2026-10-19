@@ -79,7 +79,7 @@ em{color:var(--gold);font-style:italic}
 @keyframes holofote{50%{opacity:.55;transform:translate(-50%,-50%) scale(1.08)}}
 .capa-foto img{position:relative}
 /* convite de rolagem na capa */
-.convite{position:absolute;left:50%;bottom:28px;z-index:3;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:var(--gold2);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;transition:opacity .5s,transform .5s;animation:surge 1s 1.2s backwards}
+.convite{display:none !important;position:absolute;left:50%;bottom:28px;z-index:3;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:var(--gold2);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;transition:opacity .5s,transform .5s;animation:surge 1s 1.2s backwards}
 .convite.some{opacity:0;pointer-events:none;transform:translate(-50%,12px)}
 .convite .mouse{width:28px;height:44px;border:2px solid var(--gold);border-radius:16px;display:flex;justify-content:center;padding-top:7px;box-shadow:0 0 18px rgba(201,162,74,.35)}
 .convite .mouse i{width:4px;height:9px;border-radius:2px;background:var(--gold);animation:roda 1.8s ease-in-out infinite}
@@ -630,16 +630,6 @@ em{color:var(--gold);font-style:italic}
 
   /* ---------- navegação e animações ---------- */
   var telas = [].slice.call(document.querySelectorAll('.tela')).filter(function(t){ return !t.classList.contains('hidden'); });
-  /* botão "próxima seção" no fim de cada tela (menos a capa, que tem o convite, e a última) */
-  telas.forEach(function(t, i){
-    if (i === 0 || i === telas.length - 1) return;
-    var prox = telas[i + 1], a = el('a', 'seguir r');
-    a.href = '#' + prox.id; a.style.setProperty('--d', '.6s');
-    a.innerHTML = '<span class="seta" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></span>';
-    var tx = el('span', 'seguir-txt'); tx.appendChild(el('small', null, 'Próximo')); tx.appendChild(el('b', null, prox.dataset.nome)); a.appendChild(tx);
-    a.addEventListener('click', function(e){ e.preventDefault(); prox.scrollIntoView({behavior: reduz ? 'auto' : 'smooth'}); });
-    t.appendChild(a);
-  });
   telas.forEach(function(t){
     var a = el('a'); a.href = '#' + t.id; a.setAttribute('aria-label', t.dataset.nome); a.title = t.dataset.nome;
     $('pontos').appendChild(a);
