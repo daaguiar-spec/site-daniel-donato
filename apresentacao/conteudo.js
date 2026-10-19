@@ -32,13 +32,20 @@ window.CONTEUDO = {
       { valor: 20,    prefixo: "",  sufixo: " anos", legenda: "de consultoria empresarial" },
       { valor: 10,    prefixo: "",  sufixo: " anos", legenda: "no palco" }
     ],
-    selos: [
-      "Guestologia Business · Seeds of Dreams Institute",
-      "Disney Institute · Backstage Magic e Keys to the Kingdom",
-      "MBA em Marketing Estratégico",
-      "Autor de “Checklist Cliente Feliz”"
-    ]
-  },
+    /* Credenciais: cada grupo vira uma coluna com título. */
+    credenciais: [
+      { grupo: "Certificações internacionais", itens: [
+          "Guestologia Business · Seeds of Dreams Institute",
+          "Backstage Magic e Keys to the Kingdom · Disney Institute"
+      ]},
+      { grupo: "Formação", itens: [
+          "Administração",
+          "MBA em Marketing e Relacionamento com o Cliente"
+      ]},
+      { grupo: "Autor", itens: [
+          "“Checklist Cliente Feliz: Atendimento de Alto Impacto”"
+      ]}
+    ]  },
 
   /* ---------- 3 · VÍDEOS ----------
      Cole o link do YouTube (qualquer formato: youtube.com/watch?v=..., youtu.be/..., shorts).
