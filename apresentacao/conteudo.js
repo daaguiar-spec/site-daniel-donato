@@ -59,7 +59,8 @@ window.CONTEUDO = {
     shortsTitulo: "Momentos rápidos"
   },
   videos: [
-    { link: "https://youtu.be/VIqY_5ZzdS4", titulo: "Daniel Donato no palco", detalhe: "Palestras, treinamentos e imersões", formato: "Palestras", duracao: "", destaque: true }
+    { arquivo: "videos/expoprag-abertura.mp4", capa: "videos/expoprag-abertura.jpg", titulo: "Palestra show na abertura da Expoprag", detalhe: "Expoprag Norte e Nordeste · Palestrante da abertura", formato: "Palestras", duracao: "1:12", destaque: true }
+    /* Também aceita link do YouTube: { link: "https://youtu.be/...", titulo: "...", ... } */
   ],
   /* Vídeos curtos em pé. Use "arquivo" para vídeos da pasta apresentacao/videos (com "capa" = imagem de capa)
      ou "link" para um YouTube Shorts. Aparecem na faixa "Momentos rápidos". */
