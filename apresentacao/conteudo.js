@@ -159,6 +159,26 @@ window.CONTEUDO = {
     { texto: "", nome: "", cargo: "", foto: "" }
   ],
 
+  /* ---------- DEPOIMENTOS EM VÍDEO ----------
+     Vídeos na pasta apresentacao/videos/depoimentos. A ordem da lista é a ordem na tela.
+     frase: trecho curto que aparece sobre o vídeo (opcional). logo: opcional (sem logo, mostra as iniciais).
+     horizontal: true para vídeos deitados (abrem em tela larga). foco: posição do rosto no cartão ("30%" = mais à esquerda). */
+  depoimentosVideo: {
+    etiqueta: "Depoimentos",
+    titulo: "Quem viveu,",
+    destaque: "recomenda.",
+    texto: "Ouça de quem já levou a experiência para a equipe.",
+    itens: [
+      { arquivo: "videos/depoimentos/marco-mourao.mp4", capa: "videos/depoimentos/marco-mourao.jpg", nome: "Marco Mourão", cargo: "CEO", empresa: "JAP Roteiros Exclusivos · São Paulo", logo: "/img/clientes/jap-roteiros-exclusivos.png", frase: "" },
+      { arquivo: "videos/depoimentos/danilo-dias.mp4", capa: "videos/depoimentos/danilo-dias.jpg", nome: "Dr. Danilo Dias", cargo: "Cirurgião Plástico", empresa: "", logo: "", frase: "", horizontal: true, foco: "44%" },
+      { arquivo: "videos/depoimentos/patricia-dias.mp4", capa: "videos/depoimentos/patricia-dias.jpg", nome: "Patrícia Dias", cargo: "Diretora", empresa: "Blue D SPA", logo: "", frase: "", horizontal: true, foco: "52%" },
+      { arquivo: "videos/depoimentos/tour-leader-jap.mp4", capa: "videos/depoimentos/tour-leader-jap.jpg", nome: "", cargo: "Tour Leader", empresa: "JAP Roteiros Exclusivos", logo: "/img/clientes/jap-roteiros-exclusivos.png", frase: "" },
+      { arquivo: "videos/depoimentos/felipe-craveiro.mp4", capa: "videos/depoimentos/felipe-craveiro.jpg", nome: "Felipe Craveiro", cargo: "Executivo Comercial", empresa: "ACS Automação", logo: "", frase: "", horizontal: true, foco: "54%" },
+      { arquivo: "videos/depoimentos/masterclass.mp4", capa: "videos/depoimentos/masterclass.jpg", nome: "Participantes", cargo: "Masterclass Atendimento Mágico", empresa: "", logo: "", frase: "", horizontal: true, foco: "46%" },
+      { arquivo: "videos/depoimentos/colaboradora-praiano.mp4", capa: "videos/depoimentos/colaboradora-praiano.jpg", nome: "", cargo: "Colaboradora", empresa: "Praiano Hotel", logo: "/img/clientes/praiano-hotel.png", frase: "" }
+    ]
+  },
+
   /* ---------- 6 · COMO FUNCIONA ---------- */
   passos: [
     { titulo: "Você conta o desafio", texto: "O evento, o público e o resultado que você espera." },
