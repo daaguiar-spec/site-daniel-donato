@@ -171,6 +171,7 @@ em{color:var(--gold);font-style:italic}
   .player-col .player-cap{display:flex;flex-direction:column;gap:4px;padding:12px 2px 0}
   .player-cap small{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
   .player-cap b{font-size:16px;font-weight:600;line-height:1.35}
+  .player-cap span{font-size:13px;color:var(--txt3);line-height:1.4}
 }
 .lista{display:flex;flex-direction:column;gap:12px;max-height:min(62vh,520px);overflow-y:auto;padding-right:4px}
 .item-v{display:flex;gap:14px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg2);color:var(--txt);text-align:left;cursor:pointer;font:inherit;min-height:44px;transition:border-color .25s}
@@ -221,8 +222,9 @@ em{color:var(--gold);font-style:italic}
   .deslize svg{animation:empurra 1.4s ease-in-out infinite}
   @keyframes empurra{50%{transform:translateX(6px)}}
   .rolou .deslize{opacity:.5}.rolou .deslize svg{animation:none}
-  .sh-nav{display:flex;position:absolute;top:50%;margin-top:-26px;z-index:3;width:46px;height:46px;border-radius:50%;border:0;align-items:center;justify-content:center;background:var(--gold);color:#0B0A08;box-shadow:0 6px 18px rgba(0,0,0,.55);cursor:pointer;transition:opacity .3s}
-  .sh-ant{left:-6px}.sh-prox{right:-6px;animation:cutuca 1.6s ease-in-out infinite}
+  .sh-nav{display:flex;position:absolute;top:50%;margin-top:-22px;z-index:3;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);align-items:center;justify-content:center;background:rgba(11,10,8,.55);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);cursor:pointer;transition:opacity .3s}
+  .sh-ant{left:4px}.sh-prox{right:4px;animation:cutuca 1.6s ease-in-out infinite}
+  .short .p{background:rgba(255,255,255,.85)}
   @keyframes cutuca{50%{transform:translateX(4px)}}
   .sh-nav.off{opacity:0;pointer-events:none}
   .sh-pontos{display:flex;justify-content:center;gap:6px;margin-top:12px}
@@ -610,7 +612,7 @@ em{color:var(--gold);font-style:italic}
       lg.appendChild(el('div',null,v.titulo)); if (v.detalhe) lg.appendChild(el('span',null,v.detalhe));
       b.appendChild(lg);
       var cap = $('playerCap'); cap.innerHTML = '';
-      cap.appendChild(el('small',null,lg.firstChild.textContent)); cap.appendChild(el('b',null,v.titulo));
+      cap.appendChild(el('small',null,lg.firstChild.textContent)); cap.appendChild(el('b',null,v.titulo)); if (v.detalhe) cap.appendChild(el('span',null,v.detalhe));
       b.onclick = function(){ mostra(i, true); };
       p.appendChild(b);
     }
