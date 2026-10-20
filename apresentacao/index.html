@@ -900,7 +900,7 @@ em{color:var(--gold);font-style:italic}
       var q = el('div','dep-quem'), lg = el('div','dep-lg');
       if (d.logo) lg.appendChild(img(d.logo, '', true)); else lg.textContent = (d.nome || d.empresa || '?').replace(/^(Dr|Dra)\.?\s+/,'').split(' ').map(function(s){ return s.charAt(0); }).slice(0,2).join('').toUpperCase();
       q.appendChild(lg);
-      var t = el('div'); t.appendChild(el('b', null, d.nome || d.cargo)); t.appendChild(el('span', null, [d.nome ? d.cargo : '', d.empresa].filter(Boolean).join(' · '))); q.appendChild(t);
+      var t = el('div'); t.appendChild(el('b', null, d.nome || d.cargo)); t.appendChild(el('span', null, [d.nome ? d.cargo : '', d.empresa].filter(Boolean).join(' · '))); if (d.local) t.appendChild(el('span', null, d.local)); q.appendChild(t);
       st.appendChild(q); fila.appendChild(st);
     });
     /* prévia sem som dos vídeos visíveis */
