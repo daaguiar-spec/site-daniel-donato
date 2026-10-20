@@ -2,6 +2,11 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<script>
+/* Sem a barra final (/apresentacao), os arquivos da pasta não carregam: corrige o endereço. */
+if (/\/apresentacao$/.test(location.pathname)) location.replace(location.pathname + '/' + location.search + location.hash);
+</script>
+<base href="/apresentacao/">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Daniel Donato | Apresentação</title>
 <meta name="description" content="Palestras, treinamentos e imersões de Daniel Donato inspirados na metodologia Disney de encantamento.">
