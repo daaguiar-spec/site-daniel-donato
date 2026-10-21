@@ -70,7 +70,8 @@ em{color:var(--gold);font-style:italic}
 .capa-veu{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 22%,rgba(11,10,8,.4) 60%,rgba(11,10,8,.05)),linear-gradient(0deg,var(--bg) 0%,rgba(11,10,8,0) 30%)}
 .capa-grid{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:end}
 .capa-txt{display:flex;flex-direction:column;gap:26px;padding-bottom:6vh}
-.pilula{align-self:flex-start;padding:9px 18px;border:1px solid var(--gold);border-radius:999px;color:var(--gold2);font-size:14px;background:rgba(201,162,74,.08)}
+.pilula{align-self:flex-start;padding:11px 22px;border:1px solid var(--gold);border-radius:999px;color:var(--gold2);font-size:17px;line-height:1.4;background:rgba(201,162,74,.08)}
+@media (max-width:700px){.pilula{font-size:16px;border-radius:22px;padding:10px 18px}}
 .pilula strong{color:var(--txt)}
 #capa h1{font-size:clamp(38px,5.4vw,74px);line-height:1.06}
 #capa p{margin:0;font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:var(--txt2);max-width:540px}
@@ -436,7 +437,7 @@ em{color:var(--gold);font-style:italic}
     <canvas id="magia" aria-hidden="true"></canvas>
     <div class="wrap capa-grid">
       <div class="capa-txt">
-        <div class="pilula r hidden" id="pilula">Apresentação exclusiva para <strong id="nomeCliente"></strong></div>
+        <div class="pilula r hidden" id="pilula">Olá, <strong id="nomeCliente"></strong>! Que bom ter você aqui.</div>
         <h1 class="r" style="--d:.1s"><span id="capaTitulo"></span> <em id="capaDestaque"></em></h1>
         <p class="r" style="--d:.25s" id="capaSub"></p>
       </div>
@@ -609,7 +610,7 @@ em{color:var(--gold);font-style:italic}
 
   if (cliente){
     txt('nomeCliente', cliente); $('pilula').classList.remove('hidden');
-    document.title = 'Daniel Donato | Apresentação para ' + cliente;
+    document.title = 'Daniel Donato | Para ' + cliente;
   }
   if (vendedor){
     $('vendedor').classList.remove('hidden');
