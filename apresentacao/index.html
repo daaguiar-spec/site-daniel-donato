@@ -436,7 +436,7 @@ em{color:var(--gold);font-style:italic}
     <canvas id="magia" aria-hidden="true"></canvas>
     <div class="wrap capa-grid">
       <div class="capa-txt">
-        <div class="pilula r hidden" id="pilula">Proposta exclusiva para <strong id="nomeCliente"></strong></div>
+        <div class="pilula r hidden" id="pilula">Apresentação exclusiva para <strong id="nomeCliente"></strong></div>
         <h1 class="r" style="--d:.1s"><span id="capaTitulo"></span> <em id="capaDestaque"></em></h1>
         <p class="r" style="--d:.25s" id="capaSub"></p>
       </div>
@@ -609,7 +609,7 @@ em{color:var(--gold);font-style:italic}
 
   if (cliente){
     txt('nomeCliente', cliente); $('pilula').classList.remove('hidden');
-    document.title = 'Daniel Donato | Proposta para ' + cliente;
+    document.title = 'Daniel Donato | Apresentação para ' + cliente;
   }
   if (vendedor){
     $('vendedor').classList.remove('hidden');
