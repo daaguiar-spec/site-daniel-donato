@@ -51,11 +51,11 @@ small{color:var(--txt3);font-size:12px}
     var l = link(), c = document.getElementById('cliente').value.trim();
     document.getElementById('saida').textContent = l;
     document.getElementById('abrir').href = l;
-    var vend = document.getElementById('vendedor').value.trim();
-    var m = 'Olá' + (c ? ', ' + c : '') + '! Tudo bem?\n\n' +
-            'Separei uma apresentação rápida do Daniel Donato para você conhecer como levar o encantamento da Disney para o atendimento da sua empresa.\n\n' +
-            'Tem vídeos dos eventos e depoimentos de clientes. É só tocar no link:\n' + l + '\n\n' +
-            'Qualquer dúvida, estou à disposição.' + (vend ? '\n' + vend : '');
+    var m = 'Olá' + (c ? ' ' + c : '') + '!\nTudo bem? 😊\n\n' +
+            'Quero apresentar o trabalho do Daniel Donato, palestrante e especialista em Cultura Disney aplicada aos negócios.\n\n' +
+            'Preparei uma apresentação com um pouco da sua trajetória, vídeos de eventos e depoimentos de clientes.\n\n' +
+            '👉 Conheça aqui: ' + l + '\n\n' +
+            'Vale a pena conferir!';
     document.getElementById('enviar').href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(m);
   }
   ids.forEach(function(k){ document.getElementById(k).addEventListener('input', atualiza); });
