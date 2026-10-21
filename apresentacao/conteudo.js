@@ -25,7 +25,7 @@ window.CONTEUDO = {
   sobre: {
     titulo: "O jeito Disney de encantar,",
     destaque: "traduzido para o seu negócio.",
-    texto: "Palestrante e consultor em Experiência do Cliente, Cultura e Desenvolvimento de Pessoas, com metodologia própria em 5 frentes: cultura, pessoas, atendimento, liderança e experiência.",
+    texto: "Palestrante e consultor em Experiência do Cliente, Cultura e Desenvolvimento de Pessoas, com metodologia em 5 frentes: cultura, pessoas, atendimento, liderança e experiência.",
     foto: "/img/palestra.webp",
     numeros: [
       { valor: 20,    prefixo: "+", sufixo: "",      legenda: "visitas técnicas à Disney" },
