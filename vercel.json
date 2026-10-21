@@ -1,0 +1,20 @@
+{
+  "redirects": [
+    { "source": "/portfolio", "destination": "/palestras.html", "permanent": true },
+    { "source": "/palestra-presencial", "destination": "/palestras.html", "permanent": true },
+    { "source": "/palestra-disney", "destination": "/palestras.html", "permanent": true },
+    { "source": "/palestras-do-bem-2024", "destination": "/palestras.html", "permanent": true },
+    { "source": "/hemoce", "destination": "/palestras.html", "permanent": true },
+    { "source": "/palestras", "destination": "/palestras.html", "permanent": true },
+    { "source": "/consultoria", "destination": "/consultoria.html", "permanent": true },
+    { "source": "/apresentacao-daniel-donato", "destination": "/apresentacao/", "permanent": true },
+    { "source": "/checklist-feliz-livro-digital", "destination": "https://pay.kiwify.com.br/XVbQm0V", "permanent": false },
+    { "source": "/livro", "destination": "/#livro", "permanent": true },
+    { "source": "/sobre", "destination": "/#sobre", "permanent": true },
+    { "source": "/clientes", "destination": "/#clientes", "permanent": true },
+    { "source": "/contato", "destination": "/", "permanent": true },
+    { "source": "/blog", "destination": "/#blog", "permanent": true },
+    { "source": "/blog/:path*", "destination": "/#blog", "permanent": true },
+    { "source": "/post/:path*", "destination": "/#blog", "permanent": true }
+  ]
+}
