@@ -51,7 +51,11 @@ small{color:var(--txt3);font-size:12px}
     var l = link(), c = document.getElementById('cliente').value.trim();
     document.getElementById('saida').textContent = l;
     document.getElementById('abrir').href = l;
-    var m = 'Olá' + (c ? ', equipe ' + c : '') + '! Segue a apresentação do Daniel Donato, com palestras, treinamentos e imersões para a sua equipe: ' + l;
+    var vend = document.getElementById('vendedor').value.trim();
+    var m = 'Olá' + (c ? ', ' + c : '') + '! Tudo bem?\n\n' +
+            'Separei uma apresentação rápida para você conhecer o trabalho do Daniel Donato: palestras, treinamentos e imersões que levam o jeito Disney de encantar para o atendimento das empresas.\n\n' +
+            'Tem vídeos dos eventos e depoimentos de clientes. É só tocar no link:\n' + l + '\n\n' +
+            'Qualquer dúvida, estou à disposição.' + (vend ? '\n' + vend : '');
     document.getElementById('enviar').href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(m);
   }
   ids.forEach(function(k){ document.getElementById(k).addEventListener('input', atualiza); });
