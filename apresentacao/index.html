@@ -406,6 +406,7 @@ em{color:var(--gold);font-style:italic}
 .vendedor .av{width:44px;height:44px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--gold)}
 .vendedor small{display:block;font-size:12px;color:var(--txt3)}
 .vendedor b{font-size:15px}
+.vend-fone{display:block;font-size:15px;color:var(--txt2);margin-top:2px}.vend-fone:empty{display:none}
 .rodape{position:relative;margin-top:64px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;width:100%;max-width:1240px;font-size:13px;color:#8A8276}
 
 @media (prefers-reduced-motion:reduce){
@@ -587,7 +588,7 @@ em{color:var(--gold);font-style:italic}
       </a>
       <div class="vendedor r hidden" style="--d:.5s" id="vendedor">
         <div class="av" id="vendIni"></div>
-        <div><small>Seu contato</small><b id="vendNome"></b></div>
+        <div><small>Entre em contato</small><b id="vendNome"></b><span id="vendFone" class="vend-fone"></span></div>
       </div>
     </div>
     <div class="rodape">
@@ -621,7 +622,7 @@ em{color:var(--gold);font-style:italic}
   }
   if (vendedor){
     $('vendedor').classList.remove('hidden');
-    txt('vendNome', vendedor + (fone ? ' · ' + q.get('fone') : ''));
+    txt('vendNome', vendedor); if (fone) txt('vendFone', q.get('fone'));
     txt('vendIni', vendedor.charAt(0).toUpperCase());
   }
   var msg = 'Olá! Vi a apresentação do Daniel Donato' + (vendedor ? ' (enviada por ' + vendedor + ')' : '') +
@@ -949,7 +950,7 @@ em{color:var(--gold);font-style:italic}
 
   /* ---------- 7 final ---------- */
   txt('finalTitulo', C.final.titulo); txt('finalDestaque', C.final.destaque); txt('finalTexto', C.final.texto); txt('btnZapTxt', C.final.botao);
-  txt('contatoRod', C.telefoneExibido + ' · ' + C.email);
+  txt('contatoRod', C.email);
   if (C.instagram){ var ig = String(C.instagram).replace(/^@/, ''); $('insta').href = 'https://instagram.com/' + ig; txt('instaUser', '@' + ig); $('insta').classList.remove('hidden'); }
 
   /* ---------- navegação e animações ---------- */
