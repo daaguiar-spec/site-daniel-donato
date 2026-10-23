@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Estatísticas | Daniel Donato</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/*FONTES*/
+*{box-sizing:border-box}html,body{margin:0;background:#0B0A08;color:#EDE6D8;font-family:'Manrope',system-ui,sans-serif;-webkit-text-size-adjust:100%}
+button,input{font:inherit}a{color:inherit}
+:focus-visible{outline:2px solid #E8CF95;outline-offset:3px}
+.w{max-width:1180px;margin:0 auto;padding:0 28px}
+.top{height:72px;border-bottom:1px solid #2A251C;display:flex;align-items:center}
+.top .w{display:flex;justify-content:space-between;align-items:center;width:100%;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.28em;font-size:12px;text-decoration:none;text-transform:uppercase}
+.logo b{width:40px;height:40px;border:1px solid #C9A45C;border-radius:50%;display:grid;place-items:center;font-family:Cormorant,Georgia,serif;font-weight:500;font-size:20px;color:#C9A45C;letter-spacing:0}
+.sair{background:none;border:1px solid #3A3226;color:#C9BEA8;border-radius:99px;padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.sair:hover{border-color:#C9A45C;color:#E8CF95}
+.eb{font-size:13px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#C9A45C;margin:0 0 10px}
+h1{font-family:Cormorant,Georgia,serif;font-weight:500;font-size:46px;line-height:1.05;margin:0;text-transform:uppercase}h1 em{color:#E2C58C}
+.login{min-height:calc(100vh - 72px);display:grid;place-items:center;padding:40px 20px}
+.card{width:100%;max-width:420px;background:#15130F;border:1px solid #2A251C;border-radius:18px;padding:34px}
+.card h1{font-size:36px;margin-bottom:8px}.card p{color:#B5AA95;font-size:14px;line-height:1.6;margin:0 0 24px}
+label{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9C8F78;margin:0 0 6px}
+input{width:100%;background:#0B0A08;border:1px solid #3A3226;border-radius:10px;padding:14px 16px;color:#EDE6D8;font-size:15px;margin-bottom:16px}
+input:focus{border-color:#C9A45C;outline:none}
+.g{width:100%;border:0;cursor:pointer;background:linear-gradient(180deg,#F0D99E 0%,#C9A45C 55%,#A8843F 100%);color:#1A140A;padding:16px 20px;border-radius:10px;font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.g:disabled{opacity:.6;cursor:wait}
+.erro{background:rgba(196,80,60,.12);border:1px solid rgba(196,80,60,.45);color:#F0B4A6;border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.5;margin:0 0 16px}
+.aviso{background:rgba(201,164,92,.1);border:1px solid rgba(201,164,92,.4);color:#E8CF95;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;margin:0 0 22px}
+.painel{padding:44px 0 80px}
+.cab{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.filtro{display:inline-flex;border:1px solid #3A3226;border-radius:99px;overflow:hidden}
+.filtro button{border:0;background:none;color:#C9BEA8;padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:.08em;cursor:pointer}
+.filtro button.on{background:#C9A45C;color:#1A140A}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.kpi{background:#15130F;border:1px solid #2A251C;border-radius:16px;padding:20px 22px}
+.kpi span{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9C8F78}
+.kpi b{display:block;font-family:Cormorant,Georgia,serif;font-weight:500;font-size:46px;line-height:1.1;color:#E8CF95;font-variant-numeric:lining-nums tabular-nums}
+.kpi small{font-size:13px;color:#B5AA95}
+.bloco{background:#15130F;border:1px solid #2A251C;border-radius:16px;padding:22px 24px;margin-bottom:14px}
+.bloco h2{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#C9BEA8;margin:0 0 16px}
+.duas{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px}
+.tres{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.graf{position:relative}.graf svg{width:100%;height:auto;display:block}
+.grade{stroke:#2A251C;stroke-width:1}.base{stroke:#5A4B2E;stroke-width:1}
+.eixo{fill:#9C8F78;font-size:11px;font-family:Manrope,system-ui,sans-serif}
+.barra{fill:#C9A45C}.col:hover .barra,.col.on .barra{fill:#F0D99E}
+.dica{position:absolute;top:-8px;transform:translateX(-50%);background:#EDE6D8;color:#1A140A;font-size:12.5px;font-weight:700;padding:6px 10px;border-radius:6px;white-space:nowrap;pointer-events:none}
+.lista{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.lista li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:baseline;font-size:14px}
+.lista .n{font-variant-numeric:tabular-nums;color:#E8CF95;font-weight:700}
+.lista .n small{color:#9C8F78;font-weight:600;margin-left:6px}
+.trilho{grid-column:1/-1;height:6px;background:#211D16;border-radius:99px;overflow:hidden}.trilho i{display:block;height:100%;background:#C9A45C;border-radius:99px}
+.vazio{color:#9C8F78;font-size:14px}
+.rod{color:#7D725F;font-size:12.5px;line-height:1.6;margin-top:18px}
+.carreg{padding:80px 0;text-align:center;color:#9C8F78}
+@media (max-width:900px){.w{padding:0 18px}h1{font-size:34px}.kpis{grid-template-columns:1fr 1fr}.duas,.tres{grid-template-columns:1fr}.kpi b{font-size:38px}.painel{padding:30px 0 60px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="w"><a class="logo" href="./"><b>DD</b>Daniel Donato</a><button class="sair" id="sair" hidden>Sair</button></div></header>
+<main id="app"><div class="carreg">Carregando…</div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+var SB='https://ouxzzduwjxmtixfftpsy.supabase.co',K='sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt';
+var DEMO=/[?&]demo/.test(location.search);
+var app=document.getElementById('app'),sair=document.getElementById('sair');
+var S={dias:30,tok:null,stats:null,erro:null};
+var NOMES={'/':'Página inicial','/index.html':'Página inicial','/palestras.html':'Palestras','/consultoria.html':'Consultoria',
+'/palestra-atendimento-magico.html':'Palestra Atendimento Mágico','/palestra-lideranca-que-inspira.html':'Palestra Liderança que Inspira',
+'/palestra-walt-disney-area-da-saude.html':'Palestra Se Walt Disney Fosse da Área da Saúde?','/imersao-magicday.html':'Imersão MagicDay','/apresentacao/':'Apresentação','/404.html':'Página não encontrada'};
+function nome(p){return NOMES[p]||p}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fmt(n){return Number(n||0).toLocaleString('pt-BR')}
+function tok(){try{var t=JSON.parse(sessionStorage.getItem('dd_tok')||'null');if(t&&t.exp>Date.now()/1000+30)return t.access}catch(e){}return null}
+function guarda(r){try{sessionStorage.setItem('dd_tok',JSON.stringify({access:r.access_token,exp:Math.floor(Date.now()/1000)+(r.expires_in||3600)}));localStorage.setItem('dd_admin','1')}catch(e){}}
+function telaLogin(msg){sair.hidden=true;
+app.innerHTML='<section class="login"><form class="card" id="f"><p class="eb">Área do administrador</p><h1>Estatísticas<br><em>do site</em></h1><p>Entre com o mesmo e-mail e senha que você usa na Redação do portal CX em Foco.</p>'+(msg?'<div class="erro" role="alert">'+esc(msg)+'</div>':'')+'<label for="em">E-mail</label><input id="em" type="email" autocomplete="username" required><label for="se">Senha</label><input id="se" type="password" autocomplete="current-password" required><button class="g" id="bt">Entrar</button></form></section>';
+document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();var b=document.getElementById('bt');b.disabled=true;b.textContent='Entrando…';
+sb.auth.signInWithPassword({email:document.getElementById('em').value.trim().toLowerCase(),password:document.getElementById('se').value})
+.then(function(r){if(r.error)throw r.error;try{localStorage.setItem('dd_admin','1')}catch(e){}carregar()})
+.catch(function(err){var m=String(err&&err.message||err);telaLogin(/invalid login/i.test(m)?'E-mail ou senha incorretos. Confira e tente de novo.':/not confirmed/i.test(m)?'Este e-mail ainda não foi confirmado no Supabase.':'Não foi possível entrar agora. (Detalhe: '+m+')')})})}
+function carregar(){sair.hidden=false;app.innerHTML='<div class="carreg">Carregando estatísticas…</div>';
+if(DEMO){S.stats=exemplo(S.dias);S.erro=null;return desenha()}
+sb.rpc('site_estatisticas',{dias:S.dias}).then(function(r){if(r.error)throw r.error;S.stats=r.data||{};S.erro=null;desenha()})
+.catch(function(e){var m=String(e&&(e.message||e.code)||e);if(/JWT|401|not authenticated|permission denied/i.test(m)){sb.auth.signOut();return telaLogin('Sua sessão expirou. Entre de novo.')}
+S.stats=null;S.erro=/site_estatisticas|function|PGRST2|42883/i.test(m)?'O banco ainda não tem as estatísticas do site. Rode o arquivo supabase-site-estatisticas.sql no SQL Editor do Supabase.':'Não foi possível carregar as estatísticas agora. (Detalhe: '+m+')';desenha()})}
+function grafico(serie){var mob=innerWidth<700,W=mob?520:1000,H=mob?300:260,ml=40,mr=8,mt=16,mb=30,iw=W-ml-mr,ih=H-mt-mb;
+var mx=Math.max(4,Math.max.apply(null,serie.map(function(d){return d.visitas})));var raw=mx/4,mg=Math.pow(10,Math.floor(Math.log10(raw))),nn=raw/mg,stp=(nn<=1?1:nn<=2?2:nn<=2.5?2.5:nn<=5?5:10)*mg;if(stp<1)stp=1;var top=stp*4;
+var g='';for(var i=0;i<=4;i++){var y=mt+ih-ih*i/4;g+='<line x1="'+ml+'" x2="'+(W-mr)+'" y1="'+y+'" y2="'+y+'" class="grade"/><text x="'+(ml-8)+'" y="'+(y+4)+'" text-anchor="end" class="eixo">'+fmt(Math.round(top*i/4))+'</text>'}
+var bw=iw/serie.length,gap=Math.min(6,bw*.25),cada=Math.ceil(serie.length/(mob?5:8)),b='';
+serie.forEach(function(d,i){var h=d.visitas?Math.max(2,d.visitas/top*ih):0,x=ml+i*bw+gap/2,w=Math.max(1,bw-gap),y=mt+ih-h,r=Math.min(4,w/2,h);
+var dt=d.dia.split('-'),rot=dt[2]+'/'+dt[1];
+var path=h?'M'+x+','+(mt+ih)+'V'+(y+r)+'Q'+x+','+y+' '+(x+r)+','+y+'H'+(x+w-r)+'Q'+(x+w)+','+y+' '+(x+w)+','+(y+r)+'V'+(mt+ih)+'Z':'';
+b+='<g class="col" data-x="'+((x+w/2)/W*100)+'" data-d="'+rot+': '+fmt(d.visitas)+' visitas · '+fmt(d.visitantes)+' visitantes"><rect x="'+(ml+i*bw)+'" y="'+mt+'" width="'+bw+'" height="'+ih+'" fill="transparent"/>'+(path?'<path d="'+path+'" class="barra"/>':'')+(i%cada===0?'<text x="'+(x+w/2)+'" y="'+(H-8)+'" text-anchor="middle" class="eixo">'+rot+'</text>':'')+'</g>'});
+return '<div class="graf"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Visitas por dia">'+g+'<line x1="'+ml+'" x2="'+(W-mr)+'" y1="'+(mt+ih)+'" y2="'+(mt+ih)+'" class="base"/>'+b+'</svg><div class="dica" hidden></div></div>'}
+function lista(itens,campo,rot){if(!itens||!itens.length)return '<p class="vazio">Ainda sem dados neste período.</p>';var tot=itens.reduce(function(a,b){return a+b.n},0),mx=itens[0].n;
+return '<ul class="lista">'+itens.map(function(it){var pc=tot?Math.round(100*it.n/tot):0;return '<li><span>'+esc(rot?rot(it[campo]):it[campo])+'</span><span class="n">'+fmt(it.n)+'<small>'+pc+'%</small></span><span class="trilho"><i style="width:'+(100*it.n/mx)+'%"></i></span></li>'}).join('')+'</ul>'}
+function desenha(){var st=S.stats||{},filtro='<div class="filtro" role="group" aria-label="Período">'+[[7,'7 dias'],[30,'30 dias'],[90,'90 dias'],[365,'12 meses']].map(function(o){return '<button data-d="'+o[0]+'" class="'+(S.dias===o[0]?'on':'')+'" aria-pressed="'+(S.dias===o[0])+'">'+o[1]+'</button>'}).join('')+'</div>';
+var corpo;
+if(S.erro)corpo='<div class="aviso">'+esc(S.erro)+'</div>';
+else{var mapa={};(st.por_dia||[]).forEach(function(d){mapa[d.dia]=d});var dias=[];var nd=Math.min(S.dias,90);
+for(var i=nd-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var k=d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});dias.push(mapa[k]||{dia:k,visitas:0,visitantes:0})}
+var ppv=st.visitantes?(st.visitas/st.visitantes).toLocaleString('pt-BR',{maximumFractionDigits:1}):'—';
+corpo=(DEMO?'<div class="aviso"><b>Dados de exemplo.</b> Os números reais aparecem aqui assim que o site começar a registrar visitas.</div>':'')+
+'<div class="kpis"><div class="kpi"><span>Visitas</span><b>'+fmt(st.visitas)+'</b><small>páginas vistas</small></div><div class="kpi"><span>Visitantes</span><b>'+fmt(st.visitantes)+'</b><small>pessoas diferentes (aprox.)</small></div><div class="kpi"><span>Páginas por visitante</span><b>'+ppv+'</b><small>média no período</small></div><div class="kpi"><span>Cliques no WhatsApp</span><b>'+fmt(st.whatsapp)+'</b><small>pedidos de contato</small></div></div>'+
+'<section class="bloco"><h2>Visitas por dia'+(S.dias>90?' (últimos 90 dias)':'')+'</h2>'+grafico(dias)+'</section>'+
+'<div class="duas"><section class="bloco"><h2>Páginas mais vistas</h2>'+lista(st.paginas,'pagina',nome)+'</section><section class="bloco"><h2>Aparelhos</h2>'+lista(st.dispositivos,'dispositivo')+'</section></div>'+
+'<div class="tres"><section class="bloco"><h2>De onde vieram</h2>'+lista(st.origens,'origem')+'</section><section class="bloco"><h2>Onde clicaram no WhatsApp</h2>'+lista(st.whatsapp_paginas,'pagina',nome)+'</section></div>'+
+'<p class="rod">Dados anônimos: não registramos nome, e-mail nem IP. As suas próprias visitas, feitas neste navegador depois de entrar aqui, não entram na contagem.</p>'}
+app.innerHTML='<section class="painel"><div class="w"><div class="cab"><div><p class="eb">Área do administrador</p><h1>Estatísticas <em>do site</em></h1></div>'+filtro+'</div>'+corpo+'</div></section>';
+app.querySelectorAll('.filtro button').forEach(function(b){b.addEventListener('click',function(){S.dias=+b.dataset.d;carregar()})});
+var gr=app.querySelector('.graf');if(gr){var dc=gr.querySelector('.dica');gr.querySelectorAll('.col').forEach(function(c){function on(){gr.querySelectorAll('.col.on').forEach(function(o){o.classList.remove('on')});c.classList.add('on');dc.hidden=false;dc.textContent=c.dataset.d;dc.style.left=c.dataset.x+'%'}
+c.addEventListener('mouseenter',on);c.addEventListener('click',on)});gr.addEventListener('mouseleave',function(){dc.hidden=true;gr.querySelectorAll('.col.on').forEach(function(o){o.classList.remove('on')})})}}
+function exemplo(n){var s=7,r=function(){s=(s*9301+49297)%233280;return s/233280},pd=[],tv=0,tu=0;for(var i=n-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var v=Math.round(25+r()*45+(n-i)*.6),u=Math.round(v*.6);tv+=v;tu+=u;pd.push({dia:d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'}),visitas:v,visitantes:u})}
+return{visitas:tv,visitantes:Math.round(tu*.72),whatsapp:Math.round(tv*.031),por_dia:pd,
+paginas:[{pagina:'/',n:Math.round(tv*.46)},{pagina:'/palestras.html',n:Math.round(tv*.19)},{pagina:'/palestra-atendimento-magico.html',n:Math.round(tv*.1)},{pagina:'/consultoria.html',n:Math.round(tv*.09)},{pagina:'/palestra-walt-disney-area-da-saude.html',n:Math.round(tv*.06)},{pagina:'/imersao-magicday.html',n:Math.round(tv*.05)},{pagina:'/palestra-lideranca-que-inspira.html',n:Math.round(tv*.05)}],
+origens:[{origem:'Google',n:Math.round(tu*.38)},{origem:'Instagram',n:Math.round(tu*.24)},{origem:'Acesso direto',n:Math.round(tu*.18)},{origem:'WhatsApp',n:Math.round(tu*.12)},{origem:'LinkedIn',n:Math.round(tu*.05)},{origem:'Outros sites',n:Math.round(tu*.03)}],
+dispositivos:[{dispositivo:'Celular',n:Math.round(tv*.68)},{dispositivo:'Computador',n:Math.round(tv*.28)},{dispositivo:'Tablet',n:Math.round(tv*.04)}],
+whatsapp_paginas:[{pagina:'/',n:Math.round(tv*.012)},{pagina:'/palestras.html',n:Math.round(tv*.009)},{pagina:'/palestra-atendimento-magico.html',n:Math.round(tv*.006)},{pagina:'/consultoria.html',n:Math.round(tv*.004)}]}}
+var sb=window.supabase?window.supabase.createClient(SB,K):null;
+sair.addEventListener('click',function(){sb&&sb.auth.signOut();telaLogin()});
+if(DEMO){carregar()}else if(!sb){app.innerHTML='<div class="carreg">Não foi possível carregar. Atualize a página.</div>'}else{sb.auth.getSession().then(function(r){if(r.data&&r.data.session)carregar();else telaLogin()})}
+})();
+</script>
+</body>
+</html>
