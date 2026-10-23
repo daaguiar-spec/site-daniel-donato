@@ -37,7 +37,8 @@ if(!h||h===location.hostname.replace(/^www\./,''))return null;
 if(/google\./.test(h))return 'Google';if(/bing\./.test(h))return 'Bing';if(/whatsapp|wa\.me/.test(h))return 'WhatsApp';
 if(/linkedin|lnkd/.test(h))return 'LinkedIn';if(/instagram/.test(h))return 'Instagram';if(/facebook|fb\./.test(h))return 'Facebook';
 if(/youtube/.test(h))return 'YouTube';if(/cxinfoco|portal-cx-news/.test(h))return 'CX em Foco';return 'Outros sites'}
-function env(d){d.visitante=vis();d.dispositivo=disp();d.pagina=(location.pathname||'/').slice(0,200);
+var AP=/^\/apresentacao/.test(location.pathname),QS=new URLSearchParams(location.search);
+function env(d){if(AP){var c=(QS.get('cliente')||'').trim().slice(0,80),v=(QS.get('vendedor')||'').trim().slice(0,60);if(c)d.cliente=c;if(v)d.vendedor=v}d.visitante=vis();d.dispositivo=disp();d.pagina=(location.pathname||'/').slice(0,200);
 try{fetch(U,{method:'POST',keepalive:true,headers:{'apikey':K,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(d)}).catch(function(){})}catch(e){}}
 env({tipo:'visita',origem:orig()});
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="whatsapp"],a[href*="wa.me"]');if(a)env({tipo:'whatsapp'})},true);

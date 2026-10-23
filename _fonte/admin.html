@@ -57,6 +57,10 @@ input:focus{border-color:#C9A45C;outline:none}
 .trilho{grid-column:1/-1;height:6px;background:#211D16;border-radius:99px;overflow:hidden}.trilho i{display:block;height:100%;background:#C9A45C;border-radius:99px}
 .vazio{color:#9C8F78;font-size:14px}
 .rod{color:#7D725F;font-size:12.5px;line-height:1.6;margin-top:18px}
+.ap h3{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;margin:22px 0 10px}
+.apk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.apk div{border:1px solid #2A251C;border-radius:12px;padding:14px 16px}.apk span{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#9C8F78}.apk b{font-family:Cormorant,Georgia,serif;font-weight:500;font-size:36px;color:#E8CF95;font-variant-numeric:lining-nums tabular-nums}
+.tab{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9C8F78;padding:8px 10px;border-bottom:1px solid #2A251C;white-space:nowrap}td{padding:11px 10px;border-bottom:1px solid #211D16;white-space:nowrap}td:first-child{white-space:normal;font-weight:600}.r{text-align:right;font-variant-numeric:tabular-nums}.ok{color:#9BD3A0;font-weight:700}
+@media (max-width:900px){.apk{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.apk div{padding:12px 10px;min-width:0}.apk span{font-size:9.5px;letter-spacing:.1em}.apk b{font-size:28px}table{font-size:13px}}
 .carreg{padding:80px 0;text-align:center;color:#9C8F78}
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:900px){.w{padding:0 18px}h1{font-size:34px}.kpis{grid-template-columns:1fr 1fr}.duas,.tres{grid-template-columns:1fr}.kpi b{font-size:38px}.painel{padding:30px 0 60px}}
@@ -74,7 +78,7 @@ var app=document.getElementById('app'),sair=document.getElementById('sair');
 var S={dias:30,tok:null,stats:null,erro:null};
 var NOMES={'/':'Página inicial','/index.html':'Página inicial','/palestras.html':'Palestras','/consultoria.html':'Consultoria',
 '/palestra-atendimento-magico.html':'Palestra Atendimento Mágico','/palestra-lideranca-que-inspira.html':'Palestra Liderança que Inspira',
-'/palestra-walt-disney-area-da-saude.html':'Palestra Se Walt Disney Fosse da Área da Saúde?','/imersao-magicday.html':'Imersão MagicDay','/apresentacao/':'Apresentação','/404.html':'Página não encontrada'};
+'/palestra-walt-disney-area-da-saude.html':'Palestra Se Walt Disney Fosse da Área da Saúde?','/imersao-magicday.html':'Imersão MagicDay','/apresentacao/':'Apresentação comercial','/apresentacao/index.html':'Apresentação comercial','/404.html':'Página não encontrada'};
 function nome(p){return NOMES[p]||p}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function fmt(n){return Number(n||0).toLocaleString('pt-BR')}
@@ -87,8 +91,8 @@ sb.auth.signInWithPassword({email:document.getElementById('em').value.trim().toL
 .then(function(r){if(r.error)throw r.error;try{localStorage.setItem('dd_admin','1')}catch(e){}carregar()})
 .catch(function(err){var m=String(err&&err.message||err);telaLogin(/invalid login/i.test(m)?'E-mail ou senha incorretos. Confira e tente de novo.':/not confirmed/i.test(m)?'Este e-mail ainda não foi confirmado no Supabase.':'Não foi possível entrar agora. (Detalhe: '+m+')')})})}
 function carregar(){sair.hidden=false;app.innerHTML='<div class="carreg">Carregando estatísticas…</div>';
-if(DEMO){S.stats=exemplo(S.dias);S.erro=null;return desenha()}
-sb.rpc('site_estatisticas',{dias:S.dias}).then(function(r){if(r.error)throw r.error;S.stats=r.data||{};S.erro=null;desenha()})
+if(DEMO){S.stats=exemplo(S.dias);S.ap=exemploAp();S.apErro=false;S.erro=null;return desenha()}
+Promise.all([sb.rpc('site_estatisticas',{dias:S.dias}),sb.rpc('site_apresentacao',{dias:S.dias})]).then(function(rs){var r=rs[0];if(r.error)throw r.error;S.stats=r.data||{};S.ap=rs[1].error?null:(rs[1].data||{});S.apErro=!!rs[1].error;S.erro=null;desenha()})
 .catch(function(e){var m=String(e&&(e.message||e.code)||e);if(/JWT|401|not authenticated|permission denied/i.test(m)){sb.auth.signOut();return telaLogin('Sua sessão expirou. Entre de novo.')}
 S.stats=null;S.erro=/site_estatisticas|function|PGRST2|42883/i.test(m)?'O banco ainda não tem as estatísticas do site. Rode o arquivo supabase-site-estatisticas.sql no SQL Editor do Supabase.':'Não foi possível carregar as estatísticas agora. (Detalhe: '+m+')';desenha()})}
 function grafico(serie){var mob=innerWidth<700,W=mob?520:1000,H=mob?300:260,ml=40,mr=8,mt=16,mb=30,iw=W-ml-mr,ih=H-mt-mb;
@@ -113,11 +117,26 @@ corpo=(DEMO?'<div class="aviso"><b>Dados de exemplo.</b> Os números reais apare
 '<section class="bloco"><h2>Visitas por dia'+(S.dias>90?' (últimos 90 dias)':'')+'</h2>'+grafico(dias)+'</section>'+
 '<div class="duas"><section class="bloco"><h2>Páginas mais vistas</h2>'+lista(st.paginas,'pagina',nome)+'</section><section class="bloco"><h2>Aparelhos</h2>'+lista(st.dispositivos,'dispositivo')+'</section></div>'+
 '<div class="tres"><section class="bloco"><h2>De onde vieram</h2>'+lista(st.origens,'origem')+'</section><section class="bloco"><h2>Onde clicaram no WhatsApp</h2>'+lista(st.whatsapp_paginas,'pagina',nome)+'</section></div>'+
-'<p class="rod"><b>Duas estimativas de visitantes:</b> "navegador" conta cada aparelho/navegador pelo código guardado nele; "rede" junta a rede de internet e o aparelho num código embaralhado que muda todo dia, somando os visitantes únicos de cada dia. Nenhuma das duas é exata; o número real costuma ficar entre elas.</p><p class="rod">Dados anônimos: não registramos nome, e-mail nem IP (o IP vira um código irreversível na hora e não é guardado). As suas próprias visitas, feitas neste navegador depois de entrar aqui, não entram na contagem.</p>'}
+apSecao()+'<p class="rod"><b>Duas estimativas de visitantes:</b> "navegador" conta cada aparelho/navegador pelo código guardado nele; "rede" junta a rede de internet e o aparelho num código embaralhado que muda todo dia, somando os visitantes únicos de cada dia. Nenhuma das duas é exata; o número real costuma ficar entre elas.</p><p class="rod">Dados anônimos: não registramos nome, e-mail nem IP (o IP vira um código irreversível na hora e não é guardado). As suas próprias visitas, feitas neste navegador depois de entrar aqui, não entram na contagem.</p>'}
 app.innerHTML='<section class="painel"><div class="w"><div class="cab"><div><p class="eb">Área do administrador</p><h1>Estatísticas <em>do site</em></h1></div>'+filtro+'</div>'+corpo+'</div></section>';
 app.querySelectorAll('.filtro button').forEach(function(b){b.addEventListener('click',function(){S.dias=+b.dataset.d;carregar()})});
 var gr=app.querySelector('.graf');if(gr){var dc=gr.querySelector('.dica');gr.querySelectorAll('.col').forEach(function(c){function on(){gr.querySelectorAll('.col.on').forEach(function(o){o.classList.remove('on')});c.classList.add('on');dc.hidden=false;dc.textContent=c.dataset.d;dc.style.left=c.dataset.x+'%'}
 c.addEventListener('mouseenter',on);c.addEventListener('click',on)});gr.addEventListener('mouseleave',function(){dc.hidden=true;gr.querySelectorAll('.col.on').forEach(function(o){o.classList.remove('on')})})}}
+
+function quando(t){if(!t)return '—';var d=new Date(t.replace('T',' ').replace(/-/g,'/'));var hoje=new Date();var ont=new Date();ont.setDate(ont.getDate()-1);var hh=t.slice(11,16);
+var k=t.slice(0,10),kh=hoje.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'}),ko=ont.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
+return (k===kh?'hoje':k===ko?'ontem':k.slice(8,10)+'/'+k.slice(5,7))+' às '+hh}
+function apSecao(){var a=S.ap;var h='<section class="bloco ap"><h2>Apresentação comercial</h2>';
+if(S.apErro||!a)return h+'<p class="vazio">Para ver quais clientes abriram a apresentação, rode o arquivo supabase-site-apresentacao.sql no SQL Editor do Supabase.</p></section>';
+h+='<div class="apk"><div><span>Aberturas</span><b>'+fmt(a.aberturas)+'</b></div><div><span>Clientes diferentes</span><b>'+fmt(a.clientes)+'</b></div><div><span>Chamaram no WhatsApp</span><b>'+fmt(a.whatsapp)+'</b></div></div>';
+var pc=a.por_cliente||[];
+h+='<h3>Clientes que abriram o link</h3>'+(pc.length?'<div class="tab"><table><thead><tr><th>Cliente</th><th>Vendedor</th><th class="r">Aberturas</th><th>Último acesso</th><th class="r">WhatsApp</th></tr></thead><tbody>'+pc.map(function(c){return '<tr><td>'+esc(c.cliente)+'</td><td>'+esc(c.vendedor||'—')+'</td><td class="r">'+fmt(c.aberturas)+'</td><td>'+quando(c.ultimo)+'</td><td class="r">'+(c.whatsapp?'<span class="ok">'+fmt(c.whatsapp)+'</span>':'—')+'</td></tr>'}).join('')+'</tbody></table></div>':'<p class="vazio">Nenhum link personalizado aberto neste período.</p>');
+var pv=a.por_vendedor||[];
+h+='<h3>Por vendedor</h3>'+(pv.length?'<div class="tab"><table><thead><tr><th>Vendedor</th><th class="r">Clientes</th><th class="r">Aberturas</th><th class="r">WhatsApp</th></tr></thead><tbody>'+pv.map(function(v){return '<tr><td>'+esc(v.vendedor)+'</td><td class="r">'+fmt(v.clientes)+'</td><td class="r">'+fmt(v.aberturas)+'</td><td class="r">'+fmt(v.whatsapp)+'</td></tr>'}).join('')+'</tbody></table></div>':'<p class="vazio">Ainda sem dados neste período.</p>');
+return h+'</section>'}
+function exemploAp(){var hj=new Date(),f=function(dd,hh){var d=new Date();d.setDate(d.getDate()-dd);return d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'})+'T'+hh};
+return{aberturas:47,clientes:12,whatsapp:5,por_cliente:[{cliente:'Hotel Praiano',vendedor:'João',aberturas:4,ultimo:f(0,'15:12'),whatsapp:1},{cliente:'Clínica Vida',vendedor:'Marina',aberturas:2,ultimo:f(0,'10:40'),whatsapp:0},{cliente:'Rede Mercantil',vendedor:'João',aberturas:6,ultimo:f(1,'17:05'),whatsapp:2},{cliente:'Construtora Atlântico',vendedor:'Paulo',aberturas:1,ultimo:f(3,'09:22'),whatsapp:0}],
+por_vendedor:[{vendedor:'João',clientes:6,aberturas:24,whatsapp:3},{vendedor:'Marina',clientes:4,aberturas:15,whatsapp:2},{vendedor:'Paulo',clientes:2,aberturas:8,whatsapp:0}]}}
 function exemplo(n){var s=7,r=function(){s=(s*9301+49297)%233280;return s/233280},pd=[],tv=0,tu=0;for(var i=n-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var v=Math.round(25+r()*45+(n-i)*.6),u=Math.round(v*.6);tv+=v;tu+=u;pd.push({dia:d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'}),visitas:v,visitantes:u,visitantes_rede:Math.round(u*.85)})}
 return{visitas:tv,visitantes:Math.round(tu*.72),visitantes_rede:Math.round(tu*.85),com_rede:tv,whatsapp:Math.round(tv*.031),por_dia:pd,
 paginas:[{pagina:'/',n:Math.round(tv*.46)},{pagina:'/palestras.html',n:Math.round(tv*.19)},{pagina:'/palestra-atendimento-magico.html',n:Math.round(tv*.1)},{pagina:'/consultoria.html',n:Math.round(tv*.09)},{pagina:'/palestra-walt-disney-area-da-saude.html',n:Math.round(tv*.06)},{pagina:'/imersao-magicday.html',n:Math.round(tv*.05)},{pagina:'/palestra-lideranca-que-inspira.html',n:Math.round(tv*.05)}],
