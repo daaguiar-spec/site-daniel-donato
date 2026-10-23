@@ -64,6 +64,7 @@ input:focus{border-color:#C9A45C;outline:none}
 <body>
 <header class="top"><div class="w"><a class="logo" href="./"><b>DD</b>Daniel Donato</a><button class="sair" id="sair" hidden>Sair</button></div></header>
 <main id="app"><div class="carreg">Carregando…</div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
 var SB='https://ouxzzduwjxmtixfftpsy.supabase.co',K='sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt';
@@ -81,16 +82,14 @@ function guarda(r){try{sessionStorage.setItem('dd_tok',JSON.stringify({access:r.
 function telaLogin(msg){sair.hidden=true;
 app.innerHTML='<section class="login"><form class="card" id="f"><p class="eb">Área do administrador</p><h1>Estatísticas<br><em>do site</em></h1><p>Entre com o mesmo e-mail e senha que você usa na Redação do portal CX em Foco.</p>'+(msg?'<div class="erro" role="alert">'+esc(msg)+'</div>':'')+'<label for="em">E-mail</label><input id="em" type="email" autocomplete="username" required><label for="se">Senha</label><input id="se" type="password" autocomplete="current-password" required><button class="g" id="bt">Entrar</button></form></section>';
 document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();var b=document.getElementById('bt');b.disabled=true;b.textContent='Entrando…';
-fetch(SB+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:K,'Content-Type':'application/json'},body:JSON.stringify({email:document.getElementById('em').value.trim(),password:document.getElementById('se').value})})
-.then(function(r){return r.json().then(function(j){if(!r.ok)throw j;return j})}).then(function(j){guarda(j);S.tok=j.access_token;carregar()})
-.catch(function(){telaLogin('E-mail ou senha incorretos. Confira e tente de novo.')})})}
+sb.auth.signInWithPassword({email:document.getElementById('em').value.trim().toLowerCase(),password:document.getElementById('se').value})
+.then(function(r){if(r.error)throw r.error;try{localStorage.setItem('dd_admin','1')}catch(e){}carregar()})
+.catch(function(err){var m=String(err&&err.message||err);telaLogin(/invalid login/i.test(m)?'E-mail ou senha incorretos. Confira e tente de novo.':/not confirmed/i.test(m)?'Este e-mail ainda não foi confirmado no Supabase.':'Não foi possível entrar agora. (Detalhe: '+m+')')})})}
 function carregar(){sair.hidden=false;app.innerHTML='<div class="carreg">Carregando estatísticas…</div>';
 if(DEMO){S.stats=exemplo(S.dias);S.erro=null;return desenha()}
-fetch(SB+'/rest/v1/rpc/site_estatisticas',{method:'POST',headers:{apikey:K,Authorization:'Bearer '+S.tok,'Content-Type':'application/json'},body:JSON.stringify({dias:S.dias})})
-.then(function(r){if(r.status===401){try{sessionStorage.removeItem('dd_tok')}catch(e){}throw{login:1}}return r.json().then(function(j){if(!r.ok)throw j;return j})})
-.then(function(j){S.stats=j;S.erro=null;desenha()})
-.catch(function(e){if(e&&e.login)return telaLogin('Sua sessão expirou. Entre de novo.');
-S.stats=null;S.erro=/site_estatisticas|function|PGRST|42883|404/i.test(JSON.stringify(e||''))?'O banco ainda não tem as estatísticas do site. Rode o arquivo supabase-site-estatisticas.sql no SQL Editor do Supabase.':'Não foi possível carregar as estatísticas agora. Tente de novo em instantes.';desenha()})}
+sb.rpc('site_estatisticas',{dias:S.dias}).then(function(r){if(r.error)throw r.error;S.stats=r.data||{};S.erro=null;desenha()})
+.catch(function(e){var m=String(e&&(e.message||e.code)||e);if(/JWT|401|not authenticated|permission denied/i.test(m)){sb.auth.signOut();return telaLogin('Sua sessão expirou. Entre de novo.')}
+S.stats=null;S.erro=/site_estatisticas|function|PGRST2|42883/i.test(m)?'O banco ainda não tem as estatísticas do site. Rode o arquivo supabase-site-estatisticas.sql no SQL Editor do Supabase.':'Não foi possível carregar as estatísticas agora. (Detalhe: '+m+')';desenha()})}
 function grafico(serie){var mob=innerWidth<700,W=mob?520:1000,H=mob?300:260,ml=40,mr=8,mt=16,mb=30,iw=W-ml-mr,ih=H-mt-mb;
 var mx=Math.max(4,Math.max.apply(null,serie.map(function(d){return d.visitas})));var raw=mx/4,mg=Math.pow(10,Math.floor(Math.log10(raw))),nn=raw/mg,stp=(nn<=1?1:nn<=2?2:nn<=2.5?2.5:nn<=5?5:10)*mg;if(stp<1)stp=1;var top=stp*4;
 var g='';for(var i=0;i<=4;i++){var y=mt+ih-ih*i/4;g+='<line x1="'+ml+'" x2="'+(W-mr)+'" y1="'+y+'" y2="'+y+'" class="grade"/><text x="'+(ml-8)+'" y="'+(y+4)+'" text-anchor="end" class="eixo">'+fmt(Math.round(top*i/4))+'</text>'}
@@ -124,8 +123,9 @@ paginas:[{pagina:'/',n:Math.round(tv*.46)},{pagina:'/palestras.html',n:Math.roun
 origens:[{origem:'Google',n:Math.round(tu*.38)},{origem:'Instagram',n:Math.round(tu*.24)},{origem:'Acesso direto',n:Math.round(tu*.18)},{origem:'WhatsApp',n:Math.round(tu*.12)},{origem:'LinkedIn',n:Math.round(tu*.05)},{origem:'Outros sites',n:Math.round(tu*.03)}],
 dispositivos:[{dispositivo:'Celular',n:Math.round(tv*.68)},{dispositivo:'Computador',n:Math.round(tv*.28)},{dispositivo:'Tablet',n:Math.round(tv*.04)}],
 whatsapp_paginas:[{pagina:'/',n:Math.round(tv*.012)},{pagina:'/palestras.html',n:Math.round(tv*.009)},{pagina:'/palestra-atendimento-magico.html',n:Math.round(tv*.006)},{pagina:'/consultoria.html',n:Math.round(tv*.004)}]}}
-sair.addEventListener('click',function(){try{sessionStorage.removeItem('dd_tok')}catch(e){}telaLogin()});
-if(DEMO){carregar()}else{S.tok=tok();if(S.tok)carregar();else telaLogin()}
+var sb=window.supabase?window.supabase.createClient(SB,K):null;
+sair.addEventListener('click',function(){sb&&sb.auth.signOut();telaLogin()});
+if(DEMO){carregar()}else if(!sb){app.innerHTML='<div class="carreg">Não foi possível carregar. Atualize a página.</div>'}else{sb.auth.getSession().then(function(r){if(r.data&&r.data.session)carregar();else telaLogin()})}
 })();
 </script>
 </body>
