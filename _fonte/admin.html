@@ -36,10 +36,10 @@ input:focus{border-color:#C9A45C;outline:none}
 .filtro{display:inline-flex;border:1px solid #3A3226;border-radius:99px;overflow:hidden}
 .filtro button{border:0;background:none;color:#C9BEA8;padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:.08em;cursor:pointer}
 .filtro button.on{background:#C9A45C;color:#1A140A}
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:14px}
 .kpi{background:#15130F;border:1px solid #2A251C;border-radius:16px;padding:20px 22px}
 .kpi span{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9C8F78}
-.kpi b{display:block;font-family:Cormorant,Georgia,serif;font-weight:500;font-size:46px;line-height:1.1;color:#E8CF95;font-variant-numeric:lining-nums tabular-nums}
+.kpi b{display:block;font-family:Cormorant,Georgia,serif;font-weight:500;font-size:42px;line-height:1.1;color:#E8CF95;font-variant-numeric:lining-nums tabular-nums}
 .kpi small{font-size:13px;color:#B5AA95}
 .bloco{background:#15130F;border:1px solid #2A251C;border-radius:16px;padding:22px 24px;margin-bottom:14px}
 .bloco h2{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#C9BEA8;margin:0 0 16px}
@@ -58,6 +58,7 @@ input:focus{border-color:#C9A45C;outline:none}
 .vazio{color:#9C8F78;font-size:14px}
 .rod{color:#7D725F;font-size:12.5px;line-height:1.6;margin-top:18px}
 .carreg{padding:80px 0;text-align:center;color:#9C8F78}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:900px){.w{padding:0 18px}h1{font-size:34px}.kpis{grid-template-columns:1fr 1fr}.duas,.tres{grid-template-columns:1fr}.kpi b{font-size:38px}.painel{padding:30px 0 60px}}
 </style>
 </head>
@@ -97,7 +98,7 @@ var bw=iw/serie.length,gap=Math.min(6,bw*.25),cada=Math.ceil(serie.length/(mob?5
 serie.forEach(function(d,i){var h=d.visitas?Math.max(2,d.visitas/top*ih):0,x=ml+i*bw+gap/2,w=Math.max(1,bw-gap),y=mt+ih-h,r=Math.min(4,w/2,h);
 var dt=d.dia.split('-'),rot=dt[2]+'/'+dt[1];
 var path=h?'M'+x+','+(mt+ih)+'V'+(y+r)+'Q'+x+','+y+' '+(x+r)+','+y+'H'+(x+w-r)+'Q'+(x+w)+','+y+' '+(x+w)+','+(y+r)+'V'+(mt+ih)+'Z':'';
-b+='<g class="col" data-x="'+((x+w/2)/W*100)+'" data-d="'+rot+': '+fmt(d.visitas)+' visitas · '+fmt(d.visitantes)+' visitantes"><rect x="'+(ml+i*bw)+'" y="'+mt+'" width="'+bw+'" height="'+ih+'" fill="transparent"/>'+(path?'<path d="'+path+'" class="barra"/>':'')+(i%cada===0?'<text x="'+(x+w/2)+'" y="'+(H-8)+'" text-anchor="middle" class="eixo">'+rot+'</text>':'')+'</g>'});
+b+='<g class="col" data-x="'+((x+w/2)/W*100)+'" data-d="'+rot+': '+fmt(d.visitas)+' visitas · '+fmt(d.visitantes)+' visitantes'+(d.visitantes_rede!=null?' · '+fmt(d.visitantes_rede)+' por rede':'')+'"><rect x="'+(ml+i*bw)+'" y="'+mt+'" width="'+bw+'" height="'+ih+'" fill="transparent"/>'+(path?'<path d="'+path+'" class="barra"/>':'')+(i%cada===0?'<text x="'+(x+w/2)+'" y="'+(H-8)+'" text-anchor="middle" class="eixo">'+rot+'</text>':'')+'</g>'});
 return '<div class="graf"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Visitas por dia">'+g+'<line x1="'+ml+'" x2="'+(W-mr)+'" y1="'+(mt+ih)+'" y2="'+(mt+ih)+'" class="base"/>'+b+'</svg><div class="dica" hidden></div></div>'}
 function lista(itens,campo,rot){if(!itens||!itens.length)return '<p class="vazio">Ainda sem dados neste período.</p>';var tot=itens.reduce(function(a,b){return a+b.n},0),mx=itens[0].n;
 return '<ul class="lista">'+itens.map(function(it){var pc=tot?Math.round(100*it.n/tot):0;return '<li><span>'+esc(rot?rot(it[campo]):it[campo])+'</span><span class="n">'+fmt(it.n)+'<small>'+pc+'%</small></span><span class="trilho"><i style="width:'+(100*it.n/mx)+'%"></i></span></li>'}).join('')+'</ul>'}
@@ -105,20 +106,20 @@ function desenha(){var st=S.stats||{},filtro='<div class="filtro" role="group" a
 var corpo;
 if(S.erro)corpo='<div class="aviso">'+esc(S.erro)+'</div>';
 else{var mapa={};(st.por_dia||[]).forEach(function(d){mapa[d.dia]=d});var dias=[];var nd=Math.min(S.dias,90);
-for(var i=nd-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var k=d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});dias.push(mapa[k]||{dia:k,visitas:0,visitantes:0})}
+for(var i=nd-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var k=d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});dias.push(mapa[k]||{dia:k,visitas:0,visitantes:0,visitantes_rede:0})}
 var ppv=st.visitantes?(st.visitas/st.visitantes).toLocaleString('pt-BR',{maximumFractionDigits:1}):'—';
 corpo=(DEMO?'<div class="aviso"><b>Dados de exemplo.</b> Os números reais aparecem aqui assim que o site começar a registrar visitas.</div>':'')+
-'<div class="kpis"><div class="kpi"><span>Visitas</span><b>'+fmt(st.visitas)+'</b><small>páginas vistas</small></div><div class="kpi"><span>Visitantes</span><b>'+fmt(st.visitantes)+'</b><small>pessoas diferentes (aprox.)</small></div><div class="kpi"><span>Páginas por visitante</span><b>'+ppv+'</b><small>média no período</small></div><div class="kpi"><span>Cliques no WhatsApp</span><b>'+fmt(st.whatsapp)+'</b><small>pedidos de contato</small></div></div>'+
+'<div class="kpis"><div class="kpi"><span>Visitas</span><b>'+fmt(st.visitas)+'</b><small>páginas vistas</small></div><div class="kpi"><span>Visitantes · navegador</span><b>'+fmt(st.visitantes)+'</b><small>aparelhos/navegadores diferentes</small></div><div class="kpi"><span>Visitantes · rede</span><b>'+(st.com_rede?fmt(st.visitantes_rede):'—')+'</b><small>'+(st.com_rede?'rede + aparelho, contados por dia':'aguardando as primeiras visitas')+'</small></div><div class="kpi"><span>Páginas por visitante</span><b>'+ppv+'</b><small>média no período</small></div><div class="kpi"><span>Cliques no WhatsApp</span><b>'+fmt(st.whatsapp)+'</b><small>pedidos de contato</small></div></div>'+
 '<section class="bloco"><h2>Visitas por dia'+(S.dias>90?' (últimos 90 dias)':'')+'</h2>'+grafico(dias)+'</section>'+
 '<div class="duas"><section class="bloco"><h2>Páginas mais vistas</h2>'+lista(st.paginas,'pagina',nome)+'</section><section class="bloco"><h2>Aparelhos</h2>'+lista(st.dispositivos,'dispositivo')+'</section></div>'+
 '<div class="tres"><section class="bloco"><h2>De onde vieram</h2>'+lista(st.origens,'origem')+'</section><section class="bloco"><h2>Onde clicaram no WhatsApp</h2>'+lista(st.whatsapp_paginas,'pagina',nome)+'</section></div>'+
-'<p class="rod">Dados anônimos: não registramos nome, e-mail nem IP. As suas próprias visitas, feitas neste navegador depois de entrar aqui, não entram na contagem.</p>'}
+'<p class="rod"><b>Duas estimativas de visitantes:</b> "navegador" conta cada aparelho/navegador pelo código guardado nele; "rede" junta a rede de internet e o aparelho num código embaralhado que muda todo dia, somando os visitantes únicos de cada dia. Nenhuma das duas é exata; o número real costuma ficar entre elas.</p><p class="rod">Dados anônimos: não registramos nome, e-mail nem IP (o IP vira um código irreversível na hora e não é guardado). As suas próprias visitas, feitas neste navegador depois de entrar aqui, não entram na contagem.</p>'}
 app.innerHTML='<section class="painel"><div class="w"><div class="cab"><div><p class="eb">Área do administrador</p><h1>Estatísticas <em>do site</em></h1></div>'+filtro+'</div>'+corpo+'</div></section>';
 app.querySelectorAll('.filtro button').forEach(function(b){b.addEventListener('click',function(){S.dias=+b.dataset.d;carregar()})});
 var gr=app.querySelector('.graf');if(gr){var dc=gr.querySelector('.dica');gr.querySelectorAll('.col').forEach(function(c){function on(){gr.querySelectorAll('.col.on').forEach(function(o){o.classList.remove('on')});c.classList.add('on');dc.hidden=false;dc.textContent=c.dataset.d;dc.style.left=c.dataset.x+'%'}
 c.addEventListener('mouseenter',on);c.addEventListener('click',on)});gr.addEventListener('mouseleave',function(){dc.hidden=true;gr.querySelectorAll('.col.on').forEach(function(o){o.classList.remove('on')})})}}
-function exemplo(n){var s=7,r=function(){s=(s*9301+49297)%233280;return s/233280},pd=[],tv=0,tu=0;for(var i=n-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var v=Math.round(25+r()*45+(n-i)*.6),u=Math.round(v*.6);tv+=v;tu+=u;pd.push({dia:d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'}),visitas:v,visitantes:u})}
-return{visitas:tv,visitantes:Math.round(tu*.72),whatsapp:Math.round(tv*.031),por_dia:pd,
+function exemplo(n){var s=7,r=function(){s=(s*9301+49297)%233280;return s/233280},pd=[],tv=0,tu=0;for(var i=n-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var v=Math.round(25+r()*45+(n-i)*.6),u=Math.round(v*.6);tv+=v;tu+=u;pd.push({dia:d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'}),visitas:v,visitantes:u,visitantes_rede:Math.round(u*.85)})}
+return{visitas:tv,visitantes:Math.round(tu*.72),visitantes_rede:Math.round(tu*.85),com_rede:tv,whatsapp:Math.round(tv*.031),por_dia:pd,
 paginas:[{pagina:'/',n:Math.round(tv*.46)},{pagina:'/palestras.html',n:Math.round(tv*.19)},{pagina:'/palestra-atendimento-magico.html',n:Math.round(tv*.1)},{pagina:'/consultoria.html',n:Math.round(tv*.09)},{pagina:'/palestra-walt-disney-area-da-saude.html',n:Math.round(tv*.06)},{pagina:'/imersao-magicday.html',n:Math.round(tv*.05)},{pagina:'/palestra-lideranca-que-inspira.html',n:Math.round(tv*.05)}],
 origens:[{origem:'Google',n:Math.round(tu*.38)},{origem:'Instagram',n:Math.round(tu*.24)},{origem:'Acesso direto',n:Math.round(tu*.18)},{origem:'WhatsApp',n:Math.round(tu*.12)},{origem:'LinkedIn',n:Math.round(tu*.05)},{origem:'Outros sites',n:Math.round(tu*.03)}],
 dispositivos:[{dispositivo:'Celular',n:Math.round(tv*.68)},{dispositivo:'Computador',n:Math.round(tv*.28)},{dispositivo:'Tablet',n:Math.round(tv*.04)}],
