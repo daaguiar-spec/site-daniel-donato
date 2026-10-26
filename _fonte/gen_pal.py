@@ -141,11 +141,11 @@ def page(x, testfont=''):
 <body>
 <header class="nav"><div class="w">
 <a class="logo" href="./"><b>DD</b>Daniel Donato</a>
-<nav class="menu" aria-label="Principal"><a href="./#sobre">Sobre</a><a href="palestras.html" aria-current="page">Palestras</a><a href="consultoria.html">Consultoria</a><a href="./#livro">Livro</a><a href="./#clientes">Clientes</a><a href="./#blog">Blog</a></nav>
+<nav class="menu" aria-label="Principal"><a href="./#sobre">Sobre</a><a href="palestras.html" aria-current="page">Palestras</a><a href="consultoria.html">Consultoria</a><a href="./#livro">Livro</a><a href="./#clientes">Clientes</a><a href="/blog">Blog</a></nav>
 <a class="tel" href="{WA}" target="_blank" rel="noopener">(85) 99971-1108</a>
 <button type="button" class="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span><span></span></button>
 </div></header>
-<nav class="mnav" id="mnav" aria-label="Menu"><a href="./#sobre">Sobre</a><a href="palestras.html">Palestras</a><a href="consultoria.html">Consultoria</a><a href="./#livro">Livro</a><a href="./#clientes">Clientes</a><a href="./#blog">Blog</a><a href="{WA}" target="_blank" rel="noopener">WhatsApp (85) 99971-1108</a></nav>
+<nav class="mnav" id="mnav" aria-label="Menu"><a href="./#sobre">Sobre</a><a href="palestras.html">Palestras</a><a href="consultoria.html">Consultoria</a><a href="./#livro">Livro</a><a href="./#clientes">Clientes</a><a href="/blog">Blog</a><a href="{WA}" target="_blank" rel="noopener">WhatsApp (85) 99971-1108</a></nav>
 <main>
 <section class="hero"><div class="w">
 <div>

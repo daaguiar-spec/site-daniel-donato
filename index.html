@@ -324,7 +324,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
         <a href="consultoria.html" style="text-decoration: none; color: #EDE6D8">Consultoria</a>
         <a href="#livro" style="text-decoration: none; color: #EDE6D8">Livro</a>
         <a href="#clientes" style="text-decoration: none; color: #EDE6D8">Clientes</a>
-        <a href="#blog" style="text-decoration: none; color: #EDE6D8">Blog</a>
+        <a href="/blog" style="text-decoration: none; color: #EDE6D8">Blog</a>
       </nav>
       <a class="dd-ghost" href="https://api.whatsapp.com/send?phone=5585999711108" style="text-decoration: none; border: 1px solid #C9A45C; color: #C9A45C; padding: calc(12 * var(--u)) calc(20 * var(--u)); border-radius: calc(999 * var(--u)); font-size: calc(12 * var(--u)); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; min-height: calc(44 * var(--u)); box-sizing: border-box; display: inline-flex; align-items: center; transition: background .2s, color .2s" target="_blank" rel="noopener">(85) 99971-1108</a>
     </div>
@@ -627,7 +627,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
           <span style="font-size: calc(15 * var(--u)); font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: #9C8F78">Portal CX inFoco</span>
           <h2 style="margin: 0; font-family: 'Cormorant', serif; font-weight: 500; font-size: calc(79.2 * var(--u)); line-height: 0.92; text-transform: uppercase; color: #C9A45C">Artigos</h2>
         </div>
-        <a href="https://www.cxinfoco.com.br" target="_blank" rel="noopener" style="font-size: calc(12 * var(--u)); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase">Ver o blog →</a>
+        <a href="/blog" style="font-size: calc(12 * var(--u)); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase">Ver o blog →</a>
       </div>
       <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: calc(28 * var(--u))">
         <a href="https://portal-cx-news.vercel.app/#m-daniel-donato-participa-de-imersao-inspirada-na-cultura-disn" target="_blank" rel="noopener" style="text-decoration: none; display: flex; flex-direction: column; gap: calc(14 * var(--u)); color: #EDE6D8">
@@ -704,7 +704,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
         <a class="m-menu-link" href="consultoria.html" data-menu="close">Consultoria</a>
         <a class="m-menu-link" href="#m-livro" data-menu="close">Livro</a>
         <a class="m-menu-link" href="#m-clientes" data-menu="close">Clientes</a>
-        <a class="m-menu-link" href="#m-blog" data-menu="close">Blog</a>
+        <a class="m-menu-link" href="/blog" data-menu="close">Blog</a>
       </div>
       <div class="m-menu-foot">
         <a class="m-btn" href="https://api.whatsapp.com/send?phone=5585999711108" target="_blank" rel="noopener">Solicitar proposta</a>
@@ -915,7 +915,7 @@ a{color:#C9A45C}a:hover{color:#E8CF95}
     <div class="m-wrap">
       <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 10px">
         <div class="m-stack" style="gap: 8px"><span class="m-eyebrow" style="color: #9C8F78">Portal CX inFoco</span><h2 class="m-h2" style="color: #C9A45C">Artigos</h2></div>
-        <a href="https://www.cxinfoco.com.br" target="_blank" rel="noopener" style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; padding-bottom: 6px">Ver o blog →</a>
+        <a href="/blog" style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; padding-bottom: 6px">Ver o blog →</a>
       </div>
       <a class="m-art" href="https://portal-cx-news.vercel.app/#m-daniel-donato-participa-de-imersao-inspirada-na-cultura-disn" target="_blank" rel="noopener">
         <div class="m-art-img m-art-1" role="img" aria-label="Foto da matéria: Daniel Donato participa de imersão inspirada na cultura Disney e aprofunda estudos sobre experiência do cliente e encantamento"></div>
@@ -968,9 +968,9 @@ tam();window.addEventListener('resize',tam);new IntersectionObserver(function(e)
 </script><script>
 /* Artigos: busca as 3 últimas matérias publicadas no portal CX em Foco */
 (function(){
-var URL='https://ouxzzduwjxmtixfftpsy.supabase.co/rest/v1/materias?status=eq.publicado&select=id,publicado_em,dados&order=publicado_em.desc&limit=8';
+var URL='https://ouxzzduwjxmtixfftpsy.supabase.co/rest/v1/materias?status=eq.publicado&select=id,publicado_em,dados&order=publicado_em.desc&limit=24';
 var KEY='sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt';
-var PORTAL='https://portal-cx-news.vercel.app/#m-';
+var PORTAL='https://www.cxinfoco.com.br/materia/';
 var ED={atendimento:'Atendimento',experiencia:'Experiência do Cliente',lideranca:'Liderança'};
 var MES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 function data(iso){var d=new Date(iso);return isNaN(d)?'':('0'+d.getDate()).slice(-2)+' '+MES[d.getMonth()]+' '+d.getFullYear()}
@@ -978,14 +978,15 @@ function resumo(d){var t=d.linhaFina||String(d.corpo||'').replace(/[#>*_\[\]()-]
 function okImg(u){return typeof u==='string'&&(/^data:image\//.test(u)||/^https:\/\//.test(u))}
 fetch(URL,{headers:{apikey:KEY}}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(lista){
  var agora=Date.now()+60000;
- lista=(lista||[]).filter(function(m){return m&&m.dados&&m.dados.titulo&&new Date(m.publicado_em).getTime()<=agora}).slice(0,3);
+ lista=(lista||[]).filter(function(m){return m&&m.dados&&m.dados.titulo&&new Date(m.publicado_em).getTime()<=agora});
+ var meus=lista.filter(function(m){return m.dados.siteDaniel===true});lista=meus.concat(lista.filter(function(m){return m.dados.siteDaniel!==true})).slice(0,3);
  if(lista.length<3)return;
  var desk=document.querySelectorAll('#blog a[href*="portal-cx-news"][style*="flex-direction"]');
  var mob=document.querySelectorAll('#m-blog a.m-art');
- lista.forEach(function(m,i){var d=m.dados,href=PORTAL+encodeURIComponent(m.id),kick=(ED[d.editoria]||'Artigo')+' · '+data(m.publicado_em),capa=okImg(d.imagem)?d.imagem:null;
-  var a=desk[i];if(a){a.href=href;var c=a.querySelector('.cxn-cover');if(c){if(capa)c.style.backgroundImage='url("'+capa.replace(/"/g,'%22')+'")';c.setAttribute('aria-label','Foto da matéria: '+d.titulo)}
+ lista.forEach(function(m,i){var d=m.dados,meu=d.siteDaniel===true,href=meu?'/blog/'+encodeURIComponent(m.id):PORTAL+encodeURIComponent(m.id),kick=(ED[d.editoria]||'Artigo')+' · '+data(m.publicado_em),capa=okImg(d.imagem)?d.imagem:null;
+  var a=desk[i];if(a){a.href=href;if(meu){a.removeAttribute('target');a.removeAttribute('rel')}var c=a.querySelector('.cxn-cover');if(c){if(capa)c.style.backgroundImage='url("'+capa.replace(/"/g,'%22')+'")';c.setAttribute('aria-label','Foto da matéria: '+d.titulo)}
    var sp=a.querySelectorAll('span');if(sp[0])sp[0].textContent=kick;var t=a.querySelector('.cxn-t');if(t)t.textContent=d.titulo;var f=a.querySelector('.cxn-f');if(f)f.textContent=resumo(d)}
-  var b=mob[i];if(b){b.href=href;var ci=b.querySelector('.m-art-img');if(ci){if(capa)ci.style.backgroundImage='url("'+capa.replace(/"/g,'%22')+'")';ci.setAttribute('aria-label','Foto da matéria: '+d.titulo)}
+  var b=mob[i];if(b){b.href=href;if(meu){b.removeAttribute('target');b.removeAttribute('rel')}var ci=b.querySelector('.m-art-img');if(ci){if(capa)ci.style.backgroundImage='url("'+capa.replace(/"/g,'%22')+'")';ci.setAttribute('aria-label','Foto da matéria: '+d.titulo)}
    var k=b.querySelector('.m-art-kick');if(k)k.textContent=kick;var mt=b.querySelector('.m-art-t');if(mt)mt.textContent=d.titulo}
  });
 }).catch(function(){});

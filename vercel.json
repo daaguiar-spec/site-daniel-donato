@@ -71,19 +71,23 @@
       "permanent": true
     },
     {
-      "source": "/blog",
-      "destination": "/#blog",
-      "permanent": true
-    },
-    {
-      "source": "/blog/:path*",
-      "destination": "/#blog",
-      "permanent": true
-    },
-    {
       "source": "/post/:path*",
-      "destination": "/#blog",
+      "destination": "/blog",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/blog",
+      "destination": "/api/blog"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/api/blog?slug=:slug"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
     }
   ]
 }

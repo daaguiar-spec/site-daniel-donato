@@ -79,7 +79,7 @@ var S={dias:30,tok:null,stats:null,erro:null};
 var NOMES={'/':'Página inicial','/index.html':'Página inicial','/palestras.html':'Palestras','/consultoria.html':'Consultoria',
 '/palestra-atendimento-magico.html':'Palestra Atendimento Mágico','/palestra-lideranca-que-inspira.html':'Palestra Liderança que Inspira',
 '/palestra-walt-disney-area-da-saude.html':'Palestra Se Walt Disney Fosse da Área da Saúde?','/imersao-magicday.html':'Imersão MagicDay','/apresentacao/':'Apresentação comercial','/apresentacao/index.html':'Apresentação comercial','/404.html':'Página não encontrada'};
-function nome(p){return NOMES[p]||p}
+function nome(p){if(NOMES[p])return NOMES[p];if(p==='/blog'||p==='/blog/')return 'Blog';if(/^\/blog\//.test(p))return 'Blog: '+decodeURIComponent(p.slice(6)).replace(/-/g,' ');return p}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function fmt(n){return Number(n||0).toLocaleString('pt-BR')}
 function tok(){try{var t=JSON.parse(sessionStorage.getItem('dd_tok')||'null');if(t&&t.exp>Date.now()/1000+30)return t.access}catch(e){}return null}

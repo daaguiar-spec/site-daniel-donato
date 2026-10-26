@@ -18,9 +18,9 @@ head=dh.strip().replace('</style>',mstyle+switch+'</style>',1)
 BLOG=r'''<script>
 /* Artigos: busca as 3 últimas matérias publicadas no portal CX em Foco */
 (function(){
-var URL='https://ouxzzduwjxmtixfftpsy.supabase.co/rest/v1/materias?status=eq.publicado&select=id,publicado_em,dados&order=publicado_em.desc&limit=8';
+var URL='https://ouxzzduwjxmtixfftpsy.supabase.co/rest/v1/materias?status=eq.publicado&select=id,publicado_em,dados&order=publicado_em.desc&limit=24';
 var KEY='sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt';
-var PORTAL='https://portal-cx-news.vercel.app/#m-';
+var PORTAL='https://www.cxinfoco.com.br/materia/';
 var ED={atendimento:'Atendimento',experiencia:'Experiência do Cliente',lideranca:'Liderança'};
 var MES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 function data(iso){var d=new Date(iso);return isNaN(d)?'':('0'+d.getDate()).slice(-2)+' '+MES[d.getMonth()]+' '+d.getFullYear()}
@@ -28,14 +28,15 @@ function resumo(d){var t=d.linhaFina||String(d.corpo||'').replace(/[#>*_\[\]()-]
 function okImg(u){return typeof u==='string'&&(/^data:image\//.test(u)||/^https:\/\//.test(u))}
 fetch(URL,{headers:{apikey:KEY}}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(lista){
  var agora=Date.now()+60000;
- lista=(lista||[]).filter(function(m){return m&&m.dados&&m.dados.titulo&&new Date(m.publicado_em).getTime()<=agora}).slice(0,3);
+ lista=(lista||[]).filter(function(m){return m&&m.dados&&m.dados.titulo&&new Date(m.publicado_em).getTime()<=agora});
+ var meus=lista.filter(function(m){return m.dados.siteDaniel===true});lista=meus.concat(lista.filter(function(m){return m.dados.siteDaniel!==true})).slice(0,3);
  if(lista.length<3)return;
  var desk=document.querySelectorAll('#blog a[href*="portal-cx-news"][style*="flex-direction"]');
  var mob=document.querySelectorAll('#m-blog a.m-art');
- lista.forEach(function(m,i){var d=m.dados,href=PORTAL+encodeURIComponent(m.id),kick=(ED[d.editoria]||'Artigo')+' · '+data(m.publicado_em),capa=okImg(d.imagem)?d.imagem:null;
-  var a=desk[i];if(a){a.href=href;var c=a.querySelector('.cxn-cover');if(c){if(capa)c.style.backgroundImage='url("'+capa.replace(/"/g,'%22')+'")';c.setAttribute('aria-label','Foto da matéria: '+d.titulo)}
+ lista.forEach(function(m,i){var d=m.dados,meu=d.siteDaniel===true,href=meu?'/blog/'+encodeURIComponent(m.id):PORTAL+encodeURIComponent(m.id),kick=(ED[d.editoria]||'Artigo')+' · '+data(m.publicado_em),capa=okImg(d.imagem)?d.imagem:null;
+  var a=desk[i];if(a){a.href=href;if(meu){a.removeAttribute('target');a.removeAttribute('rel')}var c=a.querySelector('.cxn-cover');if(c){if(capa)c.style.backgroundImage='url("'+capa.replace(/"/g,'%22')+'")';c.setAttribute('aria-label','Foto da matéria: '+d.titulo)}
    var sp=a.querySelectorAll('span');if(sp[0])sp[0].textContent=kick;var t=a.querySelector('.cxn-t');if(t)t.textContent=d.titulo;var f=a.querySelector('.cxn-f');if(f)f.textContent=resumo(d)}
-  var b=mob[i];if(b){b.href=href;var ci=b.querySelector('.m-art-img');if(ci){if(capa)ci.style.backgroundImage='url("'+capa.replace(/"/g,'%22')+'")';ci.setAttribute('aria-label','Foto da matéria: '+d.titulo)}
+  var b=mob[i];if(b){b.href=href;if(meu){b.removeAttribute('target');b.removeAttribute('rel')}var ci=b.querySelector('.m-art-img');if(ci){if(capa)ci.style.backgroundImage='url("'+capa.replace(/"/g,'%22')+'")';ci.setAttribute('aria-label','Foto da matéria: '+d.titulo)}
    var k=b.querySelector('.m-art-kick');if(k)k.textContent=kick;var mt=b.querySelector('.m-art-t');if(mt)mt.textContent=d.titulo}
  });
 }).catch(function(){});
@@ -154,3 +155,12 @@ for _f in _g.glob('pacote/*.html'):
     if 'site_eventos' not in _t: _t=_t.replace('</body>',_R+'</body>',1); open(_f,'w',encoding='utf-8').write(_t)
 shutil.copy('extra/admin.html','pacote/admin.html')
 print('rastreio ok')
+
+# ---------- links do Blog apontam para /blog ----------
+for _f in _g.glob('pacote/*.html'):
+    _t=open(_f,encoding='utf-8').read()
+    for _a in ['href="./#blog"','href="index.html#blog"','href="#blog" style="text-decoration: none; color: #EDE6D8"']:
+        _t=_t.replace(_a,_a.replace('./#blog','/blog').replace('index.html#blog','/blog').replace('"#blog"','"/blog"'))
+    _t=_t.replace('<a href="https://www.cxinfoco.com.br" target="_blank" rel="noopener" style=','<a href="/blog" style=').replace('href="#m-blog" data-menu="close"','href="/blog" data-menu="close"')
+    open(_f,'w',encoding='utf-8').write(_t)
+print('blog links ok')
