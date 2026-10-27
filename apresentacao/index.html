@@ -639,7 +639,7 @@ em{color:var(--gold);font-style:italic}
             ' e tenho interesse em: ' + oque + '.';
     return 'https://api.whatsapp.com/send?phone=' + numero + '&text=' + encodeURIComponent(m);
   }
-  $('btnZap').href = zap; $('topoZap').href = zap; $('topoZap').target = '_blank';
+  $('btnZap').href = zap; $('btnZap').dataset.rot = 'Falar no WhatsApp (final)'; $('topoZap').dataset.rot = 'Fale conosco (topo)'; $('topoZap').href = zap; $('topoZap').target = '_blank';
 
   /* ---------- 1 capa ---------- */
   txt('capaTitulo', C.capa.titulo); txt('capaDestaque', C.capa.destaque); txt('capaSub', C.capa.subtitulo);
@@ -768,7 +768,7 @@ em{color:var(--gold);font-style:italic}
         }
         var pl = el('div','p'); pl.innerHTML = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="#0B0A08"><path d="M8 5v14l11-7z"/></svg>'; b.appendChild(pl);
         b.appendChild(el('span',null,v.titulo));
-        b.onclick = function(){ abreCurto(v); };
+        b.dataset.rot = 'Momento rápido: ' + v.titulo; b.onclick = function(){ abreCurto(v); };
         $('shorts').appendChild(b);
       });
     }
@@ -835,7 +835,7 @@ em{color:var(--gold);font-style:italic}
     var b = el('div','card-corpo');
     b.appendChild(el('small',null,s.etiqueta)); b.appendChild(el('h3',null,s.titulo)); b.appendChild(el('p',null,s.texto));
     var ul = el('ul'); s.itens.forEach(function(x){ ul.appendChild(el('li',null,x)); }); b.appendChild(ul);
-    var cta = el('a','card-cta'); cta.href = zapInteresse(s.interesse || s.titulo); cta.target = '_blank'; cta.rel = 'noopener';
+    var cta = el('a','card-cta'); cta.href = zapInteresse(s.interesse || s.titulo); cta.target = '_blank'; cta.rel = 'noopener'; cta.dataset.rot = 'Quero saber mais: ' + (s.interesse || s.titulo);
     cta.innerHTML = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>';
     cta.appendChild(document.createTextNode(C.ctaSolucao || 'Quero saber mais'));
     b.appendChild(cta);
@@ -929,7 +929,7 @@ em{color:var(--gold);font-style:italic}
       var som = el('div','dep-som'); som.innerHTML = '<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6"/></svg>Toque para ouvir'; bt.appendChild(som);
       var pl = el('div','p'); pl.innerHTML = '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="#0B0A08"><path d="M8 5v14l11-7z"/></svg>'; bt.appendChild(pl);
       if (d.frase) bt.appendChild(el('div','dep-frase', d.frase));
-      bt.onclick = function(){ abreCurto(lista[i], lista); };
+      bt.dataset.rot = 'Depoimento: ' + lista[i].titulo; bt.onclick = function(){ abreCurto(lista[i], lista); };
       st.appendChild(bt);
       var q = el('div','dep-quem'), lg = el('div','dep-lg');
       if (d.logo) lg.appendChild(img(d.logo, '', true)); else lg.textContent = (d.nome || d.empresa || '?').replace(/^(Dr|Dra)\.?\s+/,'').split(' ').map(function(s){ return s.charAt(0); }).slice(0,2).join('').toUpperCase();
@@ -1147,19 +1147,78 @@ if(AP){
   /* até onde o cliente chegou: registra cada seção vista (uma vez por abertura) */
   var vistas={};
   if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){var id=e.target.id;if(e.isIntersecting&&id&&!vistas[id]){vistas[id]=1;env({tipo:'secao',secao:id.slice(0,30)})}})},{threshold:.45});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){var id=e.target.id;if(e.isIntersecting&&e.intersectionRect.height>=Math.min(e.boundingClientRect.height*.45,innerHeight*.5)&&id&&!vistas[id]){vistas[id]=1;env({tipo:'secao',secao:id.slice(0,30)})}})},{threshold:[0,.1,.2,.3,.45,.6]});
     document.querySelectorAll('section.tela').forEach(function(s){if(!s.classList.contains('hidden'))io.observe(s)});
   }
-  /* aviso por e-mail na primeira vez que este aparelho abre o link deste cliente */
-  var cli=(QS.get('cliente')||'').trim();
-  if(cli){var ch='dd_aviso_'+cli.toLowerCase().slice(0,60),ja=false;try{ja=!!localStorage.getItem(ch);localStorage.setItem(ch,'1')}catch(e){}
-    if(!ja&&!/teste/i.test(cli)){var ven=(QS.get('vendedor')||'').trim().slice(0,60),qd=new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',dateStyle:'short',timeStyle:'short'});
-      var dest=(window.CONTEUDO&&window.CONTEUDO.avisoEmail)||'';
-      if(dest){try{fetch('https://formsubmit.co/ajax/'+encodeURIComponent(dest),{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({_subject:'👀 '+cli.slice(0,80)+' abriu a apresentação'+(ven?' ('+ven+')':''),_template:'table',_captcha:'false',
-          'Cliente':cli.slice(0,80),'Consultor de Experiência':ven||'—','Aparelho':disp(),'Quando':qd,'Dica':'Bom momento para entrar em contato, enquanto a apresentação está fresca.'})}).catch(function(){})}catch(e){}}}}
 }
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="whatsapp"],a[href*="wa.me"]');if(a)env({tipo:'whatsapp'})},true);
+})();
+</script>
+<script>
+/* =====================================================================
+   AVISOS POR E-MAIL (FormSubmit): "abriu agora" + "resumo da visita"
+   Só para links com nome de cliente. Configuração no conteudo.js.
+   ===================================================================== */
+(function(){
+var C=window.CONTEUDO||{},QS=new URLSearchParams(location.search),cli=(QS.get('cliente')||'').trim().slice(0,80);
+if(!cli||!C.avisoEmail)return;
+try{if(localStorage.getItem('dd_admin')==='1')return;}catch(e){}
+if(/^(localhost|127\.)/.test(location.hostname)||location.protocol==='file:')return;
+var ehTeste=/teste/i.test(cli); if(ehTeste&&!C.avisoTeste)return;
+var ven=(QS.get('vendedor')||'').trim().slice(0,60);
+function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim()}
+var cons=(C.consultores||[]).filter(function(c){return norm(c.nome)===norm(ven)})[0];
+var cc=(!ehTeste&&C.avisarConsultores&&cons&&cons.email)?cons.email:'';
+var pre=ehTeste?'[TESTE] ':'';
+function disp(){var w=Math.min(innerWidth,screen.width||innerWidth);return w<=680?'Celular':w<=1024?'Tablet':'Computador'}
+function agora(){return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',dateStyle:'short',timeStyle:'short'})}
+function manda(campos){
+  var f=new URLSearchParams();f.append('_template','table');f.append('_captcha','false');if(cc)f.append('_cc',cc);
+  Object.keys(campos).forEach(function(k){f.append(k,campos[k])});
+  if(ehTeste)f.append('Modo de teste','Enviado só para '+C.avisoEmail+(cons&&cons.email?'. Com os avisos ligados, iria em cópia para '+cons.email:'. Consultor não encontrado na lista do conteudo.js'));
+  try{fetch('https://formsubmit.co/ajax/'+encodeURIComponent(C.avisoEmail),{method:'POST',mode:'no-cors',keepalive:true,body:f}).catch(function(){})}catch(e){}
+}
+/* visitas deste aparelho a este cliente */
+var ch='dd_av_'+norm(cli).slice(0,60),nv=0;try{nv=(+localStorage.getItem(ch)||0)+1;localStorage.setItem(ch,String(nv))}catch(e){nv=1}
+if(nv===1)manda({_subject:pre+'👀 '+cli+' abriu a apresentação agora'+(ven?' ('+ven+')':''),'Cliente':cli,'Consultor de Experiência':ven||'—','Aparelho':disp(),'Quando':agora(),
+  'Dica':'Você vai receber outro e-mail com o resumo do que ele viu quando sair da apresentação.'});
+/* ---- registro da visita ---- */
+var NOMES={capa:'Capa',sobre:'Quem é o Daniel',videos:'Portfólio em vídeo',depoimentos:'Depoimentos',solucoes:'Soluções',presenca:'Presença Nacional',clientes:'Clientes',como:'Como funciona',final:'Contato (final)'};
+var secs=[].slice.call(document.querySelectorAll('section.tela')).filter(function(s){return !s.classList.contains('hidden')}).map(function(s){return s.id});
+var vistas={},cliques=[],abertos=[],vids={},ativo=0,marca=Date.now(),envios=0,assinatura='';
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.intersectionRect.height>=Math.min(e.boundingClientRect.height*.45,innerHeight*.5))vistas[e.target.id]=1})},{threshold:[0,.1,.2,.3,.45,.6]});secs.forEach(function(id){io.observe(document.getElementById(id))})}
+var visivel=document.visibilityState!=='hidden';
+function conta(){if(visivel){ativo+=Date.now()-marca}marca=Date.now()}
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-rot],#insta,#player button,.item-v');if(!a)return;
+  var r=a.dataset&&a.dataset.rot;if(!r&&a.id==='insta')r='Instagram';if(!r&&a.closest('#player'))r='Play no vídeo principal';if(!r)r='Vídeo da lista: '+(a.textContent||'').trim().slice(0,60);
+  if(/^(Depoimento|Momento rápido|Play)/.test(r)){if(abertos.indexOf(r)<0)abertos.push(r)}else cliques.push(r)},true);
+function rotulo(src){src=String(src||'');var t='';
+  (C.videos||[]).concat(C.shorts||[]).forEach(function(v){if(v.arquivo&&src.indexOf(v.arquivo)>-1)t=v.titulo});
+  ((C.depoimentosVideo||{}).itens||[]).forEach(function(d){if(d.arquivo&&src.indexOf(d.arquivo)>-1)t='Depoimento: '+[d.nome,d.cargo].filter(Boolean).join(' · ')});
+  return t||src.split('/').pop()}
+document.addEventListener('timeupdate',function(e){var v=e.target;if(!v||v.muted||v.paused)return;var k=rotulo(v.currentSrc||v.src),o=vids[k]||(vids[k]={s:0,u:v.currentTime,d:v.duration||0});
+  var dt=v.currentTime-o.u;if(dt>0&&dt<1.6)o.s+=dt;o.u=v.currentTime;if(v.duration)o.d=v.duration},true);
+document.addEventListener('seeked',function(e){var v=e.target,k=rotulo(v.currentSrc||v.src);if(vids[k])vids[k].u=v.currentTime},true);
+function mmss(s){s=Math.round(s);return s<60?s+' s':Math.floor(s/60)+' min '+(s%60)+' s'}
+function resumo(){
+  if(visivel)conta();if(ativo<5000)return;
+  var vis=secs.filter(function(id){return vistas[id]}),ult=vis.length?vis[vis.length-1]:secs[0];
+  var vl=Object.keys(vids).filter(function(k){return vids[k].s>=2}).map(function(k){var o=vids[k];return k+': '+mmss(o.s)+(o.d?' de '+mmss(o.d):'')});
+  var zap=cliques.filter(function(c){return /WhatsApp|Fale conosco|Quero saber mais/.test(c)});
+  var dados={'Cliente':cli,'Consultor de Experiência':ven||'—','Aparelho':disp(),'Quando':agora(),
+    'Visita':nv===1?'1ª visita neste aparelho':nv+'ª visita neste aparelho',
+    'Tempo na apresentação':mmss(ativo/1000),
+    'Chegou até':(NOMES[ult]||ult)+' ('+(secs.indexOf(ult)+1)+' de '+secs.length+' seções)',
+    'Seções vistas':vis.map(function(id){return NOMES[id]||id}).join(', ')||'—',
+    'Vídeos assistidos (com som)':vl.length?vl.join(' | '):'Nenhum',
+    'Abriu':abertos.length?abertos.join(' | '):'—',
+    'Cliques':cliques.length?cliques.join(' | '):'Nenhum',
+    'Interesse':zap.length?'✅ Clicou para falar: '+zap.join(' | '):'Não clicou para falar no WhatsApp'};
+  var a=JSON.stringify([vis.length,vl,abertos,cliques]);if(a===assinatura||envios>=3)return;
+  dados._subject=pre+(envios?'📋 Atualização: ':'📋 Resumo: ')+cli+' · '+mmss(ativo/1000)+(zap.length?' · ✅ quis conversar':'')+(ven?' ('+ven+')':'');
+  assinatura=a;envios++;manda(dados)}
+document.addEventListener('visibilitychange',function(){conta();visivel=document.visibilityState!=='hidden';if(!visivel)resumo()});
+addEventListener('pagehide',resumo);
 })();
 </script>
 </body>
