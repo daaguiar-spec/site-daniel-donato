@@ -11,7 +11,7 @@ window.CONTEUDO = {
   email: "comercial@sinapseonline.com",
   instagram: "danieldonato.mentor",
   avisoEmail: "comercial@sinapseonline.com",  // recebe os avisos "abriu agora" e "resumo da visita" (deixe vazio para desligar)
-  avisarConsultores: false,   // true = o consultor do link recebe os avisos em cópia
+  avisarConsultores: true,    // true = o consultor do link recebe os avisos em cópia
   avisoTeste: true,           // true = links com "teste" no nome geram avisos [TESTE] só para o e-mail acima
   consultores: [              // nome exatamente como é digitado no gerador de link
     { nome: "Vanessa Matos", email: "vavamatos@hotmail.com" },
