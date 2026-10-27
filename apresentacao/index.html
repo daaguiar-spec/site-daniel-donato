@@ -1153,7 +1153,11 @@ if(AP){
   /* aviso por e-mail na primeira vez que este aparelho abre o link deste cliente */
   var cli=(QS.get('cliente')||'').trim();
   if(cli){var ch='dd_aviso_'+cli.toLowerCase().slice(0,60),ja=false;try{ja=!!localStorage.getItem(ch);localStorage.setItem(ch,'1')}catch(e){}
-    if(!ja){try{fetch('/api/aviso',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({cliente:cli.slice(0,80),vendedor:(QS.get('vendedor')||'').trim().slice(0,60),dispositivo:disp()})}).catch(function(){})}catch(e){}}}
+    if(!ja&&!/teste/i.test(cli)){var ven=(QS.get('vendedor')||'').trim().slice(0,60),qd=new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',dateStyle:'short',timeStyle:'short'});
+      var dest=(window.CONTEUDO&&window.CONTEUDO.avisoEmail)||'';
+      if(dest){try{fetch('https://formsubmit.co/ajax/'+encodeURIComponent(dest),{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({_subject:'👀 '+cli.slice(0,80)+' abriu a apresentação'+(ven?' ('+ven+')':''),_template:'table',_captcha:'false',
+          'Cliente':cli.slice(0,80),'Consultor de Experiência':ven||'—','Aparelho':disp(),'Quando':qd,'Dica':'Bom momento para entrar em contato, enquanto a apresentação está fresca.'})}).catch(function(){})}catch(e){}}}}
 }
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="whatsapp"],a[href*="wa.me"]');if(a)env({tipo:'whatsapp'})},true);
 })();

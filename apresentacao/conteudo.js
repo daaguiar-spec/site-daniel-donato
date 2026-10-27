@@ -9,7 +9,8 @@ window.CONTEUDO = {
   /* ---------- CONTATO PADRÃO (usado quando o link não traz vendedor) ---------- */
   whatsapp: "559292383440",            // só números, com 55 + DDD
   email: "comercial@sinapseonline.com",
-  instagram: "danieldonato.mentor",     // só o usuário, sem @ (deixe vazio para esconder)
+  instagram: "danieldonato.mentor",
+  avisoEmail: "comercial@sinapseonline.com",  // recebe o aviso "cliente abriu a apresentação" (deixe vazio para desligar)     // só o usuário, sem @ (deixe vazio para esconder)
   telefoneExibido: "+55 92 98238-3440",
 
   /* ---------- 1 · CAPA ---------- */
