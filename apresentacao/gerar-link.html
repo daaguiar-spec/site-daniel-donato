@@ -22,6 +22,9 @@ input::placeholder{color:#5E574C;opacity:1;font-style:italic}
 .acoes a,.acoes button{flex:1 1 140px;min-height:46px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold);font:700 14px 'Manrope',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none}
 .acoes .forte{background:var(--gold);color:var(--bg)}
 small{color:var(--txt3);font-size:12px}
+.salvo{color:#9C8F78}
+.alerta{padding:12px 14px;border-radius:8px;border:1px solid #B8863B;background:rgba(201,162,74,.12);color:#E3C47A;font-size:13px;line-height:1.45}
+.hidden{display:none}
 </style>
 </head>
 <body>
@@ -29,9 +32,11 @@ small{color:var(--txt3);font-size:12px}
   <h1>Gerar link da apresentação</h1>
   <p>Preencha e copie. Deixe tudo em branco para a versão geral.</p>
   <label>Nome do cliente (aparece na capa)<input id="cliente" placeholder="Ex.: Mariana Costa"></label>
-  <label>Consultor de Experiência<input id="vendedor" placeholder="Ex.: João Silva"></label>
+  <label>Consultor de Experiência<input id="vendedor" autocomplete="name" placeholder="Ex.: João Silva"></label>
   <label>WhatsApp do consultor (opcional)<input id="fone" inputmode="tel" placeholder="Ex.: (85) 98888-7777"></label>
   <small>Com o WhatsApp do consultor preenchido, o botão da apresentação leva para ele. Sem ele, vai para o comercial do Daniel.</small>
+  <small class="salvo" id="salvo">Seu nome e WhatsApp ficam salvos neste aparelho. Nos próximos links, preencha só o nome do cliente.</small>
+  <div class="alerta hidden" id="alerta">Preencha o seu nome de Consultor de Experiência para o cliente falar com você e o envio aparecer no painel.</div>
   <div class="saida" id="saida" aria-live="polite"></div>
   <div class="acoes">
     <button type="button" class="forte" id="copiar">Copiar link</button>
@@ -59,7 +64,15 @@ small{color:var(--txt3);font-size:12px}
             'Vale a pena conferir!';
     document.getElementById('enviar').href = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(m);
   }
-  ids.forEach(function(k){ document.getElementById(k).addEventListener('input', atualiza); });
+  /* lembra o consultor neste aparelho */
+  ['vendedor','fone'].forEach(function(k){
+    var el = document.getElementById(k);
+    try { var v = localStorage.getItem('dd_gl_' + k); if (v && !el.value) el.value = v; } catch(e){}
+    el.addEventListener('input', function(){ try { localStorage.setItem('dd_gl_' + k, el.value.trim()); } catch(e){} });
+  });
+  function confere(){ document.getElementById('alerta').classList.toggle('hidden', !!document.getElementById('vendedor').value.trim()); }
+  ids.forEach(function(k){ document.getElementById(k).addEventListener('input', function(){ atualiza(); confere(); }); });
+  confere();
   document.getElementById('copiar').onclick = function(){
     var b = this, l = link();
     (navigator.clipboard ? navigator.clipboard.writeText(l) : Promise.reject()).then(function(){

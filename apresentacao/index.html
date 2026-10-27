@@ -263,6 +263,10 @@ em{color:var(--gold);font-style:italic}
 .card p{margin:0;font-size:15px;line-height:1.55;color:var(--txt2)}
 .card ul{list-style:none;margin:auto 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
 .card li{font-size:14px;color:var(--txt3);padding-left:18px;position:relative}
+.card-cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;margin-top:20px;padding:0 20px;border-radius:999px;border:1px solid var(--gold);color:var(--gold2);font-weight:700;font-size:15px;text-decoration:none;transition:background .3s,color .3s}
+.card-cta:hover{background:var(--gold);color:#0B0A08}
+.card.top .card-cta{background:var(--gold);color:#0B0A08}
+.card.top .card-cta:hover{background:var(--gold2)}
 .card li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
 @media (max-width:900px){ .cards{grid-template-columns:1fr} }
 
@@ -630,6 +634,11 @@ em{color:var(--gold);font-style:italic}
   var msg = 'Olá! Vi a apresentação do Daniel Donato' + (vendedor ? ' (enviada por ' + vendedor + ')' : '') +
             ' e quero uma proposta' + (cliente ? ' para ' + cliente : '') + '.';
   var zap = 'https://api.whatsapp.com/send?phone=' + numero + '&text=' + encodeURIComponent(msg);
+  function zapInteresse(oque){
+    var m = 'Olá!' + (cliente ? ' Aqui é ' + cliente + '.' : '') + ' Vi a apresentação do Daniel Donato' + (vendedor ? ' (enviada por ' + vendedor + ')' : '') +
+            ' e tenho interesse em: ' + oque + '.';
+    return 'https://api.whatsapp.com/send?phone=' + numero + '&text=' + encodeURIComponent(m);
+  }
   $('btnZap').href = zap; $('topoZap').href = zap; $('topoZap').target = '_blank';
 
   /* ---------- 1 capa ---------- */
@@ -826,6 +835,10 @@ em{color:var(--gold);font-style:italic}
     var b = el('div','card-corpo');
     b.appendChild(el('small',null,s.etiqueta)); b.appendChild(el('h3',null,s.titulo)); b.appendChild(el('p',null,s.texto));
     var ul = el('ul'); s.itens.forEach(function(x){ ul.appendChild(el('li',null,x)); }); b.appendChild(ul);
+    var cta = el('a','card-cta'); cta.href = zapInteresse(s.interesse || s.titulo); cta.target = '_blank'; cta.rel = 'noopener';
+    cta.innerHTML = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>';
+    cta.appendChild(document.createTextNode(C.ctaSolucao || 'Quero saber mais'));
+    b.appendChild(cta);
     c.appendChild(b); $('cards').appendChild(c);
   });
 

@@ -75,10 +75,11 @@ window.CONTEUDO = {
   ],
 
   /* ---------- 4 · SOLUÇÕES ---------- */
+  ctaSolucao: "Quero saber mais",   /* botão de cada cartão: abre o WhatsApp já dizendo o formato (campo "interesse") */
   solucoes: [
     {
       etiqueta: "I · Palestra",
-      titulo: "Eventos e convenções",
+      titulo: "Eventos e convenções", interesse: "Palestra para eventos e convenções",
       texto: "Para abrir, encerrar ou dar energia ao seu evento, com histórias reais dos bastidores.",
       foto: "/img/eventos.webp",
       itens: ["Atendimento Mágico · Um case Disney", "Liderança que Inspira", "Se Walt Disney fosse da Saúde?"],
@@ -86,7 +87,7 @@ window.CONTEUDO = {
     },
     {
       etiqueta: "II · In company",
-      titulo: "Treinamentos",
+      titulo: "Treinamentos", interesse: "Treinamento in company",
       texto: "Programas desenhados para a realidade e os desafios da sua equipe, com prática no dia a dia.",
       foto: "/img/in-company.webp",
       itens: ["Atendimento e vendas", "Liderança e cultura", "Saúde e humanização"],
@@ -94,7 +95,7 @@ window.CONTEUDO = {
     },
     {
       etiqueta: "III · Imersão",
-      titulo: "MagicDay",
+      titulo: "MagicDay", interesse: "Imersão MagicDay",
       texto: "Um dia inteiro para viver na prática o padrão de encantamento que fideliza.",
       foto: "/img/imersao.webp",
       itens: ["Diagnóstico do atendimento atual", "Novos padrões definidos em grupo", "Plano de ação para aplicar já"],
