@@ -1216,7 +1216,17 @@ function resumo(){
     'Interesse':zap.length?'✅ Clicou para falar: '+zap.join(' | '):'Não clicou para falar no WhatsApp'};
   var a=JSON.stringify([vis.length,vl,abertos,cliques]);if(a===assinatura||envios>=3)return;
   dados._subject=pre+(envios?'📋 Atualização: ':'📋 Resumo: ')+cli+' · '+mmss(ativo/1000)+(zap.length?' · ✅ quis conversar':'')+(ven?' ('+ven+')':'');
-  assinatura=a;envios++;manda(dados)}
+  assinatura=a;envios++;manda(dados);grava(vis,ult,vl,zap)}
+var carga=Math.random().toString(36).slice(2)+Date.now().toString(36);
+function grava(vis,ult,vl,zap){
+  if(ehTeste)return; /* testes não entram no painel */
+  var vids2=Object.keys(vids).filter(function(k){return vids[k].s>=2}).map(function(k){return {t:k,s:Math.round(vids[k].s),d:Math.round(vids[k].d||0)}});
+  var d={tipo:'resumo',pagina:(location.pathname||'/').slice(0,200),cliente:cli,dispositivo:disp(),
+    detalhe:{carga:carga,visita:nv,tempo:Math.round(ativo/1000),ate:secs.indexOf(ult)+1,total:secs.length,secoes:vis,videos:vids2,abriu:abertos.slice(0,20),cliques:cliques.slice(0,20)}};
+  if(ven)d.vendedor=ven;
+  try{d.visitante=localStorage.getItem('ddv')||''}catch(e){}
+  try{fetch('https://ouxzzduwjxmtixfftpsy.supabase.co/rest/v1/site_eventos',{method:'POST',keepalive:true,headers:{'apikey':'sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(d)}).catch(function(){})}catch(e){}
+}
 document.addEventListener('visibilitychange',function(){conta();visivel=document.visibilityState!=='hidden';if(!visivel)resumo()});
 addEventListener('pagehide',resumo);
 })();
