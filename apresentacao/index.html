@@ -433,7 +433,7 @@ em{color:var(--gold);font-style:italic}
       <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
       Apresentar
     </button>
-    <a class="btn-ghost" id="topoZap" href="#">Solicitar proposta</a>
+    <a class="btn-ghost" id="topoZap" href="#">Fale conosco</a>
   </div>
 </header>
 
@@ -502,6 +502,23 @@ em{color:var(--gold);font-style:italic}
     </div>
   </section>
 
+  <!-- DEPOIMENTOS EM VÍDEO -->
+  <section class="tela" id="depoimentos" data-nome="Depoimentos">
+    <div class="wrap">
+      <div class="cab r">
+        <div class="kicker" id="depEtiqueta"></div>
+        <h2><span id="depTitulo"></span> <em id="depDestaque"></em></h2>
+        <p id="depTexto"></p>
+        <span class="dep-deslize" aria-hidden="true">Deslize <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h19M14 1l6 6-6 6"/></svg></span>
+      </div>
+      <div class="dep-wrap r" style="--d:.2s">
+        <div class="dep-fila" id="depFila"></div>
+        <button class="dep-nav dep-ant" id="depAnt" type="button" aria-label="Depoimentos anteriores"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="dep-nav dep-prox" id="depProx" type="button" aria-label="Mais depoimentos"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </section>
+
   <!-- 4 SOLUÇÕES -->
   <section class="tela" id="solucoes" data-nome="Soluções">
     <div class="wrap">
@@ -550,23 +567,6 @@ em{color:var(--gold);font-style:italic}
       <div class="mural hidden" id="mural"></div>
     </div>
     <div class="wrap"><div class="deps" id="deps"></div></div>
-  </section>
-
-  <!-- DEPOIMENTOS EM VÍDEO -->
-  <section class="tela" id="depoimentos" data-nome="Depoimentos">
-    <div class="wrap">
-      <div class="cab r">
-        <div class="kicker" id="depEtiqueta"></div>
-        <h2><span id="depTitulo"></span> <em id="depDestaque"></em></h2>
-        <p id="depTexto"></p>
-        <span class="dep-deslize" aria-hidden="true">Deslize <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h19M14 1l6 6-6 6"/></svg></span>
-      </div>
-      <div class="dep-wrap r" style="--d:.2s">
-        <div class="dep-fila" id="depFila"></div>
-        <button class="dep-nav dep-ant" id="depAnt" type="button" aria-label="Depoimentos anteriores"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <button class="dep-nav dep-prox" id="depProx" type="button" aria-label="Mais depoimentos"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-      </div>
-    </div>
   </section>
 
   <!-- 6 COMO FUNCIONA -->
@@ -1143,6 +1143,18 @@ if(AP&&/teste/i.test(QS.get('cliente')||''))return; /* links de teste não entra
 function env(d){if(AP){var c=(QS.get('cliente')||'').trim().slice(0,80),v=(QS.get('vendedor')||'').trim().slice(0,60);if(c)d.cliente=c;if(v)d.vendedor=v}d.visitante=vis();d.dispositivo=disp();d.pagina=(location.pathname||'/').slice(0,200);
 try{fetch(U,{method:'POST',keepalive:true,headers:{'apikey':K,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(d)}).catch(function(){})}catch(e){}}
 env({tipo:'visita',origem:orig()});
+if(AP){
+  /* até onde o cliente chegou: registra cada seção vista (uma vez por abertura) */
+  var vistas={};
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){var id=e.target.id;if(e.isIntersecting&&id&&!vistas[id]){vistas[id]=1;env({tipo:'secao',secao:id.slice(0,30)})}})},{threshold:.45});
+    document.querySelectorAll('section.tela').forEach(function(s){if(!s.classList.contains('hidden'))io.observe(s)});
+  }
+  /* aviso por e-mail na primeira vez que este aparelho abre o link deste cliente */
+  var cli=(QS.get('cliente')||'').trim();
+  if(cli){var ch='dd_aviso_'+cli.toLowerCase().slice(0,60),ja=false;try{ja=!!localStorage.getItem(ch);localStorage.setItem(ch,'1')}catch(e){}
+    if(!ja){try{fetch('/api/aviso',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({cliente:cli.slice(0,80),vendedor:(QS.get('vendedor')||'').trim().slice(0,60),dispositivo:disp()})}).catch(function(){})}catch(e){}}}
+}
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="whatsapp"],a[href*="wa.me"]');if(a)env({tipo:'whatsapp'})},true);
 })();
 </script>
