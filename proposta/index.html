@@ -102,6 +102,13 @@ em{color:var(--gold);font-style:italic}
 .cond{margin-top:18px;display:grid;gap:6px;color:var(--txt2);font-size:14.5px}
 .cond b{color:var(--txt)}
 
+.folha{width:100%;border-collapse:collapse}
+.folha td{padding:0;vertical-align:top}
+.timbre{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:16px;margin-bottom:28px;border-bottom:1px solid #E3DACB}
+.timbre img{height:46px;width:auto}
+.timbre b{font-family:var(--sans);font-size:15px;font-weight:800;letter-spacing:.02em;color:#1A1712;text-align:right}
+@media (max-width:600px){.timbre img{height:34px}.timbre b{font-size:11.5px}}
+
 /* experiência, objetivos, resultados */
 .exp-txt{font-size:17px;color:var(--txt2);margin:0 0 22px;max-width:680px}
 .sub-t{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--txt3);margin:22px 0 12px}
@@ -273,6 +280,8 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
   .cl h3{break-after:avoid;page-break-after:avoid}
   .cl p.it{break-inside:avoid}
   .fecho{break-inside:avoid;page-break-inside:avoid}
+  .timbre{margin-bottom:8mm;padding-bottom:4mm}
+  .folha thead{display:table-header-group}
   .cl.alt,.cl.sug{background:none;box-shadow:none}
   .cl .mudou{display:none}
   mark.falta{background:none;color:#1A1712;border-bottom:1px solid #999}
@@ -528,7 +537,8 @@ function vistaContrato(p, mud){
   if (p.status === 'assinado') h += '<div class="aviso ok">' + ICON.info + '<span>Contrato assinado. Esta é a versão final.</span></div>';
   h += '</section>';
 
-  h += '<article class="papel"><h2>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2><p class="pref">' + esc(p.dados.solucao || '') + ' · versão ' + p.versao + '</p>';
+  var cab = '<div class="timbre"><img src="img/sinapse.png" alt="Sinapse"><b>' + esc((M.contratada || {}).razao || '') + '</b></div>';
+  h += '<article class="papel"><table class="folha"><thead><tr><td>' + cab + '</td></tr></thead><tbody><tr><td><h2>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2><p class="pref">' + esc(p.dados.solucao || '') + ' · versão ' + p.versao + '</p>';
   if (p.contrato && p.contrato.abertura) h += '<div class="cl' + (mud.campos.abertura ? ' alt' : '') + '">' + paragrafos(p.contrato.abertura, campos) + '</div>';
   cls.forEach(function(c, i){
     var tem = S.sugestoes.some(function(s){ return s.i === i; });
@@ -539,7 +549,7 @@ function vistaContrato(p, mud){
   });
   var ct = p.contratante || {}, cd = M.contratada || {};
   h += '<div class="fecho"><p class="local">' + esc(campos.cidade_foro || '') + ', ' + esc(P.hoje()) + '.</p>' +
-    '<div class="assin"><div><b>' + esc(ct.razao || 'CONTRATANTE') + '</b>' + esc(ct.representante || '') + '</div><div><b>' + esc(cd.razao || 'CONTRATADA') + '</b>' + esc(cd.representante || '') + '</div></div></div></article>';
+    '<div class="assin"><div><b>' + esc(ct.razao || 'CONTRATANTE') + '</b>' + esc(ct.representante || '') + '</div><div><b>' + esc(cd.razao || 'CONTRATADA') + '</b>' + esc(cd.representante || '') + '</div></div></div></td></tr></tbody></table></article>';
 
   if (p.status !== 'assinado'){
     h += '<section class="bloco noprint"><div class="kicker">Como assinar</div><h2>Assine pelo <em>gov.br</em>, de graça.</h2><ol class="passos">' +
