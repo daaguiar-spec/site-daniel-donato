@@ -12,7 +12,7 @@ create table if not exists public.proposta_admins (
   email text primary key
 );
 insert into public.proposta_admins (email) values
-  ('daaguiar@gmail.com')            -- troque/adicione aqui: ('outro@email.com'), ...
+  ('daaguiar@gmail.com'), ('comercial@sinapseonline.com')   -- troque/adicione aqui: ('outro@email.com'), ...
 on conflict do nothing;
 alter table public.proposta_admins enable row level security;
 
