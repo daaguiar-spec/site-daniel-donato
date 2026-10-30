@@ -268,11 +268,16 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
   .formato span{background:#FBF8F2;border-color:#E3DACB;color:#5C4A20}
   .sub-t{color:#5C5446}
   .papel{box-shadow:none;padding:0;margin:0;background:#fff;font-size:11pt}
-  .cl{break-inside:avoid}
+  .cl{break-inside:auto}
+  .cl p{orphans:3;widows:3}
+  .cl h3{break-after:avoid;page-break-after:avoid}
+  .cl p.it{break-inside:avoid}
+  .fecho{break-inside:avoid;page-break-inside:avoid}
   .cl.alt,.cl.sug{background:none;box-shadow:none}
   .cl .mudou{display:none}
   mark.falta{background:none;color:#1A1712;border-bottom:1px solid #999}
-  .assin{break-inside:avoid}
+  .assin{break-inside:avoid;margin-top:40px}
+  .local{margin-top:24px}
   .rodape{border-color:#E3DACB;color:#5C5446;margin-top:8mm;padding:4mm 0 0}
   body.imprime-contrato #vistaProposta, body.imprime-proposta #vistaContrato{display:none!important}
   body.imprime-contrato .cab-contrato{display:none}
@@ -533,8 +538,8 @@ function vistaContrato(p, mud){
       '</h3>' + paragrafos(c.texto, campos) + '</div>';
   });
   var ct = p.contratante || {}, cd = M.contratada || {};
-  h += '<p class="local">' + esc(campos.cidade_foro || '') + ', ' + esc(P.hoje()) + '.</p>' +
-    '<div class="assin"><div><b>' + esc(ct.razao || 'CONTRATANTE') + '</b>' + esc(ct.representante || '') + '</div><div><b>' + esc(cd.razao || 'CONTRATADA') + '</b>' + esc(cd.representante || '') + '</div></div></article>';
+  h += '<div class="fecho"><p class="local">' + esc(campos.cidade_foro || '') + ', ' + esc(P.hoje()) + '.</p>' +
+    '<div class="assin"><div><b>' + esc(ct.razao || 'CONTRATANTE') + '</b>' + esc(ct.representante || '') + '</div><div><b>' + esc(cd.razao || 'CONTRATADA') + '</b>' + esc(cd.representante || '') + '</div></div></div></article>';
 
   if (p.status !== 'assinado'){
     h += '<section class="bloco noprint"><div class="kicker">Como assinar</div><h2>Assine pelo <em>gov.br</em>, de graça.</h2><ol class="passos">' +
