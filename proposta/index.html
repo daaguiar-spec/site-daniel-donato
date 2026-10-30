@@ -154,10 +154,15 @@ em{color:var(--gold);font-style:italic}
 .papel{background:#FBF8F2;color:#221D15;border-radius:6px;padding:clamp(24px,6vw,64px);margin:28px 0;box-shadow:0 30px 70px rgba(0,0,0,.45);font-size:15px;line-height:1.7}
 .papel h2{font-family:var(--serif);text-align:center;font-size:clamp(20px,3.6vw,26px);letter-spacing:.02em;margin:0 0 6px;color:#221D15}
 .papel .pref{text-align:center;color:#6B6152;font-size:13px;margin:0 0 30px}
-.cl{position:relative;padding:4px 0 18px;border-radius:8px}
+.cl{position:relative;padding:4px 0 30px;border-radius:8px}
 .cl h3{font-family:var(--sans);font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px;color:#221D15;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.cl p{margin:0;text-align:left}
-@media (min-width:700px){.cl p{text-align:justify;hyphens:auto}}
+.cl p{margin:0 0 12px;text-align:left}
+.cl p:last-child{margin-bottom:0}
+.cl p.it{margin:0 0 7px;padding-left:20px;text-indent:-14px}
+.cl p.sub{font-weight:700;margin-top:16px}
+.cl p.par{margin-top:14px}
+.cl h3{margin-bottom:12px!important}
+@media (min-width:700px){.cl p{text-align:justify;hyphens:auto}.cl p.it{text-align:left}}
 .cl.alt{background:rgba(229,163,90,.12);box-shadow:0 0 0 10px rgba(229,163,90,.12)}
 .cl.sug{box-shadow:0 0 0 10px rgba(201,162,74,.14);background:rgba(201,162,74,.14)}
 .cl .mudou{background:#F3DEC2;color:#8A4F12}
@@ -500,6 +505,14 @@ function acoesProposta(p){
   return '<div class="feito" style="border-color:var(--line);background:none"><h3>Proposta encerrada</h3><p>Quer retomar? Fale com a gente.</p><div class="botoes" style="margin-top:16px"><a class="bt bt2" href="' + zap('Olá! Quero retomar a proposta para ' + p.cliente + '.') + '" target="_blank" rel="noopener">' + ICON.zap + ' Falar no WhatsApp</a></div></div>';
 }
 
+/* texto do contrato em parágrafos (cada linha vira um parágrafo, com espaço entre eles) */
+function paragrafos(texto, campos){
+  var t = String(texto || '').replace(/\{\{\s*parcelas_lista\s*\}\}/g, campos.parcelas_lista || '{{parcelas_lista}}');
+  return t.split('\n').map(function(l){ return l.trim(); }).filter(Boolean).map(function(l){
+    var cls = /^(•|-|[IVX]+\.\s)/.test(l) ? 'it' : /^\d+\.\d+\s*[–-]/.test(l) ? 'sub' : /^Parágrafo/i.test(l) ? 'par' : '';
+    return '<p' + (cls ? ' class="' + cls + '"' : '') + '>' + P.preenche(l, campos, true) + '</p>';
+  }).join('');
+}
 function vistaContrato(p, mud){
   var campos = P.campos(p, M), cls = (p.contrato && p.contrato.clausulas) || [];
   var podeSugerir = ['contrato_liberado','contrato_em_ajuste'].indexOf(p.status) > -1;
@@ -511,13 +524,13 @@ function vistaContrato(p, mud){
   h += '</section>';
 
   h += '<article class="papel"><h2>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2><p class="pref">' + esc(p.dados.solucao || '') + ' · versão ' + p.versao + '</p>';
-  if (p.contrato && p.contrato.abertura) h += '<div class="cl' + (mud.campos.abertura ? ' alt' : '') + '"><p>' + P.preenche(p.contrato.abertura, campos, true) + '</p></div>';
+  if (p.contrato && p.contrato.abertura) h += '<div class="cl' + (mud.campos.abertura ? ' alt' : '') + '">' + paragrafos(p.contrato.abertura, campos) + '</div>';
   cls.forEach(function(c, i){
     var tem = S.sugestoes.some(function(s){ return s.i === i; });
     h += '<div class="cl' + (mud.clausulas[i] ? ' alt' : '') + (tem ? ' sug' : '') + '" id="cl' + i + '"><h3>Cláusula ' + (i + 1) + 'ª · ' + esc(c.titulo) +
       (mud.clausulas[i] ? '<span class="mudou">alterada</span>' : '') +
       (podeSugerir ? '<button class="lapis' + (tem ? ' tem' : '') + '" data-acao="sugerir" data-i="' + i + '" aria-label="Sugerir alteração na cláusula ' + (i + 1) + '">' + ICON.lapis + '<span>' + (tem ? 'Sugestão feita' : 'Sugerir') + '</span></button>' : '') +
-      '</h3><p>' + P.preenche(c.texto, campos, true) + '</p></div>';
+      '</h3>' + paragrafos(c.texto, campos) + '</div>';
   });
   var ct = p.contratante || {}, cd = M.contratada || {};
   h += '<p class="local">' + esc(campos.cidade_foro || '') + ', ' + esc(P.hoje()) + '.</p>' +
@@ -679,7 +692,7 @@ function abreSugestao(i){
   var c = S.prop.contrato.clausulas[i], ja = S.sugestoes.filter(function(s){ return s.i === i; })[0] || {};
   var campos = P.campos(S.prop, M);
   janela('<div class="kicker">Cláusula ' + (i + 1) + 'ª · ' + esc(c.titulo) + '</div><h3>Sugerir alteração</h3>' +
-    '<div class="citacao">' + P.preenche(c.texto, campos, true) + '</div>' +
+    '<div class="citacao cl">' + paragrafos(c.texto, campos) + '</div>' +
     '<form id="fSug" novalidate>' + campo('sgComo', 'Como gostaria que ficasse', 'area', ja.como, 'required placeholder="Escreva o novo texto ou explique a mudança"') +
     campo('sgPq', 'Por quê? (opcional)', 'text', ja.porque) +
     '<div class="erro" id="sgErro" role="alert" hidden></div><button class="bt" type="submit">' + (ja.como ? 'Atualizar sugestão' : 'Adicionar à lista') + '</button>' +
