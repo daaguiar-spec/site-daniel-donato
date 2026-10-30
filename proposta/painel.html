@@ -237,7 +237,7 @@ function desenhaLista(){
 }
 
 function novaProposta(){
-  var nome = prompt('Nome do cliente (como vai aparecer na proposta):'); if (!nome || !nome.trim()) return;
+  var nome = prompt('Nome da empresa (como vai aparecer na proposta):'); if (!nome || !nome.trim()) return;
   DB.criar({ cliente: nome.trim().slice(0, 80), status: 'rascunho', dados: P.copia(M.dados), contrato: P.copia(M.contrato) })
     .then(function(p){ abrir(p.id); }).catch(function(e){ toast(erroTxt(e)); });
 }
@@ -250,7 +250,7 @@ function abrir(id){
 }
 function linkProposta(p){ return ORIGEM + '/proposta/?p=' + p.codigo; }
 function linkApres(p){
-  var q = new URLSearchParams(); q.set('cliente', p.cliente); if (p.vendedor) q.set('vendedor', p.vendedor); if (p.fone) q.set('fone', p.fone); q.set('proposta', p.codigo);
+  var q = new URLSearchParams(); q.set('cliente', p.cliente); if ((p.dados || {}).contato) q.set('contato', p.dados.contato); if (p.vendedor) q.set('vendedor', p.vendedor); if (p.fone) q.set('fone', p.fone); q.set('proposta', p.codigo);
   return ORIGEM + '/apresentacao/?' + q.toString();
 }
 function inp(id, rot, v, tipo, cls, extra){ return '<div class="' + (cls || '') + '"><label for="' + id + '">' + rot + '</label><input id="' + id + '" type="' + (tipo || 'text') + '" value="' + esc(v == null ? '' : v) + '" ' + (extra || '') + '></div>'; }
@@ -304,6 +304,7 @@ function marcaPago(i, sim){
 }
 function editor(){
   ['estrutura','experiencia','objetivos','resultados'].forEach(function(k){ if (S.atual.dados && S.atual.dados[k] === undefined) S.atual.dados[k] = P.copia((M.dados || {})[k]); });
+  if (S.atual.contrato && S.atual.contrato.cidadeForo === undefined) S.atual.contrato.cidadeForo = M.cidadeForo || '';
   var p = S.atual, d = p.dados || {}, det = d.detalhes || {}, ct = p.contratante || {}, cons = (C.consultores || []).map(function(c){ return c.nome; });
   var h = '<div class="w painel"><button class="volta" id="volta">← Todas as propostas</button>' +
     '<div class="ed-cab"><div><p class="eb">Proposta · v' + p.versao + '</p><h1>' + esc(p.cliente) + '</h1><div style="margin-top:8px">' + chip(p.status) + '</div></div>' +
@@ -311,7 +312,7 @@ function editor(){
     '<a class="sec" target="_blank" rel="noopener" href="/proposta/?p=' + esc(p.codigo) + (DEMO ? '&demo' : '') + '">Ver como o cliente</a></div></div>' +
     pedidosPendentes(p) +
 
-    '<section class="bloco"><h2>Cliente</h2><div class="g3">' + inp('fCliente', 'Nome na proposta', p.cliente) +
+    '<section class="bloco"><h2>Cliente</h2><div class="g2" style="margin-bottom:12px">' + inp('fCliente', 'Empresa (aparece na proposta)', p.cliente) + inp('fContato', 'Nome do contato (aparece no "Olá, …" da apresentação)', d.contato, 'text', '', 'placeholder="Ex.: Maria"') + '</div><div class="g2">' +
     '<div><label for="fVend">Consultor de Experiência</label><input id="fVend" list="consList" value="' + esc(p.vendedor || '') + '"><datalist id="consList">' + cons.map(function(n){ return '<option value="' + esc(n) + '">'; }).join('') + '</datalist></div>' +
     inp('fFone', 'WhatsApp do consultor', p.fone, 'tel', '', 'placeholder="Vazio = número do comercial"') + '</div></section>' +
 
@@ -392,7 +393,7 @@ function v(id){ var e = document.getElementById(id); return e ? e.value.trim() :
 function linhas(id){ return v(id).split('\n').map(function(x){ return x.trim(); }).filter(Boolean); }
 function coleta(){
   var p = S.atual, d = P.copia(p.dados);
-  d.solucao = v('fSol'); d.apresentacao = v('fAp');
+  d.contato = v('fContato'); d.solucao = v('fSol'); d.apresentacao = v('fAp');
   d.detalhes = { formato: v('fFor'), data_evento: v('fData'), local: v('fLocal'), carga_horaria: v('fCh'), participantes: v('fPart') };
   d.experiencia = { titulo: v('eTit'), texto: v('eTxt'), vivenciado: linhas('eViv'), formato: linhas('eFor') };
   d.objetivos = linhas('fObj');
@@ -436,6 +437,8 @@ function guarda(acao){
     base.dados = c.dados; base.contrato = c.contrato;
     if (acao === 'enviar'){ base.status = 'enviada'; base.publicado_em = new Date().toISOString(); }
     prom = DB.atualizar(p.id, base);
+  } else if (soContato(c, p) && acao !== 'liberar'){
+    base.dados = c.dados; prom = DB.atualizar(p.id, base); /* mudar só o nome do contato não cria nova versão */
   } else {
     prom = DB.atualizar(p.id, base).then(function(){ return DB.publicar(p.id, c.dados, c.contrato); }).then(function(r){
       if (acao === 'liberar') return DB.atualizar(p.id, { status: 'contrato_liberado' });
@@ -451,6 +454,7 @@ function guarda(acao){
     toast(acao === 'publicar' ? 'Nada mudou no conteúdo; dados salvos.' : 'Salvo.');
   }).catch(function(e){ botoes(false); toast(erroTxt(e)); });
 }
+function soContato(c, p){ var a = P.copia(c.dados), b = P.copia(p.dados); delete a.contato; delete b.contato; return P.igual(a, b) && P.igual(c.contrato, p.contrato); }
 function botoes(off){ [].forEach.call(document.querySelectorAll('.barra button'), function(b){ b.disabled = off; }); var e = document.getElementById('estado'); if (e && off) e.textContent = 'Salvando…'; }
 function mudaStatus(st){
   var nomes = { recusada: 'marcar como recusada', arquivada: 'arquivar', assinado: 'marcar o contrato como assinado', aprovada: 'esconder o contrato do cliente', enviada: 'desarquivar' };
@@ -512,6 +516,7 @@ app.addEventListener('click', function(e){
 });
 
 if (!sb && !DEMO){ app.innerHTML = '<div class="w painel"><div class="aviso">Não foi possível carregar o sistema de login. Confira a internet e recarregue.</div></div>'; return; }
+if (DEMO) window.__painel = { coleta: coleta, S: S };
 inicio();
 })();
 </script>

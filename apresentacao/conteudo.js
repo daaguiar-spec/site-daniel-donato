@@ -203,11 +203,11 @@ window.CONTEUDO = {
     botao: "Falar no WhatsApp"
   },
 
-  /* Final quando o link traz uma proposta (?proposta=...). {cliente} vira o nome do cliente. */
+  /* Final quando o link traz uma proposta (?proposta=...). {empresa} vira o nome da empresa. */
   finalComProposta: {
     titulo: "Preparamos uma proposta",
     destaque: "só para você.",
-    texto: "Veja os valores e as condições pensados para {cliente}. Se estiver tudo certo, é só aceitar.",
+    texto: "Veja os valores e as condições pensados para {empresa}. Se estiver tudo certo, é só aceitar.",
     botao: "Tirar dúvidas no WhatsApp"
   }
 };

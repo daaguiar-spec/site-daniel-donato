@@ -383,7 +383,7 @@ function numeroZap(){
 function zap(msg){ return 'https://api.whatsapp.com/send?phone=' + numeroZap() + '&text=' + encodeURIComponent(msg); }
 function toast(m){ var t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 3800); }
 function linkApresentacao(){
-  var q = new URLSearchParams(); q.set('cliente', S.prop.cliente); if (S.prop.vendedor) q.set('vendedor', S.prop.vendedor);
+  var q = new URLSearchParams(); q.set('cliente', S.prop.cliente); if ((S.prop.dados || {}).contato) q.set('contato', S.prop.dados.contato); if (S.prop.vendedor) q.set('vendedor', S.prop.vendedor);
   if (S.prop.fone) q.set('fone', S.prop.fone); q.set('proposta', S.prop.codigo);
   return '/apresentacao/?' + q.toString();
 }
@@ -539,7 +539,7 @@ function blocoPagamento(p){
   if (!parc.length || !cfg.pixChave) return '';
   function pago(i){ return pagos.filter(function(x){ return x.parcela === i && x.pago; })[0]; }
   var prox = -1; parc.some(function(x, i){ if (!pago(i)){ prox = i; return true; } return false; });
-  var h = '<section class="bloco noprint" id="pagamento"><div class="kicker">Pagamento</div><h2>' + (prox < 0 ? 'Tudo <em>pago.</em> Obrigado!' : 'Pague com <em>Pix</em>, sem taxa.') + '</h2><div class="parcs">';
+  var h = '<section class="bloco noprint" id="pagamento"><div class="kicker">Pagamento</div><h2>' + (prox < 0 ? 'Tudo <em>pago.</em> Obrigado!' : 'Pague com <em>Pix</em>.') + '</h2><div class="parcs">';
   parc.forEach(function(x, i){
     var pg = pago(i);
     h += '<div class="' + (i === prox ? 'prox' : '') + '"><span><b>' + (i + 1) + 'ª parcela · ' + P.brl(x.valor) + '</b><small>' + x.percentual + '% ' + esc(x.quando) + '</small></span>' +
@@ -742,7 +742,7 @@ function baixaPdf(){
   document.body.classList.remove('imprime-proposta', 'imprime-contrato'); document.body.classList.add('imprime-' + vista);
   var t = document.title; document.title = (vista === 'contrato' ? 'Contrato' : 'Proposta') + ' - ' + S.prop.cliente + ' - Daniel Donato';
   responder(vista === 'contrato' ? 'baixou_pdf_contrato' : 'baixou_pdf_proposta', {}).catch(function(){});
-  setTimeout(function(){ window.print(); setTimeout(function(){ document.title = t; }, 500); }, 60);
+  window.print(); setTimeout(function(){ document.title = t; }, 1000);
 }
 
 /* ---------------- cliques ---------------- */
