@@ -94,5 +94,34 @@
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
     }
+  ],
+  "headers": [
+    {
+      "source": "/proposta/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/apresentacao/(.*)\\.(js|html)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/apresentacao/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, must-revalidate"
+        }
+      ]
+    }
   ]
 }
