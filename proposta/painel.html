@@ -297,7 +297,8 @@ function editor(){
 
     '<section class="bloco"><h2>Proposta</h2><div class="g2">' + inp('fSol', 'Solução', d.solucao, 'text', 'full') + area('fAp', 'Texto de apresentação', d.apresentacao, 'full') + '</div>' +
     '<div class="g3" style="margin-top:12px">' + inp('fFor', 'Formato', det.formato) + inp('fData', 'Data', det.data_evento) + inp('fLocal', 'Local', det.local) + inp('fCh', 'Carga horária', det.carga_horaria) + inp('fPart', 'Participantes', det.participantes) + '</div>' +
-    '<div class="g2" style="margin-top:12px">' + area('fInc', 'O que está incluído (um por linha)', (d.inclui || []).join('\n')) + area('fNao', 'Não incluso (um por linha)', (d.naoInclui || []).join('\n')) + '</div></section>' +
+    '<div class="g2" style="margin-top:12px">' + area('fInc', 'O que está incluído (um por linha)', (d.inclui || []).join('\n')) + area('fNao', 'Não incluso (um por linha)', (d.naoInclui || []).join('\n')) +
+    area('fEst', 'Estrutura necessária (um por linha)', (d.estrutura || []).join('\n'), 'full', 'placeholder="Ex.: Projetor com HDMI"') + '</div></section>' +
 
     '<section class="bloco"><h2>Valores</h2><div id="itens"></div><button class="add" data-acao="addItem">+ Item</button>' +
     '<div class="g3" style="margin-top:16px">' + inp('fDesc', 'Desconto (R$)', d.desconto || '', 'text', '', 'inputmode="decimal"') + inp('fForma', 'Forma de pagamento', d.formaPagamento) + inp('fVal', 'Validade (dias após enviar)', d.validadeDias || '', 'number') + '</div>' +
@@ -310,7 +311,7 @@ function editor(){
 
     '<section class="bloco"><h2>Contrato · cláusulas</h2><div id="clausulas"></div><button class="add" data-acao="addCl">+ Cláusula</button>' +
     '<div style="margin-top:14px;max-width:320px">' + inp('fForo', 'Foro (cidade/UF)', (p.contrato || {}).cidadeForo || M.cidadeForo) + '</div>' +
-    '<p class="dica">Campos automáticos: <code>{{contratante_razao}}</code> <code>{{contratante_cnpj}}</code> <code>{{contratante_endereco}}</code> <code>{{contratante_representante}}</code> <code>{{contratante_cpf}}</code> <code>{{solucao}}</code> <code>{{data_evento}}</code> <code>{{local}}</code> <code>{{carga_horaria}}</code> <code>{{participantes}}</code> <code>{{formato}}</code> <code>{{valor_total}}</code> <code>{{valor_extenso}}</code> <code>{{pagamento}}</code> <code>{{forma_pagamento}}</code> <code>{{cidade_foro}}</code>. Os dados da sua empresa ficam no arquivo <code>proposta/modelo.js</code>.</p></section>' +
+    '<p class="dica">Campos automáticos: <code>{{contratante_razao}}</code> <code>{{contratante_cnpj}}</code> <code>{{contratante_endereco}}</code> <code>{{contratante_representante}}</code> <code>{{contratante_cpf}}</code> <code>{{solucao}}</code> <code>{{data_evento}}</code> <code>{{local}}</code> <code>{{carga_horaria}}</code> <code>{{participantes}}</code> <code>{{formato}}</code> <code>{{valor_total}}</code> <code>{{valor_extenso}}</code> <code>{{pagamento}}</code> <code>{{forma_pagamento}}</code> <code>{{estrutura}}</code> <code>{{cidade_foro}}</code>. Os dados da sua empresa ficam no arquivo <code>proposta/modelo.js</code>.</p></section>' +
 
     '<section class="bloco"><h2>Histórico</h2>' + (S.eventos.length ? '<ul class="hist">' + S.eventos.map(function(e){ return '<li><time>' + P.dataHora(e.criado_em) + '</time><span>' + esc(NOMES_EV[e.tipo] || e.tipo) + ((e.detalhe || {}).versao ? ' · v' + e.detalhe.versao : '') + '</span></li>'; }).join('') + '</ul>' : '<p class="dica">Nada ainda.</p>') +
     '<div class="links" style="margin-top:16px">' + (['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="recusada">Marcar como recusada</button>' : '') +
@@ -363,7 +364,7 @@ function coleta(){
   var p = S.atual, d = P.copia(p.dados);
   d.solucao = v('fSol'); d.apresentacao = v('fAp');
   d.detalhes = { formato: v('fFor'), data_evento: v('fData'), local: v('fLocal'), carga_horaria: v('fCh'), participantes: v('fPart') };
-  d.inclui = linhas('fInc'); d.naoInclui = linhas('fNao');
+  d.inclui = linhas('fInc'); d.naoInclui = linhas('fNao'); d.estrutura = linhas('fEst');
   d.itens = [].map.call(document.querySelectorAll('#itens .linha'), function(l){
     return { nome: l.querySelector('[data-k=nome]').value.trim(), descricao: l.querySelector('[data-k=descricao]').value.trim(), valor: P.num(l.querySelector('[data-k=valor]').value) };
   });

@@ -88,6 +88,7 @@ P.campos = function(prop, modelo){
     solucao: d.solucao, data_evento: det.data_evento, local: det.local, carga_horaria: det.carga_horaria,
     participantes: det.participantes, formato: det.formato,
     valor_total: P.brl(P.total(d)), valor_extenso: P.extenso(P.total(d)), pagamento: pg, forma_pagamento: d.formaPagamento,
+    estrutura: (d.estrutura || []).filter(Boolean).join('; '),
     cidade_foro: (prop.contrato && prop.contrato.cidadeForo) || (modelo && modelo.cidadeForo), data_hoje: P.hoje()
   };
 };
@@ -111,7 +112,7 @@ P.mudancas = function(atual, anterior){
     var velho = (b.itens || [])[i];
     if (!velho || !P.igual(it, velho)) { m.itens[i] = velho ? { antes: velho } : { novo: true }; m.alguma = true; }
   });
-  ['desconto','pagamento','formaPagamento','inclui','naoInclui','detalhes','solucao','apresentacao','observacoes'].forEach(function(k){
+  ['desconto','pagamento','formaPagamento','inclui','naoInclui','estrutura','detalhes','solucao','apresentacao','observacoes'].forEach(function(k){
     if (!P.igual(a[k], b[k])) { m.campos[k] = true; m.alguma = true; }
   });
   if (P.total(a) !== P.total(b)) { m.campos.total = { antes: P.total(b) }; m.alguma = true; }

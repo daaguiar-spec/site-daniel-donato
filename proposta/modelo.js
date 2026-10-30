@@ -9,7 +9,7 @@
    {{contratante_representante}} {{contratante_cpf}}
    {{contratada_razao}} {{contratada_cnpj}} {{contratada_endereco}} {{contratada_representante}}
    {{solucao}} {{data_evento}} {{local}} {{carga_horaria}} {{participantes}} {{formato}}
-   {{valor_total}} {{valor_extenso}} {{pagamento}} {{forma_pagamento}}
+   {{valor_total}} {{valor_extenso}} {{pagamento}} {{forma_pagamento}} {{estrutura}}
    {{cidade_foro}} {{data_hoje}}
 
    ATENÇÃO: o texto do contrato abaixo é um modelo inicial. Peça para o
@@ -54,6 +54,12 @@ window.MODELO_PROPOSTA = {
       "Material de apoio digital para os participantes",
       "Certificado de participação"
     ],
+    estrutura: [
+      "Sala com cadeiras para todos os participantes",
+      "Projetor ou TV com entrada HDMI",
+      "Som com microfone sem fio",
+      "Mesa de apoio para o palestrante"
+    ],
     naoInclui: [
       "Passagens, hospedagem e alimentação fora de Fortaleza (quando houver)"
     ],
@@ -84,7 +90,7 @@ window.MODELO_PROPOSTA = {
       { titulo: "Das obrigações da CONTRATADA",
         texto: "Realizar o serviço com qualidade e pontualidade; adaptar o conteúdo à realidade da CONTRATANTE; fornecer o material de apoio previsto na proposta; manter sigilo sobre as informações da CONTRATANTE às quais tiver acesso." },
       { titulo: "Das obrigações da CONTRATANTE",
-        texto: "Fornecer as informações necessárias para a preparação do conteúdo; disponibilizar local, equipamentos de som e projeção e a lista de participantes; efetuar os pagamentos nas datas combinadas." },
+        texto: "Fornecer as informações necessárias para a preparação do conteúdo; disponibilizar a lista de participantes e a seguinte estrutura: {{estrutura}}; efetuar os pagamentos nas datas combinadas." },
       { titulo: "Do cancelamento e da remarcação",
         texto: "Remarcações solicitadas pela CONTRATANTE com pelo menos 15 (quinze) dias de antecedência não geram custo, ficando a nova data sujeita à agenda da CONTRATADA. Em caso de cancelamento pela CONTRATANTE, o valor pago na assinatura não será devolvido, servindo como compensação pela reserva da agenda e pela preparação do conteúdo." },
       { titulo: "Do uso de imagem",

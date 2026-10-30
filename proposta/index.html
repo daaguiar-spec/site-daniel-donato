@@ -78,6 +78,7 @@ em{color:var(--gold);font-style:italic}
 .lista-ok{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .lista-ok li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:var(--txt)}
 .lista-ok li::before{content:"";flex:none;width:22px;height:22px;border-radius:50%;background:rgba(201,162,74,.16) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23E3C47A' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/12px no-repeat;margin-top:1px}
+.lista-est li::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23E3C47A' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E")}
 .nao{margin-top:18px;font-size:13.5px;color:var(--txt3)}
 .nao b{color:var(--txt2)}
 
@@ -394,6 +395,12 @@ function vistaProposta(p, d, st, mud){
     if ((d.inclui || []).length) h += '<ul class="lista-ok">' + d.inclui.filter(Boolean).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
     if ((d.naoInclui || []).filter(Boolean).length) h += '<p class="nao"><b>Não incluso:</b> ' + d.naoInclui.filter(Boolean).map(esc).join(' · ') + '</p>';
     h += '</section>';
+  }
+
+  /* estrutura necessária */
+  if ((d.estrutura || []).filter(Boolean).length){
+    h += '<section class="bloco"><div class="kicker">Estrutura necessária' + (mud.campos.estrutura ? ' <span class="mudou">alterado</span>' : '') + '</div><h2>O que precisamos <em>no local.</em></h2>' +
+      '<ul class="lista-ok lista-est">' + d.estrutura.filter(Boolean).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></section>';
   }
 
   /* investimento */
