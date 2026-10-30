@@ -116,6 +116,24 @@ em{color:var(--gold);font-style:italic}
 .res span{color:var(--txt2);font-size:15.5px}
 @media (min-width:800px){.res{grid-template-columns:repeat(5,1fr);gap:18px}.res li{grid-template-columns:1fr;border-top:0;border-left:1px solid var(--line);padding:4px 0 4px 18px}.res li:first-child{border-left:0;padding-left:0}.res li::before{grid-row:auto;margin-bottom:10px}}
 
+/* pagamento */
+.parcs{display:grid;gap:10px;margin-bottom:22px}
+.parcs div{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg)}
+.parcs div.prox{border-color:var(--gold);background:rgba(201,162,74,.06)}
+.parcs b{font-size:16px}
+.parcs small{display:block;color:var(--txt3);font-size:13.5px}
+.pix{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
+@media (max-width:640px){.pix{grid-template-columns:1fr;justify-items:center;text-align:center}}
+.qr{background:#fff;border-radius:14px;padding:10px;width:200px;height:200px}
+.qr svg{width:100%;height:100%;display:block}
+.pix h3{font-size:22px;margin:0 0 6px}
+.pix .val{font-family:var(--serif);font-size:34px;color:var(--gold2);margin:0 0 12px}
+.copia{width:100%;font:500 12px ui-monospace,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--txt3);word-break:break-all;max-height:64px;overflow:hidden;margin-bottom:12px;text-align:left}
+.banco{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.banco button{display:block;text-align:left;width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg);cursor:pointer}
+.banco small{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3)}
+.banco b{font-weight:600;font-size:15px}
+
 /* ações */
 .acoes{margin:34px 0 10px;text-align:center}
 .acoes h2{font-size:clamp(24px,4vw,32px);margin-bottom:8px}
@@ -276,6 +294,7 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 <script src="/apresentacao/conteudo.js"></script>
 <script src="modelo.js"></script>
 <script src="comum.js"></script>
+<script src="qrcode.js"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -323,6 +342,7 @@ function demo(){
     p.status = 'contrato_liberado'; p.contrato = c;
     p.contratante = { razao: 'Praiano Hotel Ltda.', cnpj: '12.345.678/0001-90', endereco: 'Av. Beira Mar, 2800, Meireles, Fortaleza/CE', representante: 'Maria Souza', cpf: '123.456.789-00' };
     p.aceite = { nome: 'Maria Souza', cargo: 'Diretora', quando: new Date(Date.now() - 864e5).toISOString() };
+    p.pagamentos = [];
   }
   return Promise.resolve(p);
 }
@@ -510,7 +530,40 @@ function vistaContrato(p, mud){
       '<button class="bt bt2" data-acao="assinei">Já assinei · enviar contrato</button>' +
       (podeSugerir ? '<button class="bt-link" data-acao="enviarSug">Sugerir alterações no contrato</button>' : '') + '</div></section>';
   }
+  h += blocoPagamento(p);
   return h;
+}
+
+function blocoPagamento(p){
+  var cfg = M.pagamento || {}, parc = P.parcelas(p.dados || {}), pagos = p.pagamentos || [];
+  if (!parc.length || !cfg.pixChave) return '';
+  function pago(i){ return pagos.filter(function(x){ return x.parcela === i && x.pago; })[0]; }
+  var prox = -1; parc.some(function(x, i){ if (!pago(i)){ prox = i; return true; } return false; });
+  var h = '<section class="bloco noprint" id="pagamento"><div class="kicker">Pagamento</div><h2>' + (prox < 0 ? 'Tudo <em>pago.</em> Obrigado!' : 'Pague com <em>Pix</em>, sem taxa.') + '</h2><div class="parcs">';
+  parc.forEach(function(x, i){
+    var pg = pago(i);
+    h += '<div class="' + (i === prox ? 'prox' : '') + '"><span><b>' + (i + 1) + 'ª parcela · ' + P.brl(x.valor) + '</b><small>' + x.percentual + '% ' + esc(x.quando) + '</small></span>' +
+      (pg ? '<span class="chip verde">Paga' + (pg.quando ? ' em ' + esc(P.data(pg.quando)) : '') + '</span>' : (i === prox ? '<span class="chip ouro">A pagar</span>' : '<span class="chip cinza">Depois</span>')) + '</div>';
+  });
+  h += '</div>';
+  if (prox > -1){
+    var v = parc[prox].valor, cod = P.pix(cfg, v, 'DD' + p.codigo + 'P' + (prox + 1));
+    h += '<div class="pix"><div class="qr" aria-label="QR Code Pix">' + qrSvg(cod) + '</div><div><h3>' + (prox + 1) + 'ª parcela</h3><p class="val">' + P.brl(v) + '</p>' +
+      '<div class="copia" id="pixCod">' + esc(cod) + '</div>' +
+      '<div class="botoes" style="align-items:stretch"><button class="bt" data-copiar="' + esc(cod) + '">Copiar Pix copia e cola</button>' +
+      '<a class="bt bt2" data-acao="comprovante" data-parc="' + (prox + 1) + '" href="' + zap('Olá! Segue o comprovante da ' + (prox + 1) + 'ª parcela (' + P.brl(v) + ') de ' + p.cliente + '.') + '" target="_blank" rel="noopener">' + ICON.zap + ' Enviar comprovante</a></div></div></div>' +
+      '<p class="nao" style="margin-top:18px">Prefere transferência? Toque para copiar:</p><div class="banco">' +
+      [['Chave Pix (' + (cfg.pixTipo || 'chave') + ')', cfg.pixExibido || cfg.pixChave], ['Banco', cfg.banco], ['Agência', cfg.agencia], ['Conta', cfg.conta]].filter(function(x){ return x[1]; })
+        .map(function(x){ return '<button type="button" data-copiar="' + esc(x[1]) + '"><small>' + esc(x[0]) + '</small><b>' + esc(x[1]) + '</b></button>'; }).join('') + '</div>';
+  }
+  return h + '</section>';
+}
+function qrSvg(texto){
+  try{ var q = qrcode(0, 'M'); q.addData(texto); q.make(); return q.createSvgTag({ cellSize: 4, margin: 2, scalable: true }); }catch(e){ return ''; }
+}
+function copiar(t){
+  (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function(){ toast('Copiado!'); })
+    .catch(function(){ var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); toast('Copiado!'); }catch(e){} a.remove(); });
 }
 
 function rodape(p){
@@ -673,7 +726,7 @@ function abreAssinei(){
   var p = S.prop, assunto = 'Contrato assinado · ' + p.cliente;
   var msg = 'Olá! Segue o contrato assinado pelo gov.br referente à proposta de ' + (p.dados.solucao || '') + ' para ' + p.cliente + '.';
   var mail = (M.contratada && M.contratada.email) || C.email || '';
-  janela('<div class="kicker">Contrato assinado</div><h3>Envie para nós</h3><p class="ex">Escolha por onde enviar e <b>anexe o PDF assinado</b> na conversa ou no e-mail.</p>' +
+  janela('<div class="kicker">Contrato assinado</div><h3>Envie para nós</h3><p class="ex">Escolha por onde enviar e <b>anexe o PDF assinado</b> na conversa ou no e-mail. Depois, o Pix da 1ª parcela está logo abaixo, na seção <b>Pagamento</b>.</p>' +
     '<div class="envio"><a class="bt" data-envio="WhatsApp" href="' + zap(msg) + '" target="_blank" rel="noopener">' + ICON.zap + ' Enviar pelo WhatsApp</a>' +
     (mail ? '<a class="bt bt2" data-envio="E-mail" href="mailto:' + esc(mail) + '?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(msg + '\n\n(anexe aqui o PDF assinado)') + '">' + ICON.mail + ' Enviar por e-mail</a>' : '') + '</div>', function(j){
       [].forEach.call(j.querySelectorAll('[data-envio]'), function(a){ a.addEventListener('click', function(){
@@ -694,6 +747,7 @@ function baixaPdf(){
 
 /* ---------------- cliques ---------------- */
 document.addEventListener('click', function(e){
+  var cp = e.target.closest('[data-copiar]'); if (cp){ copiar(cp.dataset.copiar); return; }
   var a = e.target.closest('[data-acao],[data-vista]'); if (!a || !S.prop) return;
   if (a.dataset.vista){
     S.vista = a.dataset.vista; desenha(); scrollTo({ top: 0 });
@@ -707,6 +761,8 @@ document.addEventListener('click', function(e){
   else if (ac === 'enviarSug') abreEnvioSug();
   else if (ac === 'assinei') abreAssinei();
   else if (ac === 'pdf') baixaPdf();
+  else if (ac === 'comprovante'){ responder('enviou_comprovante', { parcela: +a.dataset.parc }).catch(function(){});
+    aviso('💰 ' + S.prop.cliente + ' disse que PAGOU a ' + a.dataset.parc + 'ª parcela', { 'Confira': 'Veja se o Pix caiu e marque como recebida no painel (seção Pagamentos).' }); }
   else if (ac === 'conversar') responder('falou_whatsapp', {}).catch(function(){});
 });
 $('topoPdf').addEventListener('click', baixaPdf);
@@ -724,6 +780,7 @@ if (!CODIGO && !DEMO) return semProposta('Proposta não encontrada');
   .then(function(p){
     if (!p) return semProposta('Proposta não encontrada');
     S.prop = p; desenha();
+    if (location.hash === '#pagamento' && $('pagamento')) setTimeout(function(){ $('pagamento').scrollIntoView(); scrollBy(0, -80); }, 150);
     if (!p.previa && !DEMO){
       var ch = 'dd_prop_' + p.codigo + '_v' + p.versao, n = 0;
       try{ n = +localStorage.getItem(ch) || 0; localStorage.setItem(ch, String(n + 1)); }catch(e){}

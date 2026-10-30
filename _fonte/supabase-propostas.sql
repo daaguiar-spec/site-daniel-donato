@@ -40,8 +40,10 @@ create table if not exists public.propostas (
   aceite        jsonb,                                -- quem aceitou, quando, aparelho
   criado_em     timestamptz not null default now(),
   atualizado_em timestamptz not null default now(),
-  publicado_em  timestamptz
+  publicado_em  timestamptz,
+  pagamentos    jsonb not null default '[]'::jsonb
 );
+alter table public.propostas add column if not exists pagamentos jsonb not null default '[]'::jsonb;
 alter table public.propostas drop constraint if exists propostas_status_check;
 alter table public.propostas add constraint propostas_status_check check (status in
   ('rascunho','enviada','visualizada','em_ajuste','aprovada','contrato_liberado','contrato_em_ajuste','assinado','recusada','arquivada'));
@@ -103,7 +105,7 @@ begin
     'status', r.status, 'versao', r.versao, 'publicado_em', coalesce(r.publicado_em, r.atualizado_em),
     'dados', r.dados,
     'contrato', case when mostra_contrato then r.contrato else null end,
-    'contratante', r.contratante, 'aceite', r.aceite,
+    'contratante', r.contratante, 'aceite', r.aceite, 'pagamentos', r.pagamentos,
     'anterior', case when ant is null then null else jsonb_build_object('dados', ant.dados, 'contrato', case when mostra_contrato then ant.contrato else null end) end,
     'previa', adm
   );
@@ -135,7 +137,7 @@ begin
     if r.status not in ('contrato_liberado','contrato_em_ajuste') then raise exception 'contrato indisponivel'; end if;
     novo := 'contrato_em_ajuste';
     update public.propostas set status = novo where id = r.id;
-  elsif p_tipo not in ('baixou_pdf_proposta','baixou_pdf_contrato','abriu_contrato','enviou_assinado','falou_whatsapp') then
+  elsif p_tipo not in ('baixou_pdf_proposta','baixou_pdf_contrato','abriu_contrato','enviou_assinado','falou_whatsapp','enviou_comprovante') then
     raise exception 'tipo invalido';
   end if;
 

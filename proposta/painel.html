@@ -133,7 +133,7 @@ function demoBase(){
     { id: 'a1', codigo: 'demo', cliente: 'Hotel Praiano', vendedor: 'Vanessa Matos', fone: '', status: 'em_ajuste', versao: 1, dados: d1, contrato: P.copia(M.contrato), contratante: null, aceite: null, atualizado_em: new Date().toISOString(), publicado_em: new Date(Date.now()-3*864e5).toISOString() },
     { id: 'a2', codigo: 'demo2', cliente: 'Colégio Christus', vendedor: 'Rômulo Hora', fone: '', status: 'aprovada', versao: 2, dados: d2, contrato: P.copia(M.contrato),
       contratante: { razao: 'Colégio Christus Ltda.', cnpj: '12.345.678/0001-90', endereco: 'Rua X, 100, Fortaleza/CE', representante: 'João Lima', cpf: '123.456.789-00' },
-      aceite: { nome: 'João Lima', cargo: 'Diretor', email: 'joao@x.com', quando: new Date().toISOString() }, atualizado_em: new Date().toISOString() }
+      aceite: { nome: 'João Lima', cargo: 'Diretor', email: 'joao@x.com', quando: new Date().toISOString() }, pagamentos: [], atualizado_em: new Date().toISOString() }
   ], eventos: { a1: [ { tipo: 'ajuste_proposta', criado_em: new Date().toISOString(), detalhe: { nome: 'Maria Souza', temas: ['Parcelamento','Valor'], pedido: 'Conseguimos fazer 30% na assinatura e 70% no final? E um valor um pouco menor, perto de R$ 11 mil.', versao: 1 } },
     { tipo: 'visualizou', criado_em: new Date(Date.now()-864e5).toISOString(), detalhe: { versao: 1 } } ] } };
   return memoria;
@@ -283,6 +283,25 @@ function pedidosPendentes(p){
   return h ? '<section class="bloco destaque"><h2>Precisa de você</h2>' + h + '</section>' : '';
 }
 
+function blocoPagamentos(p){
+  if (['aprovada','contrato_liberado','contrato_em_ajuste','assinado'].indexOf(p.status) < 0) return '';
+  var parc = P.parcelas(p.dados || {}), pagos = p.pagamentos || [];
+  var h = '<section class="bloco"><h2>Pagamentos</h2><p class="dica" style="margin:-8px 0 14px">O cliente vê o Pix da próxima parcela na aba Contrato (depois que você libera o contrato). Marque quando o dinheiro cair.</p>';
+  parc.forEach(function(x, i){
+    var pg = pagos.filter(function(y){ return y.parcela === i && y.pago; })[0];
+    h += '<div class="pedido" style="border-color:' + (pg ? 'rgba(127,192,143,.5)' : '#3A3226') + ';background:none;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">' +
+      '<span><b>' + (i + 1) + 'ª parcela · ' + P.brl(x.valor) + '</b><br><small style="color:#9C8F78;text-transform:none;letter-spacing:0;font-size:13px;display:inline">' + x.percentual + '% ' + esc(x.quando) + (pg ? ' · recebida em ' + P.data(pg.quando) : '') + '</small></span>' +
+      '<span class="links" style="margin:0">' + (pg ? '<button class="sec" data-pago="' + i + '" data-v="0">Desmarcar</button>' :
+        '<button class="sec" data-cobrar="' + i + '">Cobrar no WhatsApp</button><button class="g" data-pago="' + i + '" data-v="1">Marcar como recebida</button>') + '</span></div>';
+  });
+  return h + '</section>';
+}
+function marcaPago(i, sim){
+  var pagos = (S.atual.pagamentos || []).filter(function(x){ return x.parcela !== i; });
+  if (sim) pagos.push({ parcela: i, pago: true, quando: new Date().toISOString() });
+  DB.atualizar(S.atual.id, { pagamentos: pagos }).then(function(){ return DB.abrir(S.atual.id); }).then(function(r){ var y = scrollY; S.atual = r[0]; S.eventos = r[1]; editor(); scrollTo(0, y); toast(sim ? 'Parcela marcada como recebida.' : 'Desmarcado.'); })
+    .catch(function(e){ toast(/pagamentos/.test(String(e && e.message)) ? 'Rode no Supabase o arquivo supabase-propostas-pagamentos.sql.' : erroTxt(e)); });
+}
 function editor(){
   ['estrutura','experiencia','objetivos','resultados'].forEach(function(k){ if (S.atual.dados && S.atual.dados[k] === undefined) S.atual.dados[k] = P.copia((M.dados || {})[k]); });
   var p = S.atual, d = p.dados || {}, det = d.detalhes || {}, ct = p.contratante || {}, cons = (C.consultores || []).map(function(c){ return c.nome; });
@@ -311,6 +330,7 @@ function editor(){
     '<h2 style="margin-top:20px">Parcelas</h2><div id="parcelas"></div><button class="add" data-acao="addParc">+ Parcela</button><p class="dica" id="somaPct"></p>' +
     '<div style="margin-top:14px">' + area('fObs', 'Observações (opcional)', d.observacoes) + '</div></section>' +
 
+    blocoPagamentos(p) +
     '<section class="bloco"><h2>Contrato · dados do contratante</h2><p class="dica" style="margin:-8px 0 14px">O cliente preenche ao aceitar. Você pode corrigir aqui.</p><div class="g2">' +
     inp('cRazao', 'Razão social', ct.razao) + inp('cCnpj', 'CNPJ / CPF', ct.cnpj) + inp('cEnd', 'Endereço', ct.endereco, 'text', 'full') + inp('cRep', 'Quem assina', ct.representante) + inp('cCpf', 'CPF de quem assina', ct.cpf) + '</div></section>' +
 
@@ -469,6 +489,9 @@ app.addEventListener('click', function(e){
   if (b.id === 'volta'){ if (S.sujo && !confirm('Há alterações não salvas. Voltar mesmo assim?')) return; return lista(); }
   if (b.dataset.copia) return copia(b.dataset.copia === 'prop' ? linkProposta(S.atual) : linkApres(S.atual));
   if (b.dataset.st) return mudaStatus(b.dataset.st);
+  if (b.dataset.pago) return marcaPago(+b.dataset.pago, b.dataset.v === '1');
+  if (b.dataset.cobrar){ var k = +b.dataset.cobrar, px = P.parcelas(S.atual.dados)[k];
+    return janelaEnvio('Cobrar ' + (k + 1) + 'ª parcela', 'Olá! Segue o Pix da ' + (k + 1) + 'ª parcela (' + P.brl(px.valor) + ') referente a ' + (S.atual.dados.solucao || '') + ' para ' + S.atual.cliente + '. É só abrir o link, copiar o Pix ou ler o QR Code:\n' + linkProposta(S.atual) + '&ver=contrato#pagamento'); }
   var a = b.dataset.acao; if (!a) return;
   var c, i = +b.dataset.i;
   if (a === 'addItem' || a === 'tiraItem'){ c = coleta(); S.atual.dados = c.dados; if (a === 'addItem') c.dados.itens.push({ nome: '', descricao: '', valor: '' }); else c.dados.itens.splice(i, 1); desenhaItens(); marcaSujo(); }

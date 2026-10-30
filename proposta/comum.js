@@ -124,5 +124,27 @@ P.mudancas = function(atual, anterior){
 };
 
 P.destaque = function(t){ return P.esc(t).replace(/\*([^*]+)\*/g, '<em>$1</em>'); };
+
+/* ---------- Pix copia e cola (BR Code estático, padrão do Banco Central) ---------- */
+function tlv(id, v){ v = String(v); return id + ('0' + v.length).slice(-2) + v; }
+function semAcento(t, n){ return String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9 .\-]/g, '').toUpperCase().trim().slice(0, n); }
+P.crc16 = function(str){
+  var crc = 0xFFFF;
+  for (var i = 0; i < str.length; i++){
+    crc ^= str.charCodeAt(i) << 8;
+    for (var j = 0; j < 8; j++) crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) & 0xFFFF : (crc << 1) & 0xFFFF;
+  }
+  return ('000' + crc.toString(16).toUpperCase()).slice(-4);
+};
+P.pix = function(cfg, valor, txid){
+  var chave = String(cfg.pixChave || '').trim(); if (!chave) return '';
+  var p = tlv('00', '01') + tlv('26', tlv('00', 'br.gov.bcb.pix') + tlv('01', chave)) + tlv('52', '0000') + tlv('53', '986');
+  if (P.num(valor) > 0) p += tlv('54', P.num(valor).toFixed(2));
+  p += tlv('58', 'BR') + tlv('59', semAcento(cfg.nome || 'RECEBEDOR', 25)) + tlv('60', semAcento(cfg.cidade || 'FORTALEZA', 15));
+  p += tlv('62', tlv('05', String(txid || '***').replace(/[^A-Za-z0-9]/g, '').slice(0, 25) || '***'));
+  p += '6304';
+  return p + P.crc16(p);
+};
+
 P.copia = function(o){ return JSON.parse(JSON.stringify(o || {})); };
 })();

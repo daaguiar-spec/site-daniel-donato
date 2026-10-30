@@ -29,6 +29,19 @@ window.MODELO_PROPOSTA = {
 
   cidadeForo: "Fortaleza/CE",
 
+  /* Dados para o cliente pagar (aparecem na aba Contrato, depois que você libera o contrato).
+     nome e cidade vão dentro do código Pix (sem acento, até 25 e 15 letras). */
+  pagamento: {
+    pixChave: "11277870000129",
+    pixTipo: "CNPJ",
+    pixExibido: "11.277.870/0001-29",
+    nome: "Daniel Donato",
+    cidade: "Fortaleza",
+    banco: "Nu Pagamentos S.A. (0260)",
+    agencia: "0001",
+    conta: "70785761-8"
+  },
+
   /* Como assinar pelo gov.br (aparece no contrato, em passos). */
   passosGovBr: [
     "Toque em “Baixar PDF” e salve o contrato no celular ou no computador.",
