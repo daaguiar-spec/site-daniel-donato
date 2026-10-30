@@ -41,6 +41,36 @@ window.MODELO_PROPOSTA = {
   dados: {
     solucao: "Treinamento Atendimento Mágico",
     apresentacao: "Uma experiência in company inspirada nos princípios Disney de encantamento, adaptada à realidade da sua equipe.",
+    /* Blocos de conteúdo (aparecem antes dos valores).
+       Nos títulos, o trecho entre *asteriscos* fica em dourado itálico. */
+    experiencia: {
+      titulo: "Uma experiência para transformar *a forma de atender.*",
+      texto: "Uma palestra inspiradora, baseada em princípios da Cultura Disney, para ampliar a percepção sobre atendimento, relacionamento e experiência do cliente.",
+      vivenciado: [
+        "Cases e aprendizados da Disney",
+        "Princípios da experiência do cliente",
+        "Cultura do encantamento e atenção aos detalhes",
+        "Conexão, comunicação e superação de expectativas"
+      ],
+      formato: [
+        "Storytelling envolvente",
+        "Interatividade e participação ativa do público"
+      ]
+    },
+    objetivos: [
+      "Mais consciência sobre o impacto de cada interação com o cliente",
+      "Uma postura mais protagonista no atendimento",
+      "Comunicação mais cuidadosa e intencional",
+      "Atenção aos pequenos detalhes que fazem diferença na experiência",
+      "Mais conexão entre atendimento, relacionamento e resultado"
+    ],
+    resultados: [
+      { titulo: "Perceber", texto: "Que cada contato com o cliente constrói ou destrói valor." },
+      { titulo: "Assumir", texto: "Uma postura mais protagonista diante das situações do dia a dia." },
+      { titulo: "Encantar", texto: "Entendendo que experiência não depende apenas de grandes ações, mas de pequenos detalhes." },
+      { titulo: "Comunicar", texto: "De maneira mais humana, clara e intencional." },
+      { titulo: "Agir", texto: "Transformando os aprendizados em comportamentos observáveis." }
+    ],
     detalhes: {
       formato: "Presencial · in company",
       data_evento: "A combinar",

@@ -284,7 +284,7 @@ function pedidosPendentes(p){
 }
 
 function editor(){
-  if (S.atual.dados && S.atual.dados.estrutura === undefined) S.atual.dados.estrutura = P.copia((M.dados || {}).estrutura || []);
+  ['estrutura','experiencia','objetivos','resultados'].forEach(function(k){ if (S.atual.dados && S.atual.dados[k] === undefined) S.atual.dados[k] = P.copia((M.dados || {})[k]); });
   var p = S.atual, d = p.dados || {}, det = d.detalhes || {}, ct = p.contratante || {}, cons = (C.consultores || []).map(function(c){ return c.nome; });
   var h = '<div class="w painel"><button class="volta" id="volta">← Todas as propostas</button>' +
     '<div class="ed-cab"><div><p class="eb">Proposta · v' + p.versao + '</p><h1>' + esc(p.cliente) + '</h1><div style="margin-top:8px">' + chip(p.status) + '</div></div>' +
@@ -301,6 +301,10 @@ function editor(){
     '<div class="g2" style="margin-top:12px">' + area('fInc', 'O que está incluído (um por linha)', (d.inclui || []).join('\n')) + area('fNao', 'Não incluso (um por linha)', (d.naoInclui || []).join('\n')) +
     area('fEst', 'Estrutura necessária (um por linha)', (d.estrutura || []).join('\n'), 'full', 'placeholder="Ex.: Projetor com HDMI"') + '</div></section>' +
 
+    '<section class="bloco"><h2>A experiência</h2><div class="g2">' + inp('eTit', 'Título (o trecho entre *asteriscos* fica dourado)', (d.experiencia || {}).titulo, 'text', 'full') + area('eTxt', 'Texto', (d.experiencia || {}).texto, 'full') +
+    area('eViv', 'O que será vivenciado (um por linha)', ((d.experiencia || {}).vivenciado || []).join('\n')) + area('eFor', 'Formato (um por linha)', ((d.experiencia || {}).formato || []).join('\n')) + '</div></section>' +
+    '<section class="bloco"><h2>O que queremos provocar</h2>' + area('fObj', 'Objetivos (um por linha)', (d.objetivos || []).join('\n')) + '</section>' +
+    '<section class="bloco"><h2>Ao final, seu time será provocado a</h2><div id="resultados"></div><button class="add" data-acao="addRes">+ Passo</button></section>' +
     '<section class="bloco"><h2>Valores</h2><div id="itens"></div><button class="add" data-acao="addItem">+ Item</button>' +
     '<div class="g3" style="margin-top:16px">' + inp('fDesc', 'Desconto (R$)', d.desconto || '', 'text', '', 'inputmode="decimal"') + inp('fForma', 'Forma de pagamento', d.formaPagamento) + inp('fVal', 'Validade (dias após enviar)', d.validadeDias || '', 'number') + '</div>' +
     '<div class="tot" id="tot"></div>' +
@@ -322,7 +326,7 @@ function editor(){
 
     '<div class="barra"><div class="w"><span class="st" id="estado">Tudo salvo</span>' + botoesBarra(p) + '</div></div>';
   app.innerHTML = h;
-  desenhaItens(); desenhaParcelas(); desenhaClausulas(); recalcula();
+  desenhaItens(); desenhaParcelas(); desenhaResultados(); desenhaClausulas(); recalcula();
 }
 function botoesBarra(p){
   var s = p.status;
@@ -349,6 +353,11 @@ function desenhaParcelas(){
     return '<div class="linha pg" data-p="' + i + '"><input aria-label="Percentual" inputmode="decimal" value="' + esc(pg.percentual) + '" data-k="percentual" placeholder="%"><input aria-label="Quando" value="' + esc(pg.quando) + '" data-k="quando" placeholder="Quando (ex.: na assinatura)"><button class="mini" data-acao="tiraParc" data-i="' + i + '" aria-label="Remover parcela">×</button></div>';
   }).join('');
 }
+function desenhaResultados(){
+  document.getElementById('resultados').innerHTML = (S.atual.dados.resultados || []).map(function(r, i){
+    return '<div class="linha pg" data-r="' + i + '" style="grid-template-columns:minmax(0,.6fr) minmax(0,1.4fr) 40px"><input aria-label="Passo" value="' + esc(r.titulo) + '" data-k="titulo" placeholder="Ex.: Perceber"><input aria-label="Descrição" value="' + esc(r.texto) + '" data-k="texto" placeholder="Descrição"><button class="mini" data-acao="tiraRes" data-i="' + i + '" aria-label="Remover passo">×</button></div>';
+  }).join('');
+}
 function desenhaClausulas(){
   var cls = (S.atual.contrato && S.atual.contrato.clausulas) || [];
   document.getElementById('clausulas').innerHTML = cls.map(function(c, i){
@@ -365,6 +374,9 @@ function coleta(){
   var p = S.atual, d = P.copia(p.dados);
   d.solucao = v('fSol'); d.apresentacao = v('fAp');
   d.detalhes = { formato: v('fFor'), data_evento: v('fData'), local: v('fLocal'), carga_horaria: v('fCh'), participantes: v('fPart') };
+  d.experiencia = { titulo: v('eTit'), texto: v('eTxt'), vivenciado: linhas('eViv'), formato: linhas('eFor') };
+  d.objetivos = linhas('fObj');
+  d.resultados = [].map.call(document.querySelectorAll('#resultados .linha'), function(l){ return { titulo: l.querySelector('[data-k=titulo]').value.trim(), texto: l.querySelector('[data-k=texto]').value.trim() }; }).filter(function(r){ return r.titulo || r.texto; });
   d.inclui = linhas('fInc'); d.naoInclui = linhas('fNao'); d.estrutura = linhas('fEst');
   d.itens = [].map.call(document.querySelectorAll('#itens .linha'), function(l){
     return { nome: l.querySelector('[data-k=nome]').value.trim(), descricao: l.querySelector('[data-k=descricao]').value.trim(), valor: P.num(l.querySelector('[data-k=valor]').value) };
@@ -461,6 +473,7 @@ app.addEventListener('click', function(e){
   var c, i = +b.dataset.i;
   if (a === 'addItem' || a === 'tiraItem'){ c = coleta(); S.atual.dados = c.dados; if (a === 'addItem') c.dados.itens.push({ nome: '', descricao: '', valor: '' }); else c.dados.itens.splice(i, 1); desenhaItens(); marcaSujo(); }
   else if (a === 'addParc' || a === 'tiraParc'){ c = coleta(); S.atual.dados = c.dados; if (a === 'addParc') c.dados.pagamento.push({ percentual: 0, quando: '' }); else c.dados.pagamento.splice(i, 1); desenhaParcelas(); marcaSujo(); }
+  else if (a === 'addRes' || a === 'tiraRes'){ c = coleta(); S.atual.dados = c.dados; if (a === 'addRes') c.dados.resultados.push({ titulo: '', texto: '' }); else c.dados.resultados.splice(i, 1); desenhaResultados(); marcaSujo(); }
   else if (a === 'addCl' || a === 'tiraCl' || a === 'sobe'){
     c = coleta(); S.atual.contrato = c.contrato; var cl = c.contrato.clausulas;
     if (a === 'addCl') cl.push({ titulo: 'Nova cláusula', texto: '' });

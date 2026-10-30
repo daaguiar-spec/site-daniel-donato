@@ -102,6 +102,20 @@ em{color:var(--gold);font-style:italic}
 .cond{margin-top:18px;display:grid;gap:6px;color:var(--txt2);font-size:14.5px}
 .cond b{color:var(--txt)}
 
+/* experiência, objetivos, resultados */
+.exp-txt{font-size:17px;color:var(--txt2);margin:0 0 22px;max-width:680px}
+.sub-t{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--txt3);margin:22px 0 12px}
+.formato{display:flex;flex-wrap:wrap;gap:8px}
+.formato span{padding:8px 14px;border:1px solid rgba(201,162,74,.4);border-radius:999px;font-size:14.5px;color:var(--gold2);background:rgba(201,162,74,.06)}
+.lista-obj li::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23E3C47A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E")}
+.res{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:r}
+.res li{counter-increment:r;display:grid;align-content:start;grid-template-columns:64px 1fr;gap:4px 16px;padding:18px 0;border-top:1px solid var(--line)}
+.res li:first-child{border-top:0;padding-top:4px}
+.res li::before{content:counter(r);grid-row:1 / span 2;font-family:var(--serif);font-size:46px;line-height:1;color:var(--gold);font-variant-numeric:lining-nums}
+.res b{font-size:18px;font-weight:700}
+.res span{color:var(--txt2);font-size:15.5px}
+@media (min-width:800px){.res{grid-template-columns:repeat(5,1fr);gap:18px}.res li{grid-template-columns:1fr;border-top:0;border-left:1px solid var(--line);padding:4px 0 4px 18px}.res li:first-child{border-left:0;padding-left:0}.res li::before{grid-row:auto;margin-bottom:10px}}
+
 /* ações */
 .acoes{margin:34px 0 10px;text-align:center}
 .acoes h2{font-size:clamp(24px,4vw,32px);margin-bottom:8px}
@@ -225,6 +239,11 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
   .parc span{color:#4A4338}
   .lista-ok li::before{background-color:#F3EBDA}
   .mudou{background:none;border:1px solid #C9A24A;color:#8A6A2E}
+  .exp-txt,.res span{color:#4A4338}
+  .res li::before{color:#8A6A2E}
+  .res li,.res b{border-color:#E3DACB;color:#1A1712}
+  .formato span{background:#FBF8F2;border-color:#E3DACB;color:#5C4A20}
+  .sub-t{color:#5C5446}
   .papel{box-shadow:none;padding:0;margin:0;background:#fff;font-size:11pt}
   .cl{break-inside:avoid}
   .cl.alt,.cl.sug{background:none;box-shadow:none}
@@ -386,6 +405,25 @@ function vistaProposta(p, d, st, mud){
   if (p.status === 'em_ajuste')
     h += '<div class="aviso noprint">' + ICON.info + '<span>Recebemos o seu pedido de ajuste e estamos revisando. Se preferir, você ainda pode aceitar esta versão.</span></div>';
   h += '</section>';
+
+  /* a experiência */
+  var ex = d.experiencia || {};
+  if (ex.titulo || ex.texto || (ex.vivenciado || []).length){
+    h += '<section class="bloco"><div class="kicker">A experiência' + (mud.campos.experiencia ? ' <span class="mudou">alterado</span>' : '') + '</div>' +
+      (ex.titulo ? '<h2>' + P.destaque(ex.titulo) + '</h2>' : '') + (ex.texto ? '<p class="exp-txt">' + esc(ex.texto) + '</p>' : '');
+    if ((ex.vivenciado || []).filter(Boolean).length) h += '<div class="sub-t">O que será vivenciado</div><ul class="lista-ok">' + ex.vivenciado.filter(Boolean).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    if ((ex.formato || []).filter(Boolean).length) h += '<div class="sub-t">Formato</div><div class="formato">' + ex.formato.filter(Boolean).map(function(x){ return '<span>' + esc(x) + '</span>'; }).join('') + '</div>';
+    h += '</section>';
+  }
+  /* o que queremos provocar */
+  if ((d.objetivos || []).filter(Boolean).length)
+    h += '<section class="bloco"><div class="kicker">Objetivos' + (mud.campos.objetivos ? ' <span class="mudou">alterado</span>' : '') + '</div><h2>O que queremos <em>provocar</em> com esta experiência.</h2><ul class="lista-ok lista-obj">' +
+      d.objetivos.filter(Boolean).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></section>';
+  /* ao final */
+  var rs = (d.resultados || []).filter(function(r){ return r && (r.titulo || r.texto); });
+  if (rs.length)
+    h += '<section class="bloco"><div class="kicker">Resultados' + (mud.campos.resultados ? ' <span class="mudou">alterado</span>' : '') + '</div><h2>Ao final da experiência, seu time será <em>provocado a:</em></h2><ol class="res">' +
+      rs.map(function(r){ return '<li><b>' + esc(r.titulo) + '</b><span>' + esc(r.texto) + '</span></li>'; }).join('') + '</ol></section>';
 
   /* o que inclui */
   var campos = [['Formato', det.formato], ['Data', det.data_evento], ['Local', det.local], ['Carga horária', det.carga_horaria], ['Participantes', det.participantes]].filter(function(x){ return x[1]; });
