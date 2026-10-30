@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<script>
+if (/\/proposta$/.test(location.pathname)) location.replace(location.pathname + '/' + location.search + location.hash);
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daniel Donato | Proposta</title>
+<meta name="theme-color" content="#0B0A08">
+<meta property="og:title" content="Daniel Donato | Sua proposta">
+<meta property="og:description" content="Proposta personalizada de palestra, treinamento ou imersão.">
+<meta property="og:image" content="https://www.danieldonato.com.br/apresentacao/img/og-capa.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#0B0A08; --bg2:#15130F; --bg3:#1F1B15; --line:#2E2A22;
+  --txt:#F3EDE2; --txt2:#C7BFB2; --txt3:#A79F92;
+  --gold:#C9A24A; --gold2:#E3C47A; --verde:#7FC08F; --laranja:#E5A35A;
+  --serif:'Playfair Display', Georgia, serif; --sans:'Manrope', system-ui, sans-serif;
+  --pad:clamp(18px,5vw,56px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip;line-height:1.5}
+button,input,textarea,select{font:inherit;color:inherit}
+a{color:var(--gold2)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;line-height:1.12}
+em{color:var(--gold);font-style:italic}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.hidden{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding:0 var(--pad)}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+
+/* topo */
+.topo{position:sticky;top:0;z-index:30;background:rgba(11,10,8,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topo .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt)}
+.marca b{width:38px;height:38px;border:1.5px solid var(--gold);border-radius:50%;display:grid;place-items:center;font-family:var(--serif);color:var(--gold);font-weight:700}
+.marca span{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--txt3)}
+.topo-acoes{display:flex;gap:8px}
+.bt-g{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--txt2);font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.bt-g:hover{border-color:var(--gold);color:var(--gold2)}
+@media (max-width:620px){.marca span,.so-desk{display:none}.bt-g{padding:0 13px}}
+
+/* abas */
+.abas{display:flex;gap:6px;padding:6px;background:var(--bg2);border:1px solid var(--line);border-radius:999px;width:max-content;max-width:100%;margin:26px auto 0}
+.abas button{border:0;background:none;padding:10px 20px;border-radius:999px;color:var(--txt2);font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.abas button.on{background:var(--gold);color:#16120A}
+.abas button:disabled{opacity:.45;cursor:not-allowed}
+
+/* capa */
+.capa{padding:44px 0 10px;text-align:center}
+.capa h1{font-size:clamp(34px,7vw,60px);margin:14px 0 14px}
+.capa .sol{font-family:var(--serif);font-size:clamp(20px,3.4vw,26px);color:var(--gold2);margin:0 0 10px}
+.capa p.ap{max-width:620px;margin:0 auto;color:var(--txt2);font-size:16px}
+.meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;margin-top:18px;color:var(--txt3);font-size:13px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.04em;border:1px solid}
+.chip.verde{color:var(--verde);border-color:rgba(127,192,143,.45);background:rgba(127,192,143,.08)}
+.chip.laranja{color:var(--laranja);border-color:rgba(229,163,90,.45);background:rgba(229,163,90,.08)}
+.chip.ouro,.chip.azul{color:var(--gold2);border-color:rgba(201,162,74,.45);background:rgba(201,162,74,.08)}
+.chip.cinza{color:var(--txt3);border-color:var(--line)}
+
+.aviso{display:flex;gap:12px;align-items:flex-start;margin:22px auto 0;max-width:720px;padding:14px 18px;border-radius:14px;border:1px solid rgba(201,162,74,.45);background:rgba(201,162,74,.08);color:var(--gold2);font-size:14.5px;text-align:left}
+.aviso.ok{border-color:rgba(127,192,143,.45);background:rgba(127,192,143,.08);color:#BFE3C6}
+.aviso svg{flex:none;margin-top:2px}
+
+/* blocos */
+.bloco{margin:28px 0;background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,4vw,36px)}
+.bloco h2{font-size:clamp(24px,4vw,32px);margin:8px 0 20px}
+.det{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.det div{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg)}
+.det small{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--txt3);margin-bottom:4px}
+.det b{font-weight:600;font-size:15.5px}
+.lista-ok{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.lista-ok li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:var(--txt)}
+.lista-ok li::before{content:"";flex:none;width:22px;height:22px;border-radius:50%;background:rgba(201,162,74,.16) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23E3C47A' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/12px no-repeat;margin-top:1px}
+.nao{margin-top:18px;font-size:13.5px;color:var(--txt3)}
+.nao b{color:var(--txt2)}
+
+.itens{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.item b{font-weight:600;font-size:16px}
+.item span{color:var(--txt3);font-size:14px}
+.item .v{grid-row:1 / span 2;grid-column:2;align-self:center;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.item .v s{display:block;font-weight:500;color:var(--txt3);font-size:13px}
+.mudou{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:6px;background:rgba(229,163,90,.15);color:var(--laranja);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;vertical-align:middle}
+.sub{display:flex;justify-content:space-between;padding:12px 0;color:var(--txt2);font-size:15px;border-bottom:1px solid var(--line)}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:22px 0 6px;flex-wrap:wrap}
+.total small{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--txt3)}
+.total b{font-family:var(--serif);font-size:clamp(34px,6vw,48px);color:var(--gold2);font-weight:500;font-variant-numeric:lining-nums tabular-nums}
+.total s{color:var(--txt3);font-size:15px;margin-right:10px}
+.parc{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:18px}
+.parc div{border:1px solid rgba(201,162,74,.35);border-radius:14px;padding:16px 18px;background:rgba(201,162,74,.05)}
+.parc small{display:block;color:var(--gold2);font-weight:800;font-size:13px;letter-spacing:.06em}
+.parc b{display:block;font-size:22px;font-weight:700;margin:2px 0;font-variant-numeric:tabular-nums}
+.parc span{color:var(--txt2);font-size:14px}
+.cond{margin-top:18px;display:grid;gap:6px;color:var(--txt2);font-size:14.5px}
+.cond b{color:var(--txt)}
+
+/* ações */
+.acoes{margin:34px 0 10px;text-align:center}
+.acoes h2{font-size:clamp(24px,4vw,32px);margin-bottom:8px}
+.acoes p{color:var(--txt2);margin:0 auto 22px;max-width:520px}
+.botoes{display:flex;flex-direction:column;align-items:center;gap:12px}
+.bt{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:58px;padding:0 34px;border-radius:999px;border:0;background:var(--gold);color:#16120A;font-weight:800;font-size:17px;cursor:pointer;text-decoration:none;transition:transform .25s,box-shadow .25s;width:min(100%,380px)}
+.bt:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(201,162,74,.3)}
+.bt:disabled{opacity:.6;cursor:wait;transform:none}
+.bt2{background:transparent;color:var(--txt);border:1px solid rgba(201,162,74,.55);font-weight:700;font-size:16px;min-height:52px}
+.bt2:hover{background:rgba(201,162,74,.1);box-shadow:none}
+.bt-link{background:none;border:0;color:var(--txt2);font-weight:600;font-size:14.5px;cursor:pointer;text-decoration:underline;text-underline-offset:4px;padding:8px}
+.feito{max-width:620px;margin:0 auto;padding:26px;border-radius:20px;border:1px solid rgba(127,192,143,.4);background:rgba(127,192,143,.06);text-align:center}
+.feito .ic{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;background:rgba(127,192,143,.18);color:var(--verde)}
+.feito h3{font-size:26px;margin-bottom:8px}
+.feito p{color:var(--txt2);margin:0 0 6px}
+
+/* contrato */
+.papel{background:#FBF8F2;color:#221D15;border-radius:6px;padding:clamp(24px,6vw,64px);margin:28px 0;box-shadow:0 30px 70px rgba(0,0,0,.45);font-size:15px;line-height:1.7}
+.papel h2{font-family:var(--serif);text-align:center;font-size:clamp(20px,3.6vw,26px);letter-spacing:.02em;margin:0 0 6px;color:#221D15}
+.papel .pref{text-align:center;color:#6B6152;font-size:13px;margin:0 0 30px}
+.cl{position:relative;padding:4px 0 18px;border-radius:8px}
+.cl h3{font-family:var(--sans);font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px;color:#221D15;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cl p{margin:0;text-align:left}
+@media (min-width:700px){.cl p{text-align:justify;hyphens:auto}}
+.cl.alt{background:rgba(229,163,90,.12);box-shadow:0 0 0 10px rgba(229,163,90,.12)}
+.cl.sug{box-shadow:0 0 0 10px rgba(201,162,74,.14);background:rgba(201,162,74,.14)}
+.cl .mudou{background:#F3DEC2;color:#8A4F12}
+.campo{font-weight:700}
+mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
+.lapis{margin-left:auto;display:inline-flex;align-items:center;gap:6px;border:1px solid #D9CFBE;background:#fff;color:#6B5320;border-radius:999px;padding:5px 11px;font:700 12px var(--sans);letter-spacing:.02em;text-transform:none;cursor:pointer}
+.lapis:hover{border-color:#B8902F;color:#8A6A2E}
+.lapis.tem{background:#B8902F;color:#fff;border-color:#B8902F}
+.assin{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:56px}
+.assin div{border-top:1px solid #221D15;padding-top:8px;text-align:center;font-size:13px}
+.assin b{display:block}
+.local{margin-top:34px;text-align:right}
+@media (max-width:600px){.assin{grid-template-columns:1fr;gap:48px}.lapis span{display:none}.lapis{padding:6px 9px}}
+
+.passos{counter-reset:p;list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.passos li{counter-increment:p;display:flex;gap:14px;align-items:flex-start;color:var(--txt2);font-size:15px}
+.passos li::before{content:counter(p);flex:none;width:30px;height:30px;border-radius:50%;background:var(--gold);color:#16120A;font-weight:800;display:grid;place-items:center;font-size:14px}
+
+.bandeja{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:35;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 20px;border-radius:999px;background:#1F1B15;border:1px solid var(--gold);box-shadow:0 18px 40px rgba(0,0,0,.55);white-space:nowrap}
+.bandeja b{font-size:14.5px}
+.bandeja .bt{min-height:44px;width:auto;padding:0 20px;font-size:14.5px}
+
+/* rodapé */
+.rodape{margin:46px 0 0;padding:28px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);color:var(--txt3);font-size:13px;text-align:center}
+.vend{display:inline-flex;align-items:center;gap:12px;padding:12px 20px;border:1px solid var(--line);border-radius:12px;text-align:left;margin-bottom:16px;color:var(--txt2)}
+.vend .av{width:40px;height:40px;border-radius:50%;background:var(--line);display:grid;place-items:center;color:var(--gold);font-weight:800}
+.vend small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3)}
+.vend b{color:var(--txt)}
+
+/* janelas */
+.fundo{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center;padding:0;animation:aparece .2s}
+@keyframes aparece{from{opacity:0}}
+.jan{width:100%;max-width:560px;max-height:92vh;max-height:92svh;overflow:auto;background:var(--bg2);border:1px solid var(--line);border-radius:22px 22px 0 0;padding:26px 22px calc(26px + env(safe-area-inset-bottom,0px));animation:sobe .25s cubic-bezier(.2,.7,.2,1)}
+@keyframes sobe{from{transform:translateY(40px)}}
+@media (min-width:700px){.fundo{align-items:center;padding:20px}.jan{border-radius:22px;padding:32px}}
+.jan h3{font-size:26px;margin:4px 0 6px}
+.jan .ex{color:var(--txt2);font-size:14.5px;margin:0 0 18px}
+.jan .x{float:right;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--txt2);cursor:pointer;font-size:20px;line-height:1}
+.jan label{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);margin:14px 0 6px}
+.jan input,.jan textarea,.jan select{width:100%;background:var(--bg);border:1px solid #3A3226;border-radius:12px;padding:13px 14px;font-size:16px;color:var(--txt)}
+.jan textarea{min-height:110px;resize:vertical}
+.jan input:focus,.jan textarea:focus{border-color:var(--gold);outline:none}
+.jan .dupla{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+@media (max-width:480px){.jan .dupla{grid-template-columns:1fr}}
+.jan fieldset{border:1px solid var(--line);border-radius:16px;padding:6px 16px 16px;margin:18px 0 0}
+.jan legend{padding:0 8px;color:var(--gold2);font-weight:700;font-size:14px}
+.jan .bt{width:100%;margin-top:22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{margin:0;text-transform:none;letter-spacing:0;font-size:14.5px;font-weight:600;color:var(--txt2)}
+.chips input{position:absolute;opacity:0;width:1px;height:1px}
+.chips span{display:inline-block;padding:9px 14px;border:1px solid #3A3226;border-radius:999px;cursor:pointer}
+.chips input:checked + span{background:var(--gold);border-color:var(--gold);color:#16120A}
+.chips input:focus-visible + span{outline:2px solid var(--gold2);outline-offset:2px}
+.concordo{display:flex!important;gap:12px;align-items:flex-start;text-transform:none!important;letter-spacing:0!important;font-size:14.5px!important;font-weight:500!important;color:var(--txt2)!important;margin-top:18px!important}
+.concordo input{width:22px;height:22px;flex:none;accent-color:var(--gold);margin-top:1px}
+.citacao{background:var(--bg);border-left:3px solid var(--gold);border-radius:8px;padding:12px 14px;color:var(--txt2);font-size:14px;max-height:180px;overflow:auto}
+.erro{color:#F0B4A6;font-size:14px;margin-top:12px}
+.lista-sug{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.lista-sug li{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--txt2)}
+.lista-sug li b{color:var(--txt);display:block}
+.lista-sug button{background:none;border:0;color:#F0B4A6;font-size:13px;cursor:pointer;padding:6px 0 0;text-decoration:underline}
+.envio{display:grid;gap:10px;margin-top:18px}
+.envio a{justify-content:flex-start;padding:0 22px}
+
+.toast{position:fixed;left:50%;top:80px;transform:translateX(-50%);z-index:80;background:#EDE6D8;color:#1A140A;font-weight:700;padding:12px 18px;border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.4);font-size:14.5px;max-width:calc(100% - 32px);text-align:center}
+.carreg{min-height:60vh;display:grid;place-items:center;color:var(--txt3)}
+.vazio{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:40px var(--pad)}
+.vazio h1{font-size:34px}
+.vazio p{color:var(--txt2);max-width:440px;margin:0}
+.demo{background:#3A2E14;color:var(--gold2);text-align:center;font-size:13px;padding:8px 14px}
+
+/* ---------- PDF / impressão ---------- */
+.so-print{display:none}
+@media print{
+  @page{size:A4;margin:16mm 16mm 18mm}
+  html,body{background:#fff!important;color:#1A1712!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-size:11.5pt}
+  .noprint,.topo,.abas,.acoes,.bandeja,.fundo,.toast,.lapis,.demo,.rodape .vend{display:none!important}
+  .so-print{display:block}
+  .wrap{max-width:none;padding:0}
+  em{color:#8A6A2E}
+  .kicker{color:#8A6A2E}
+  .capa{padding:0 0 6mm;text-align:left}
+  .capa h1{font-size:28pt;margin:4mm 0}
+  .capa .sol{color:#8A6A2E}
+  .capa p.ap,.meta{color:#4A4338;justify-content:flex-start}
+  .chip,.aviso{display:none}
+  .bloco{background:#fff;border:1px solid #DDD3C2;border-radius:10px;padding:7mm;margin:0 0 6mm;break-inside:avoid}
+  .bloco h2{color:#1A1712}
+  .det div{background:#FBF8F2;border-color:#E3DACB}
+  .det small,.item span,.nao,.sub,.total small,.cond{color:#5C5446}
+  .det b,.lista-ok li,.item b,.cond b,.nao b{color:#1A1712}
+  .itens,.item,.sub{border-color:#E3DACB}
+  .total b{color:#8A6A2E}
+  .parc div{background:#FBF8F2;border-color:#E3DACB}
+  .parc small{color:#8A6A2E}
+  .parc span{color:#4A4338}
+  .lista-ok li::before{background-color:#F3EBDA}
+  .mudou{background:none;border:1px solid #C9A24A;color:#8A6A2E}
+  .papel{box-shadow:none;padding:0;margin:0;background:#fff;font-size:11pt}
+  .cl{break-inside:avoid}
+  .cl.alt,.cl.sug{background:none;box-shadow:none}
+  .cl .mudou{display:none}
+  mark.falta{background:none;color:#1A1712;border-bottom:1px solid #999}
+  .assin{break-inside:avoid}
+  .rodape{border-color:#E3DACB;color:#5C5446;margin-top:8mm;padding:4mm 0 0}
+  body.imprime-contrato #vistaProposta, body.imprime-proposta #vistaContrato{display:none!important}
+  body.imprime-contrato .cab-contrato{display:none}
+}
+</style>
+</head>
+<body>
+<div id="faixaDemo" class="demo noprint hidden">Modo demonstração: nada aqui é salvo nem enviado.</div>
+<header class="topo">
+  <div class="wrap">
+    <a class="marca" id="linkApres" href="/apresentacao/"><b>DD</b><span>Daniel Donato</span></a>
+    <div class="topo-acoes">
+      <a class="bt-g so-desk" id="topoApres" href="/apresentacao/">Ver apresentação</a>
+      <button class="bt-g" id="topoPdf" type="button" hidden>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        Baixar PDF
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
+
+<script src="/apresentacao/conteudo.js"></script>
+<script src="modelo.js"></script>
+<script src="comum.js"></script>
+<script>
+(function(){
+var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
+var esc = P.esc, $ = function(id){ return document.getElementById(id); };
+var QS = new URLSearchParams(location.search);
+var CODIGO = (QS.get('p') || QS.get('codigo') || '').replace(/[^a-z0-9]/gi, '').slice(0, 40);
+var DEMO = QS.has('demo');
+var S = { prop: null, vista: QS.get('ver') === 'contrato' ? 'contrato' : 'proposta', sugestoes: [] };
+
+var ICON = {
+  ok: '<svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>',
+  info: '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>',
+  lapis: '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>',
+  cad: '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  zap: '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>',
+  mail: '<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>'
+};
+
+/* ---------------- dados ---------------- */
+function tokenAdmin(){
+  try{
+    for (var i = 0; i < localStorage.length; i++){
+      var k = localStorage.key(i);
+      if (/^sb-.*-auth-token$/.test(k)){ var t = JSON.parse(localStorage.getItem(k)); if (t && t.access_token && (!t.expires_at || t.expires_at > Date.now()/1000 + 30)) return t.access_token; }
+    }
+  }catch(e){}
+  return null;
+}
+function rpc(nome, corpo){
+  var h = { apikey: P.KEY, 'Content-Type': 'application/json' }, t = tokenAdmin();
+  if (t) h.Authorization = 'Bearer ' + t;
+  return fetch(P.SB + '/rest/v1/rpc/' + nome, { method: 'POST', headers: h, body: JSON.stringify(corpo) })
+    .then(function(r){ return r.json().then(function(j){ if (!r.ok) throw new Error((j && (j.message || j.hint)) || ('Erro ' + r.status)); return j; }); });
+}
+function demo(){
+  var d = P.copia(M.dados), c = P.copia(M.contrato);
+  var etapa = QS.get('demo') || 'proposta';
+  var p = { codigo: 'demo', cliente: 'Hotel Praiano', vendedor: 'Vanessa Matos', fone: '', status: 'visualizada', versao: 1,
+    publicado_em: new Date().toISOString(), dados: d, contrato: null, contratante: null, aceite: null, anterior: null };
+  if (etapa === 'ajustada'){
+    var antes = P.copia(d); d.itens[0].valor = 11000; d.pagamento = [{percentual:30,quando:'na assinatura do contrato'},{percentual:70,quando:'ao final do treinamento'}];
+    p.versao = 2; p.anterior = { dados: antes, contrato: null }; p.status = 'enviada';
+  }
+  if (etapa === 'contrato'){
+    p.status = 'contrato_liberado'; p.contrato = c;
+    p.contratante = { razao: 'Praiano Hotel Ltda.', cnpj: '12.345.678/0001-90', endereco: 'Av. Beira Mar, 2800, Meireles, Fortaleza/CE', representante: 'Maria Souza', cpf: '123.456.789-00' };
+    p.aceite = { nome: 'Maria Souza', cargo: 'Diretora', quando: new Date(Date.now() - 864e5).toISOString() };
+  }
+  return Promise.resolve(p);
+}
+function responder(tipo, dados){
+  if (DEMO){
+    var mapa = { aceite: 'aprovada', ajuste_proposta: 'em_ajuste', ajuste_contrato: 'contrato_em_ajuste' };
+    if (mapa[tipo]) S.prop.status = mapa[tipo];
+    if (tipo === 'aceite'){ S.prop.aceite = Object.assign({ quando: new Date().toISOString() }, dados.aceite); S.prop.contratante = dados.contratante; }
+    return Promise.resolve({ ok: true });
+  }
+  if (S.prop.previa) return Promise.resolve({ ok: true, previa: true });
+  return rpc('proposta_responder', { p_codigo: S.prop.codigo, p_tipo: tipo, p_dados: dados || {} }).then(function(r){ if (r && r.status) S.prop.status = r.status; return r; });
+}
+
+/* ---------------- avisos por e-mail (FormSubmit, como na apresentação) ---------------- */
+function norm(s){ return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim(); }
+function aviso(assunto, campos){
+  if (DEMO || !S.prop || S.prop.previa || !C.avisoEmail) return;
+  if (/^(localhost|127\.)/.test(location.hostname) || location.protocol === 'file:') return;
+  var cons = (C.consultores || []).filter(function(c){ return norm(c.nome) === norm(S.prop.vendedor); })[0];
+  var f = new URLSearchParams(); f.append('_template', 'table'); f.append('_captcha', 'false'); f.append('_subject', assunto);
+  if (C.avisarConsultores && cons && cons.email) f.append('_cc', cons.email);
+  var base = { 'Cliente': S.prop.cliente, 'Consultor de Experiência': S.prop.vendedor || '—', 'Versão': String(S.prop.versao),
+    'Quando': new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' }) };
+  Object.keys(base).forEach(function(k){ f.append(k, base[k]); });
+  Object.keys(campos || {}).forEach(function(k){ f.append(k, campos[k]); });
+  f.append('Painel', location.origin + '/proposta/painel.html');
+  try{ fetch('https://formsubmit.co/ajax/' + encodeURIComponent(C.avisoEmail), { method: 'POST', mode: 'no-cors', keepalive: true, body: f }).catch(function(){}); }catch(e){}
+}
+function aparelho(){ var w = Math.min(innerWidth, screen.width || innerWidth); return w <= 680 ? 'Celular' : w <= 1024 ? 'Tablet' : 'Computador'; }
+
+/* ---------------- utilidades ---------------- */
+function numeroZap(){
+  var f = String((S.prop && S.prop.fone) || '').replace(/\D/g, '');
+  if (f.length === 10 || f.length === 11) f = '55' + f;
+  return f.length >= 12 ? f : (C.whatsapp || '');
+}
+function zap(msg){ return 'https://api.whatsapp.com/send?phone=' + numeroZap() + '&text=' + encodeURIComponent(msg); }
+function toast(m){ var t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 3800); }
+function linkApresentacao(){
+  var q = new URLSearchParams(); q.set('cliente', S.prop.cliente); if (S.prop.vendedor) q.set('vendedor', S.prop.vendedor);
+  if (S.prop.fone) q.set('fone', S.prop.fone); q.set('proposta', S.prop.codigo);
+  return '/apresentacao/?' + q.toString();
+}
+function contratoDisponivel(){ return !!S.prop.contrato && ['contrato_liberado','contrato_em_ajuste','assinado'].indexOf(S.prop.status) > -1 || (!!S.prop.contrato && S.prop.previa); }
+
+/* ---------------- telas ---------------- */
+function desenha(){
+  var p = S.prop, d = p.dados || {}, st = P.STATUS[p.status] || { t: p.status, c: 'cinza' };
+  var mud = P.mudancas(p, p.anterior);
+  document.title = 'Proposta · ' + p.cliente + ' · Daniel Donato';
+  $('linkApres').href = $('topoApres').href = linkApresentacao();
+  $('topoPdf').hidden = false;
+
+  var temContrato = contratoDisponivel();
+  if (!temContrato && S.vista === 'contrato') S.vista = 'proposta';
+  var abas = '<div class="abas noprint" role="tablist">' +
+    '<button role="tab" data-vista="proposta" class="' + (S.vista === 'proposta' ? 'on' : '') + '" aria-selected="' + (S.vista === 'proposta') + '">Proposta</button>' +
+    '<button role="tab" data-vista="contrato" class="' + (S.vista === 'contrato' ? 'on' : '') + '" aria-selected="' + (S.vista === 'contrato') + '"' + (temContrato ? '' : ' disabled title="O contrato aparece aqui depois que a proposta for aceita"') + '>' + (temContrato ? '' : ICON.cad) + 'Contrato</button></div>';
+
+  var h = '<div class="wrap">' + (p.previa ? '<div class="aviso noprint">' + ICON.info + '<span><b>Prévia do administrador.</b> Suas visitas e cliques não são registrados.</span></div>' : '') + abas;
+  h += '<div id="vistaProposta"' + (S.vista === 'proposta' ? '' : ' class="hidden"') + '>' + vistaProposta(p, d, st, mud) + '</div>';
+  h += '<div id="vistaContrato"' + (S.vista === 'contrato' ? '' : ' class="hidden"') + '>' + (temContrato ? vistaContrato(p, mud) : '') + '</div>';
+  h += rodape(p) + '</div>';
+  $('app').innerHTML = h;
+  bandeja();
+}
+
+function vistaProposta(p, d, st, mud){
+  var det = d.detalhes || {}, h = '';
+  var meta = ['Versão ' + p.versao + ' · ' + P.data(p.publicado_em)];
+  var val = P.validade(d, p.publicado_em); if (val) meta.push('Válida até ' + val);
+  h += '<section class="capa"><div class="kicker">Proposta comercial</div>' +
+    '<h1>Para <em>' + esc(p.cliente) + '</em></h1>' +
+    (d.solucao ? '<p class="sol">' + esc(d.solucao) + (mud.campos.solucao ? '<span class="mudou">alterado</span>' : '') + '</p>' : '') +
+    (d.apresentacao ? '<p class="ap">' + esc(d.apresentacao) + '</p>' : '') +
+    '<div class="meta"><span>' + meta.map(esc).join('</span><span>') + '</span><span class="chip ' + st.c + '">' + esc(st.t) + '</span></div>';
+  if (mud.alguma && ['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1)
+    h += '<div class="aviso">' + ICON.info + '<span><b>Proposta atualizada.</b> Revisamos conforme a conversa. Os pontos que mudaram estão marcados como <span class="mudou" style="margin:0">alterado</span>.</span></div>';
+  if (p.status === 'em_ajuste')
+    h += '<div class="aviso noprint">' + ICON.info + '<span>Recebemos o seu pedido de ajuste e estamos revisando. Se preferir, você ainda pode aceitar esta versão.</span></div>';
+  h += '</section>';
+
+  /* o que inclui */
+  var campos = [['Formato', det.formato], ['Data', det.data_evento], ['Local', det.local], ['Carga horária', det.carga_horaria], ['Participantes', det.participantes]].filter(function(x){ return x[1]; });
+  if (campos.length || (d.inclui || []).length){
+    h += '<section class="bloco"><div class="kicker">O que você recebe' + (mud.campos.detalhes || mud.campos.inclui ? ' <span class="mudou">alterado</span>' : '') + '</div><h2>Tudo o que está <em>incluído.</em></h2>';
+    if (campos.length) h += '<div class="det">' + campos.map(function(x){ return '<div><small>' + esc(x[0]) + '</small><b>' + esc(x[1]) + '</b></div>'; }).join('') + '</div>';
+    if ((d.inclui || []).length) h += '<ul class="lista-ok">' + d.inclui.filter(Boolean).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    if ((d.naoInclui || []).filter(Boolean).length) h += '<p class="nao"><b>Não incluso:</b> ' + d.naoInclui.filter(Boolean).map(esc).join(' · ') + '</p>';
+    h += '</section>';
+  }
+
+  /* investimento */
+  h += '<section class="bloco"><div class="kicker">Investimento</div><h2>Valores e <em>condições.</em></h2><div class="itens">';
+  (d.itens || []).forEach(function(it, i){
+    var m = mud.itens[i];
+    h += '<div class="item"><b>' + esc(it.nome) + (m ? '<span class="mudou">' + (m.novo ? 'novo' : 'alterado') + '</span>' : '') + '</b>' +
+      '<div class="v">' + (m && m.antes && P.num(m.antes.valor) !== P.num(it.valor) ? '<s>' + P.brl(m.antes.valor) + '</s>' : '') + P.brl(it.valor) + '</div>' +
+      (it.descricao ? '<span>' + esc(it.descricao) + '</span>' : '<span></span>') + '</div>';
+  });
+  h += '</div>';
+  if (P.num(d.desconto)) h += '<div class="sub"><span>Subtotal</span><span>' + P.brl(P.subtotal(d)) + '</span></div><div class="sub"><span>Desconto' + (mud.campos.desconto ? '<span class="mudou">alterado</span>' : '') + '</span><span>− ' + P.brl(d.desconto) + '</span></div>';
+  h += '<div class="total"><small>Investimento total</small><b>' + (mud.campos.total ? '<s>' + P.brl(mud.campos.total.antes) + '</s>' : '') + P.brl(P.total(d)) + '</b></div>';
+  var parc = P.parcelas(d);
+  if (parc.length) h += '<div class="parc">' + parc.map(function(x){ return '<div><small>' + x.percentual + '%' + (mud.campos.pagamento ? ' · alterado' : '') + '</small><b>' + P.brl(x.valor) + '</b><span>' + esc(x.quando) + '</span></div>'; }).join('') + '</div>';
+  h += '<div class="cond">' + (d.formaPagamento ? '<span><b>Forma de pagamento:</b> ' + esc(d.formaPagamento) + (mud.campos.formaPagamento ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
+    (val ? '<span><b>Validade da proposta:</b> ' + esc(val) + '</span>' : '') +
+    (d.observacoes ? '<span>' + esc(d.observacoes).replace(/\n/g, '<br>') + '</span>' : '') + '</div></section>';
+
+  /* ações */
+  h += '<section class="acoes">' + acoesProposta(p) + '</section>';
+  return h;
+}
+
+function acoesProposta(p){
+  var ac = p.aceite || {};
+  if (['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1)
+    return '<h2>Vamos <em>começar?</em></h2><p>Se estiver tudo certo, aceite a proposta e já preparamos o contrato. Se quiser mudar algo, é só pedir.</p>' +
+      '<div class="botoes"><button class="bt" data-acao="aceitar">' + ICON.ok + ' Aceito a proposta</button>' +
+      '<button class="bt bt2" data-acao="ajustar">Quero ajustar algo</button>' +
+      '<a class="bt-link" data-acao="conversar" href="' + zap('Olá! Estou vendo a proposta do Daniel Donato para ' + p.cliente + ' e queria conversar.') + '" target="_blank" rel="noopener">Prefiro conversar pelo WhatsApp</a></div>';
+  var quem = ac.nome ? ' por ' + esc(ac.nome) : '';
+  if (p.status === 'aprovada')
+    return '<div class="feito"><div class="ic">' + ICON.ok + '</div><h3>Proposta aceita!</h3><p>Aceita em ' + esc(P.dataHora(ac.quando)) + quem + '.</p><p>Estamos preparando o contrato. Ele vai aparecer aqui, na aba <b>Contrato</b>, e avisamos você assim que estiver pronto.</p></div>';
+  if (p.status === 'contrato_liberado' || p.status === 'contrato_em_ajuste')
+    return '<div class="feito"><div class="ic">' + ICON.ok + '</div><h3>Proposta aceita!</h3><p>Aceita em ' + esc(P.dataHora(ac.quando)) + quem + '.</p><p>O contrato já está pronto para você ler.</p><div class="botoes" style="margin-top:16px"><button class="bt" data-vista="contrato">Ver o contrato</button></div></div>';
+  if (p.status === 'assinado')
+    return '<div class="feito"><div class="ic">' + ICON.ok + '</div><h3>Contrato assinado.</h3><p>Obrigado pela confiança! Agora é com a gente: em breve combinamos os próximos passos.</p></div>';
+  return '<div class="feito" style="border-color:var(--line);background:none"><h3>Proposta encerrada</h3><p>Quer retomar? Fale com a gente.</p><div class="botoes" style="margin-top:16px"><a class="bt bt2" href="' + zap('Olá! Quero retomar a proposta para ' + p.cliente + '.') + '" target="_blank" rel="noopener">' + ICON.zap + ' Falar no WhatsApp</a></div></div>';
+}
+
+function vistaContrato(p, mud){
+  var campos = P.campos(p, M), cls = (p.contrato && p.contrato.clausulas) || [];
+  var podeSugerir = ['contrato_liberado','contrato_em_ajuste'].indexOf(p.status) > -1;
+  var h = '<section class="capa cab-contrato"><div class="kicker">Contrato</div><h1>Leia com <em>calma.</em></h1>' +
+    '<p class="ap">Se estiver tudo certo, baixe o PDF e assine pelo gov.br. Quer mudar alguma cláusula? Toque em <b>Sugerir</b> ao lado dela.</p>';
+  if (p.status === 'contrato_em_ajuste') h += '<div class="aviso">' + ICON.info + '<span>Recebemos as suas sugestões e estamos revisando o contrato. Avisamos você quando a nova versão estiver pronta.</span></div>';
+  else if (mud.alguma && Object.keys(mud.clausulas).length) h += '<div class="aviso">' + ICON.info + '<span><b>Contrato atualizado.</b> As cláusulas que mudaram estão marcadas.</span></div>';
+  if (p.status === 'assinado') h += '<div class="aviso ok">' + ICON.info + '<span>Contrato assinado. Esta é a versão final.</span></div>';
+  h += '</section>';
+
+  h += '<article class="papel"><h2>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2><p class="pref">' + esc(p.dados.solucao || '') + ' · versão ' + p.versao + '</p>';
+  cls.forEach(function(c, i){
+    var tem = S.sugestoes.some(function(s){ return s.i === i; });
+    h += '<div class="cl' + (mud.clausulas[i] ? ' alt' : '') + (tem ? ' sug' : '') + '" id="cl' + i + '"><h3>Cláusula ' + (i + 1) + 'ª · ' + esc(c.titulo) +
+      (mud.clausulas[i] ? '<span class="mudou">alterada</span>' : '') +
+      (podeSugerir ? '<button class="lapis' + (tem ? ' tem' : '') + '" data-acao="sugerir" data-i="' + i + '" aria-label="Sugerir alteração na cláusula ' + (i + 1) + '">' + ICON.lapis + '<span>' + (tem ? 'Sugestão feita' : 'Sugerir') + '</span></button>' : '') +
+      '</h3><p>' + P.preenche(c.texto, campos, true) + '</p></div>';
+  });
+  var ct = p.contratante || {}, cd = M.contratada || {};
+  h += '<p class="local">' + esc(campos.cidade_foro || '') + ', ' + esc(P.hoje()) + '.</p>' +
+    '<div class="assin"><div><b>' + esc(ct.razao || 'CONTRATANTE') + '</b>' + esc(ct.representante || '') + '</div><div><b>' + esc(cd.razao || 'CONTRATADA') + '</b>' + esc(cd.representante || '') + '</div></div></article>';
+
+  if (p.status !== 'assinado'){
+    h += '<section class="bloco noprint"><div class="kicker">Como assinar</div><h2>Assine pelo <em>gov.br</em>, de graça.</h2><ol class="passos">' +
+      (M.passosGovBr || []).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>' +
+      '<div class="botoes" style="margin-top:24px"><button class="bt" data-acao="pdf">Baixar PDF do contrato</button>' +
+      '<a class="bt bt2" href="https://assinador.iti.br/" target="_blank" rel="noopener">Abrir o assinador gov.br</a>' +
+      '<button class="bt bt2" data-acao="assinei">Já assinei · enviar contrato</button>' +
+      (podeSugerir ? '<button class="bt-link" data-acao="enviarSug">Sugerir alterações no contrato</button>' : '') + '</div></section>';
+  }
+  return h;
+}
+
+function rodape(p){
+  var v = p.vendedor ? '<div class="vend"><div class="av">' + esc(p.vendedor.charAt(0).toUpperCase()) + '</div><div><small>Consultor de Experiência</small><b>' + esc(p.vendedor) + '</b></div></div><br>' : '';
+  return '<footer class="rodape">' + v + 'Daniel Donato · Palestras, treinamentos e imersões' + (C.telefoneExibido ? ' · ' + esc(C.telefoneExibido) : '') + (C.email ? ' · ' + esc(C.email) : '') + '</footer>';
+}
+
+function bandeja(){
+  var b = $('bandeja'); if (b) b.remove();
+  if (S.vista !== 'contrato' || !S.sugestoes.length) return;
+  b = document.createElement('div'); b.id = 'bandeja'; b.className = 'bandeja noprint';
+  b.innerHTML = '<b>' + S.sugestoes.length + (S.sugestoes.length > 1 ? ' sugestões' : ' sugestão') + ' no contrato</b><button class="bt" data-acao="enviarSug">Revisar e enviar</button>';
+  document.body.appendChild(b);
+}
+
+/* ---------------- janelas ---------------- */
+function janela(html, aoMontar){
+  fecha();
+  var f = document.createElement('div'); f.className = 'fundo noprint'; f.id = 'janela';
+  f.innerHTML = '<div class="jan" role="dialog" aria-modal="true"><button class="x" type="button" data-fechar aria-label="Fechar">×</button>' + html + '</div>';
+  f.addEventListener('click', function(e){ if (e.target === f || e.target.hasAttribute('data-fechar')) fecha(); });
+  document.body.appendChild(f); document.body.style.overflow = 'hidden';
+  var primeiro = f.querySelector('input,textarea,select'); if (primeiro && innerWidth > 700) primeiro.focus();
+  if (aoMontar) aoMontar(f.querySelector('.jan'));
+}
+function fecha(){ var f = $('janela'); if (f) f.remove(); document.body.style.overflow = ''; }
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') fecha(); });
+function campo(id, rot, tipo, valor, extra){
+  return '<label for="' + id + '">' + rot + '</label>' + (tipo === 'area'
+    ? '<textarea id="' + id + '" ' + (extra || '') + '>' + esc(valor || '') + '</textarea>'
+    : '<input id="' + id + '" type="' + (tipo || 'text') + '" value="' + esc(valor || '') + '" ' + (extra || '') + '>');
+}
+function val(id){ var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function digitos(s){ return String(s || '').replace(/\D/g, ''); }
+
+function abreAceite(){
+  var ct = S.prop.contratante || {}, ac = S.prop.aceite || {};
+  janela('<div class="kicker">Aceite da proposta</div><h3>Falta pouco.</h3><p class="ex">Com estes dados nós já preparamos o contrato. Leva um minuto.</p>' +
+    '<form id="fAceite" novalidate>' +
+    '<div class="dupla"><div>' + campo('acNome', 'Seu nome', 'text', ac.nome, 'autocomplete="name" required') + '</div><div>' + campo('acCargo', 'Cargo', 'text', ac.cargo, 'autocomplete="organization-title"') + '</div></div>' +
+    '<div class="dupla"><div>' + campo('acEmail', 'E-mail', 'email', ac.email, 'autocomplete="email" required') + '</div><div>' + campo('acFone', 'WhatsApp', 'tel', ac.fone, 'autocomplete="tel" inputmode="tel"') + '</div></div>' +
+    '<fieldset><legend>Dados para o contrato</legend>' +
+    campo('ctRazao', 'Razão social (ou nome completo)', 'text', ct.razao || S.prop.cliente, 'autocomplete="organization" required') +
+    campo('ctCnpj', 'CNPJ (ou CPF)', 'text', ct.cnpj, 'inputmode="numeric" required') +
+    campo('ctEnd', 'Endereço completo', 'text', ct.endereco, 'autocomplete="street-address" required') +
+    '<div class="dupla"><div>' + campo('ctRep', 'Quem assina o contrato', 'text', ct.representante, 'required') + '</div><div>' + campo('ctCpf', 'CPF de quem assina', 'text', ct.cpf, 'inputmode="numeric" required') + '</div></div>' +
+    '</fieldset>' +
+    '<label class="concordo"><input type="checkbox" id="acOk"> <span>Li a proposta de <b>' + esc(P.brl(P.total(S.prop.dados))) + '</b> e concordo com os valores e as condições.</span></label>' +
+    '<div class="erro" id="acErro" role="alert" hidden></div>' +
+    '<button class="bt" type="submit">' + ICON.ok + ' Confirmar aceite</button></form>', function(j){
+      j.querySelector('#fAceite').addEventListener('submit', function(e){
+        e.preventDefault();
+        var er = j.querySelector('#acErro'), falta = [];
+        if (!val('acNome')) falta.push('seu nome');
+        if (!/^\S+@\S+\.\S+$/.test(val('acEmail'))) falta.push('um e-mail válido');
+        if (!val('ctRazao')) falta.push('a razão social');
+        var doc = digitos(val('ctCnpj')); if (doc.length !== 14 && doc.length !== 11) falta.push('o CNPJ (14 números) ou CPF (11 números)');
+        if (!val('ctEnd')) falta.push('o endereço');
+        if (!val('ctRep')) falta.push('quem assina');
+        if (digitos(val('ctCpf')).length !== 11) falta.push('o CPF de quem assina (11 números)');
+        if (!j.querySelector('#acOk').checked) falta.push('marcar que concorda com a proposta');
+        if (falta.length){ er.hidden = false; er.textContent = 'Falta: ' + falta.join(', ') + '.'; return; }
+        var dados = {
+          aceite: { nome: val('acNome'), cargo: val('acCargo'), email: val('acEmail'), fone: val('acFone'), aparelho: aparelho(), total: P.total(S.prop.dados) },
+          contratante: { razao: val('ctRazao'), cnpj: formataDoc(val('ctCnpj')), endereco: val('ctEnd'), representante: val('ctRep'), cpf: formataDoc(val('ctCpf')) }
+        };
+        var b = j.querySelector('button[type=submit]'); b.disabled = true; b.textContent = 'Enviando…';
+        responder('aceite', dados).then(function(){
+          aviso('✅ ' + S.prop.cliente + ' ACEITOU a proposta (' + P.brl(P.total(S.prop.dados)) + ')', {
+            'Quem aceitou': dados.aceite.nome + (dados.aceite.cargo ? ' · ' + dados.aceite.cargo : ''), 'E-mail': dados.aceite.email, 'WhatsApp': dados.aceite.fone || '—',
+            'Razão social': dados.contratante.razao, 'CNPJ/CPF': dados.contratante.cnpj, 'Endereço': dados.contratante.endereco,
+            'Assina o contrato': dados.contratante.representante + ' · CPF ' + dados.contratante.cpf,
+            'Próximo passo': 'Revise o contrato no painel e toque em "Liberar contrato".' });
+          S.prop.aceite = Object.assign({ quando: new Date().toISOString() }, dados.aceite); S.prop.contratante = dados.contratante;
+          fecha(); desenha(); scrollTo({ top: document.querySelector('.acoes').offsetTop - 90, behavior: 'smooth' }); toast('Proposta aceita! Obrigado.');
+        }).catch(function(err){ b.disabled = false; b.innerHTML = ICON.ok + ' Confirmar aceite'; er.hidden = false; er.textContent = 'Não foi possível enviar agora. Tente de novo ou fale com a gente pelo WhatsApp. (' + err.message + ')'; });
+      });
+    });
+}
+function formataDoc(s){
+  var d = digitos(s);
+  if (d.length === 14) return d.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+  if (d.length === 11) return d.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+  return s;
+}
+
+var TEMAS = ['Valor', 'Forma de pagamento', 'Parcelamento', 'Data', 'Carga horária', 'Participantes', 'Conteúdo', 'Outro'];
+function abreAjuste(){
+  var ac = S.prop.aceite || {};
+  janela('<div class="kicker">Ajuste na proposta</div><h3>O que você quer mudar?</h3><p class="ex">Conte o que precisa e revisamos a proposta. Você recebe a nova versão neste mesmo link.</p>' +
+    '<form id="fAj" novalidate><label>Escolha um ou mais</label><div class="chips">' +
+    TEMAS.map(function(t, i){ return '<label><input type="checkbox" name="tema" value="' + esc(t) + '" id="tm' + i + '"><span>' + esc(t) + '</span></label>'; }).join('') + '</div>' +
+    campo('ajComo', 'Como gostaria que ficasse', 'area', '', 'placeholder="Ex.: parcelar em 3 vezes, ou fazer em duas turmas de 4 horas" required') +
+    '<div class="dupla"><div>' + campo('ajNome', 'Seu nome', 'text', ac.nome, 'autocomplete="name" required') + '</div><div>' + campo('ajFone', 'WhatsApp (opcional)', 'tel', '', 'autocomplete="tel"') + '</div></div>' +
+    '<div class="erro" id="ajErro" role="alert" hidden></div><button class="bt" type="submit">Enviar pedido de ajuste</button></form>', function(j){
+      j.querySelector('#fAj').addEventListener('submit', function(e){
+        e.preventDefault();
+        var temas = [].slice.call(j.querySelectorAll('input[name=tema]:checked')).map(function(x){ return x.value; });
+        var er = j.querySelector('#ajErro');
+        if (!val('ajComo') || !val('ajNome')){ er.hidden = false; er.textContent = 'Conte como gostaria que ficasse e diga o seu nome.'; return; }
+        var dados = { temas: temas, pedido: val('ajComo').slice(0, 3000), nome: val('ajNome'), fone: val('ajFone') };
+        var b = j.querySelector('button[type=submit]'); b.disabled = true; b.textContent = 'Enviando…';
+        responder('ajuste_proposta', dados).then(function(){
+          aviso('✏️ ' + S.prop.cliente + ' pediu AJUSTE na proposta', { 'Quem pediu': dados.nome + (dados.fone ? ' · ' + dados.fone : ''), 'O que ajustar': temas.join(', ') || '—', 'Pedido': dados.pedido });
+          fecha(); desenha(); toast('Pedido enviado! Em breve você recebe a nova versão.');
+        }).catch(function(err){ b.disabled = false; b.textContent = 'Enviar pedido de ajuste'; er.hidden = false; er.textContent = 'Não foi possível enviar agora. (' + err.message + ')'; });
+      });
+    });
+}
+
+function abreSugestao(i){
+  var c = S.prop.contrato.clausulas[i], ja = S.sugestoes.filter(function(s){ return s.i === i; })[0] || {};
+  var campos = P.campos(S.prop, M);
+  janela('<div class="kicker">Cláusula ' + (i + 1) + 'ª · ' + esc(c.titulo) + '</div><h3>Sugerir alteração</h3>' +
+    '<div class="citacao">' + P.preenche(c.texto, campos, true) + '</div>' +
+    '<form id="fSug" novalidate>' + campo('sgComo', 'Como gostaria que ficasse', 'area', ja.como, 'required placeholder="Escreva o novo texto ou explique a mudança"') +
+    campo('sgPq', 'Por quê? (opcional)', 'text', ja.porque) +
+    '<div class="erro" id="sgErro" role="alert" hidden></div><button class="bt" type="submit">' + (ja.como ? 'Atualizar sugestão' : 'Adicionar à lista') + '</button>' +
+    (ja.como ? '<div class="botoes"><button class="bt-link" type="button" id="sgTira">Retirar esta sugestão</button></div>' : '') + '</form>', function(j){
+      j.querySelector('#fSug').addEventListener('submit', function(e){
+        e.preventDefault();
+        if (!val('sgComo')){ var er = j.querySelector('#sgErro'); er.hidden = false; er.textContent = 'Escreva como gostaria que ficasse.'; return; }
+        S.sugestoes = S.sugestoes.filter(function(s){ return s.i !== i; });
+        S.sugestoes.push({ i: i, titulo: c.titulo, como: val('sgComo').slice(0, 2000), porque: val('sgPq').slice(0, 500) });
+        S.sugestoes.sort(function(a, b){ return a.i - b.i; });
+        fecha(); redesenhaContrato(); toast('Sugestão guardada. Envie quando terminar.');
+      });
+      var t = j.querySelector('#sgTira'); if (t) t.addEventListener('click', function(){ S.sugestoes = S.sugestoes.filter(function(s){ return s.i !== i; }); fecha(); redesenhaContrato(); });
+    });
+}
+function redesenhaContrato(){ var y = scrollY; desenha(); scrollTo(0, y); }
+
+function abreEnvioSug(){
+  if (!S.sugestoes.length){
+    janela('<div class="kicker">Sugestões no contrato</div><h3>Como funciona</h3><p class="ex">Toque em <b>Sugerir</b> ao lado de cada cláusula que você quer mudar. As sugestões vão se juntando e você envia todas de uma vez.</p><button class="bt" data-fechar>Entendi</button>');
+    return;
+  }
+  var ac = S.prop.aceite || {};
+  janela('<div class="kicker">Sugestões no contrato</div><h3>Revise e envie</h3><p class="ex">Vamos analisar e publicar uma nova versão do contrato neste mesmo link.</p>' +
+    '<ul class="lista-sug">' + S.sugestoes.map(function(s, k){ return '<li><b>Cláusula ' + (s.i + 1) + 'ª · ' + esc(s.titulo) + '</b>' + esc(s.como) + (s.porque ? '<br><i>Por quê: ' + esc(s.porque) + '</i>' : '') + '<br><button type="button" data-tira="' + k + '">Retirar</button></li>'; }).join('') + '</ul>' +
+    '<form id="fEnv" novalidate>' + campo('enNome', 'Seu nome', 'text', ac.nome, 'autocomplete="name" required') +
+    '<div class="erro" id="enErro" role="alert" hidden></div><button class="bt" type="submit">Enviar ' + S.sugestoes.length + (S.sugestoes.length > 1 ? ' sugestões' : ' sugestão') + '</button></form>', function(j){
+      [].forEach.call(j.querySelectorAll('[data-tira]'), function(b){ b.addEventListener('click', function(){ S.sugestoes.splice(+b.dataset.tira, 1); redesenhaContrato(); abreEnvioSug(); }); });
+      j.querySelector('#fEnv').addEventListener('submit', function(e){
+        e.preventDefault();
+        if (!val('enNome')){ var er = j.querySelector('#enErro'); er.hidden = false; er.textContent = 'Diga o seu nome.'; return; }
+        var dados = { nome: val('enNome'), sugestoes: S.sugestoes.map(function(s){ return { clausula: s.i + 1, titulo: s.titulo, como: s.como, porque: s.porque }; }) };
+        var b = j.querySelector('button[type=submit]'); b.disabled = true; b.textContent = 'Enviando…';
+        responder('ajuste_contrato', dados).then(function(){
+          var campos = { 'Quem pediu': dados.nome };
+          dados.sugestoes.forEach(function(s){ campos['Cláusula ' + s.clausula + 'ª · ' + s.titulo] = s.como + (s.porque ? ' (Por quê: ' + s.porque + ')' : ''); });
+          aviso('📝 ' + S.prop.cliente + ' sugeriu ' + dados.sugestoes.length + ' alteração(ões) no CONTRATO', campos);
+          S.sugestoes = []; fecha(); desenha(); toast('Sugestões enviadas! Avisamos quando a nova versão estiver pronta.');
+        }).catch(function(err){ b.disabled = false; b.textContent = 'Enviar'; var er = j.querySelector('#enErro'); er.hidden = false; er.textContent = 'Não foi possível enviar agora. (' + err.message + ')'; });
+      });
+    });
+}
+
+function abreAssinei(){
+  var p = S.prop, assunto = 'Contrato assinado · ' + p.cliente;
+  var msg = 'Olá! Segue o contrato assinado pelo gov.br referente à proposta de ' + (p.dados.solucao || '') + ' para ' + p.cliente + '.';
+  var mail = (M.contratada && M.contratada.email) || C.email || '';
+  janela('<div class="kicker">Contrato assinado</div><h3>Envie para nós</h3><p class="ex">Escolha por onde enviar e <b>anexe o PDF assinado</b> na conversa ou no e-mail.</p>' +
+    '<div class="envio"><a class="bt" data-envio="WhatsApp" href="' + zap(msg) + '" target="_blank" rel="noopener">' + ICON.zap + ' Enviar pelo WhatsApp</a>' +
+    (mail ? '<a class="bt bt2" data-envio="E-mail" href="mailto:' + esc(mail) + '?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(msg + '\n\n(anexe aqui o PDF assinado)') + '">' + ICON.mail + ' Enviar por e-mail</a>' : '') + '</div>', function(j){
+      [].forEach.call(j.querySelectorAll('[data-envio]'), function(a){ a.addEventListener('click', function(){
+        responder('enviou_assinado', { por: a.dataset.envio }).catch(function(){});
+        aviso('🖊️ ' + p.cliente + ' disse que ASSINOU o contrato', { 'Enviou por': a.dataset.envio, 'Confira': 'Veja se o arquivo chegou e marque como "Assinado" no painel.' });
+        setTimeout(fecha, 400);
+      }); });
+    });
+}
+
+function baixaPdf(){
+  var vista = S.vista;
+  document.body.classList.remove('imprime-proposta', 'imprime-contrato'); document.body.classList.add('imprime-' + vista);
+  var t = document.title; document.title = (vista === 'contrato' ? 'Contrato' : 'Proposta') + ' - ' + S.prop.cliente + ' - Daniel Donato';
+  responder(vista === 'contrato' ? 'baixou_pdf_contrato' : 'baixou_pdf_proposta', {}).catch(function(){});
+  setTimeout(function(){ window.print(); setTimeout(function(){ document.title = t; }, 500); }, 60);
+}
+
+/* ---------------- cliques ---------------- */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('[data-acao],[data-vista]'); if (!a || !S.prop) return;
+  if (a.dataset.vista){
+    S.vista = a.dataset.vista; desenha(); scrollTo({ top: 0 });
+    if (S.vista === 'contrato' && !S.abriuContrato){ S.abriuContrato = 1; responder('abriu_contrato', {}).catch(function(){}); }
+    return;
+  }
+  var ac = a.dataset.acao;
+  if (ac === 'aceitar') abreAceite();
+  else if (ac === 'ajustar') abreAjuste();
+  else if (ac === 'sugerir') abreSugestao(+a.dataset.i);
+  else if (ac === 'enviarSug') abreEnvioSug();
+  else if (ac === 'assinei') abreAssinei();
+  else if (ac === 'pdf') baixaPdf();
+  else if (ac === 'conversar') responder('falou_whatsapp', {}).catch(function(){});
+});
+$('topoPdf').addEventListener('click', baixaPdf);
+addEventListener('beforeprint', function(){ if (!document.body.className.match(/imprime-/)) document.body.classList.add('imprime-' + S.vista); });
+addEventListener('afterprint', function(){ document.body.classList.remove('imprime-proposta', 'imprime-contrato'); });
+
+/* ---------------- início ---------------- */
+function semProposta(msg){
+  $('app').innerHTML = '<div class="vazio"><div class="kicker">Proposta</div><h1>' + (msg || 'Link indisponível') + '</h1><p>Confira se o link chegou completo ou fale com a gente que enviamos de novo.</p>' +
+    '<a class="bt" href="https://api.whatsapp.com/send?phone=' + (C.whatsapp || '') + '&text=' + encodeURIComponent('Olá! Não consegui abrir a minha proposta.') + '" target="_blank" rel="noopener">' + ICON.zap + ' Falar no WhatsApp</a></div>';
+}
+if (DEMO) $('faixaDemo').classList.remove('hidden');
+if (!CODIGO && !DEMO) return semProposta('Proposta não encontrada');
+(DEMO ? demo() : rpc('proposta_ver', { p_codigo: CODIGO, p_registrar: true }))
+  .then(function(p){
+    if (!p) return semProposta('Proposta não encontrada');
+    S.prop = p; desenha();
+    if (!p.previa && !DEMO){
+      var ch = 'dd_prop_' + p.codigo + '_v' + p.versao, n = 0;
+      try{ n = +localStorage.getItem(ch) || 0; localStorage.setItem(ch, String(n + 1)); }catch(e){}
+      if (!n) aviso('👀 ' + p.cliente + ' abriu a proposta' + (p.versao > 1 ? ' (versão ' + p.versao + ')' : ''), { 'Aparelho': aparelho(), 'Situação': (P.STATUS[p.status] || {}).t || p.status });
+    }
+  })
+  .catch(function(err){ console.error(err); semProposta('Não conseguimos abrir agora'); });
+})();
+</script>
+</body>
+</html>

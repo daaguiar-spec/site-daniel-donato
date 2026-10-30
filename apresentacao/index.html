@@ -415,6 +415,25 @@ em{color:var(--gold);font-style:italic}
 .rodape{position:relative;margin-top:64px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;width:100%;max-width:1240px;font-size:13px;color:#8A8276}
 @media (max-width:700px){.rodape{flex-direction:column;align-items:center;text-align:center}}
 
+/* ---------- proposta e PDF ---------- */
+.btn-zap.sec{background:transparent;color:var(--txt);border:1px solid rgba(201,162,74,.55);min-height:54px;font-size:16px}
+.btn-zap.sec:hover{background:rgba(201,162,74,.1);color:var(--txt)}
+.pdf-link{background:none;border:0;color:var(--txt3);font:600 14px var(--sans);text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:6px}
+.pdf-link:hover{color:var(--gold2)}
+@media print{
+  @page{size:A4 landscape;margin:0}
+  html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact;background:var(--bg)}
+  html{scroll-snap-type:none}
+  .topo,.pontos,.proximo,.convite,.seguir,.sh-nav,.dep-nav,.abas,.pdf-link,#magia,.deslize,.dep-deslize,.sh-pontos{display:none !important}
+  .tela{min-height:auto !important;height:auto;break-after:page;page-break-after:always;padding:14mm 16mm !important;overflow:visible}
+  #final{break-after:auto !important;page-break-after:auto !important}
+  body{overflow:visible}
+  .r,.on .r{opacity:1 !important;transform:none !important;transition:none !important}
+  *{animation:none !important;transition:none !important}
+  .capa-foto{margin-bottom:0}
+  .faixas .trilho{animation:none !important}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important}
   .r,.estados i,.mural .logo,.vitrine .cel,.uf{opacity:1;transform:none}
@@ -433,6 +452,7 @@ em{color:var(--gold);font-style:italic}
       <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
       Apresentar
     </button>
+    <a class="btn-ghost hidden" id="topoProposta" href="#">Ver proposta</a>
     <a class="btn-ghost" id="topoZap" href="#">Fale conosco</a>
   </div>
 </header>
@@ -584,6 +604,10 @@ em{color:var(--gold);font-style:italic}
       <div class="kicker r">Vamos conversar</div>
       <h2 class="r" style="--d:.1s"><span id="finalTitulo"></span> <em id="finalDestaque"></em></h2>
       <p class="r" style="--d:.2s" id="finalTexto"></p>
+      <a class="btn-zap r zoom hidden" style="--d:.3s" id="btnProposta" href="#">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+        <span>Ver a proposta</span>
+      </a>
       <a class="btn-zap r zoom" style="--d:.35s" id="btnZap" href="#" target="_blank" rel="noopener">
         <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg>
         <span id="btnZapTxt"></span>
@@ -597,6 +621,7 @@ em{color:var(--gold);font-style:italic}
         <div><small>Entre em contato</small><span class="vend-cargo">Consultor de Experiência</span><b id="vendNome"></b><span id="vendFone" class="vend-fone"></span></div>
       </div>
     </div>
+    <button class="pdf-link r" style="--d:.55s" id="btnPdf" type="button">Baixar esta apresentação em PDF</button>
     <div class="rodape">
       <div id="contatoRod"></div>
       <div>Conteúdo independente, sem vínculo oficial com The Walt Disney Company.</div>
@@ -640,6 +665,27 @@ em{color:var(--gold);font-style:italic}
     return 'https://api.whatsapp.com/send?phone=' + numero + '&text=' + encodeURIComponent(m);
   }
   $('btnZap').href = zap; $('btnZap').dataset.rot = 'Falar no WhatsApp (final)'; $('topoZap').dataset.rot = 'Fale conosco (topo)'; $('topoZap').href = zap; $('topoZap').target = '_blank';
+
+  /* ---------- proposta vinculada (?proposta=código) e PDF ---------- */
+  var codProposta = (q.get('proposta') || '').replace(/[^a-z0-9]/gi, '').slice(0, 40);
+  if (codProposta){
+    var urlProp = '/proposta/?p=' + codProposta;
+    $('btnProposta').href = urlProp; $('btnProposta').dataset.rot = 'Ver a proposta (final)'; $('btnProposta').classList.remove('hidden');
+    $('topoProposta').href = urlProp; $('topoProposta').dataset.rot = 'Ver proposta (topo)'; $('topoProposta').classList.remove('hidden');
+    $('topoZap').classList.add('so-desk');
+    $('btnZap').classList.add('sec');
+  }
+  $('btnPdf').dataset.rot = 'Baixou PDF da apresentação';
+  $('btnPdf').addEventListener('click', function(){
+    var t = document.title; document.title = 'Apresentação Daniel Donato' + (cliente ? ' - ' + cliente : '');
+    document.querySelectorAll('.tela').forEach(function(s){ s.classList.add('on'); });
+    document.querySelectorAll('img[loading=lazy]').forEach(function(i){ i.loading = 'eager'; });
+    setTimeout(function(){ window.print(); document.title = t; }, 400);
+  });
+  addEventListener('beforeprint', function(){
+    document.querySelectorAll('.tela').forEach(function(s){ s.classList.add('on'); });
+    document.querySelectorAll('[data-valor]').forEach(function(b){ b.dataset.feito = 1; b.textContent = (b.dataset.pre || '') + b.dataset.valor + (b.dataset.suf || ''); });
+  });
 
   /* ---------- 1 capa ---------- */
   txt('capaTitulo', C.capa.titulo); txt('capaDestaque', C.capa.destaque); txt('capaSub', C.capa.subtitulo);

@@ -6,6 +6,11 @@
       "permanent": false
     },
     {
+      "source": "/propostas",
+      "destination": "/proposta/painel.html",
+      "permanent": false
+    },
+    {
       "source": "/portfolio",
       "destination": "/palestras.html",
       "permanent": true

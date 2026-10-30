@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Propostas | Daniel Donato</title>
+<meta name="theme-color" content="#0B0A08">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#0B0A08;color:#EDE6D8;font-family:'Manrope',system-ui,sans-serif;-webkit-text-size-adjust:100%}
+button,input,textarea,select{font:inherit;color:inherit}a{color:#E8CF95}
+:focus-visible{outline:2px solid #E8CF95;outline-offset:3px}
+.hidden{display:none!important}
+.w{max-width:1100px;margin:0 auto;padding:0 20px}
+.top{height:66px;border-bottom:1px solid #2A251C;display:flex;align-items:center;position:sticky;top:0;background:rgba(11,10,8,.94);backdrop-filter:blur(8px);z-index:20}
+.top .w{display:flex;justify-content:space-between;align-items:center;width:100%;gap:12px}
+.logo{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.24em;font-size:11px;text-decoration:none;text-transform:uppercase;color:#EDE6D8}
+.logo b{width:38px;height:38px;border:1px solid #C9A45C;border-radius:50%;display:grid;place-items:center;font-family:Cormorant,Georgia,serif;font-weight:500;font-size:19px;color:#C9A45C;letter-spacing:0}
+.top nav{display:flex;gap:8px}
+.sec{background:none;border:1px solid #3A3226;color:#C9BEA8;border-radius:99px;padding:9px 15px;font-size:12px;font-weight:700;letter-spacing:.06em;cursor:pointer;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.sec:hover{border-color:#C9A45C;color:#E8CF95}
+.eb{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#C9A45C;margin:0 0 8px}
+h1{font-family:Cormorant,Georgia,serif;font-weight:500;font-size:42px;line-height:1.05;margin:0}h1 em{color:#E2C58C}
+h2{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#C9BEA8;margin:0 0 16px}
+.g{border:0;cursor:pointer;background:linear-gradient(180deg,#F0D99E 0%,#C9A45C 55%,#A8843F 100%);color:#1A140A;padding:14px 20px;border-radius:12px;font-weight:800;font-size:13px;letter-spacing:.06em}
+.g:disabled{opacity:.6;cursor:wait}
+.login{min-height:calc(100vh - 66px);display:grid;place-items:center;padding:40px 20px}
+.card{width:100%;max-width:420px;background:#15130F;border:1px solid #2A251C;border-radius:18px;padding:32px}
+.card p{color:#B5AA95;font-size:14px;line-height:1.6;margin:8px 0 22px}
+label{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;margin:0 0 6px}
+input,textarea,select{width:100%;background:#0B0A08;border:1px solid #3A3226;border-radius:10px;padding:12px 13px;color:#EDE6D8;font-size:15px}
+textarea{min-height:90px;resize:vertical;line-height:1.5}
+input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
+.card input{margin-bottom:14px}.card .g{width:100%}
+.erro{background:rgba(196,80,60,.12);border:1px solid rgba(196,80,60,.45);color:#F0B4A6;border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.5;margin:0 0 16px}
+.aviso{background:rgba(201,164,92,.1);border:1px solid rgba(201,164,92,.4);color:#E8CF95;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;margin:0 0 18px}
+.aviso code{background:#0B0A08;padding:2px 6px;border-radius:5px;font-size:12.5px}
+.painel{padding:32px 0 120px}
+.cab{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.filtro{display:inline-flex;border:1px solid #3A3226;border-radius:99px;overflow:hidden}
+.filtro button{border:0;background:none;color:#C9BEA8;padding:9px 15px;font-size:12px;font-weight:700;cursor:pointer}
+.filtro button.on{background:#C9A45C;color:#1A140A}
+.lista{display:grid;gap:10px}
+.prop{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:center;background:#15130F;border:1px solid #2A251C;border-radius:14px;padding:16px 18px;cursor:pointer;text-align:left;width:100%}
+.prop:hover{border-color:#5A4B2E}
+.prop b{font-size:16px}
+.prop small{color:#9C8F78;font-size:13px}
+.prop .v{font-weight:800;color:#E8CF95;font-variant-numeric:tabular-nums;text-align:right}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:800;border:1px solid;white-space:nowrap}
+.chip.verde{color:#8FD19F;border-color:rgba(127,192,143,.45)}
+.chip.laranja{color:#F0B56C;border-color:rgba(229,163,90,.5);background:rgba(229,163,90,.1)}
+.chip.ouro,.chip.azul{color:#E8CF95;border-color:rgba(201,164,92,.45)}
+.chip.cinza{color:#9C8F78;border-color:#3A3226}
+.vez{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:6px;background:#C9A45C;color:#1A140A;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.vazio{color:#9C8F78;font-size:14.5px;padding:30px;text-align:center;border:1px dashed #3A3226;border-radius:14px}
+
+/* editor */
+.volta{background:none;border:0;color:#C9BEA8;cursor:pointer;font-weight:700;font-size:13px;padding:0;margin-bottom:14px}
+.ed-cab{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start;margin-bottom:18px}
+.ed-cab h1{font-size:38px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.bloco{background:#15130F;border:1px solid #2A251C;border-radius:16px;padding:20px;margin-bottom:14px}
+.bloco.destaque{border-color:#C9A45C;background:rgba(201,164,92,.07)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 14px}
+.full{grid-column:1/-1}
+@media (max-width:700px){.g2,.g3{grid-template-columns:1fr}.ed-cab h1{font-size:32px}h1{font-size:34px}}
+.linha{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) 130px 40px;gap:8px;margin-bottom:8px;align-items:start}
+.linha.pg{grid-template-columns:90px minmax(0,1fr) 40px}
+@media (max-width:700px){.linha{grid-template-columns:1fr 1fr;padding:12px;border:1px solid #2A251C;border-radius:12px}.linha .nm{grid-column:1/-1}.linha .ds{grid-column:1/-1}.linha.pg{grid-template-columns:80px 1fr 40px;padding:0;border:0}}
+.mini{width:40px;height:44px;border-radius:10px;border:1px solid #3A3226;background:none;color:#C9BEA8;cursor:pointer;font-size:18px;line-height:1}
+.mini:hover{border-color:#C47A6A;color:#F0B4A6}
+.add{background:none;border:1px dashed #5A4B2E;color:#E8CF95;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700;font-size:13px}
+.tot{display:flex;justify-content:flex-end;gap:18px;flex-wrap:wrap;margin-top:12px;color:#C9BEA8;font-size:14px}
+.tot b{color:#E8CF95;font-size:18px}
+.clausula{border:1px solid #2A251C;border-radius:12px;padding:12px;margin-bottom:10px}
+.clausula .tt{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.clausula .tt span{font-weight:800;color:#C9A45C;font-size:13px;white-space:nowrap}
+.clausula textarea{min-height:120px}
+.dica{color:#9C8F78;font-size:12.5px;line-height:1.55;margin:6px 0 0}
+.dica code{color:#E8CF95}
+.pedido{border:1px solid rgba(229,163,90,.5);background:rgba(229,163,90,.07);border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:14.5px;line-height:1.55}
+.pedido small{color:#F0B56C;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;display:block;margin-bottom:4px}
+.pedido ul{margin:6px 0 0;padding-left:18px}
+.hist{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:13.5px;color:#B5AA95;max-height:320px;overflow:auto}
+.hist li{display:flex;gap:10px}.hist time{color:#7D725F;white-space:nowrap;font-variant-numeric:tabular-nums}
+.barra{position:fixed;left:0;right:0;bottom:0;z-index:25;background:rgba(21,19,15,.97);border-top:1px solid #3A3226;padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px))}
+.barra .w{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;align-items:center}
+.barra .st{margin-right:auto;font-size:13px;color:#9C8F78}
+.toast{position:fixed;left:50%;top:80px;transform:translateX(-50%);z-index:80;background:#EDE6D8;color:#1A140A;font-weight:700;padding:12px 18px;border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.4);font-size:14px;max-width:calc(100% - 32px);text-align:center}
+.fundo{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.7);display:grid;place-items:center;padding:16px}
+.jan{width:100%;max-width:520px;background:#15130F;border:1px solid #3A3226;border-radius:18px;padding:26px;max-height:90vh;overflow:auto}
+.jan h3{font-family:Cormorant,Georgia,serif;font-weight:500;font-size:30px;margin:0 0 8px}
+.jan p{color:#B5AA95;font-size:14px;line-height:1.6}
+.jan textarea{min-height:150px;margin:6px 0 14px}
+.jan .bts{display:flex;gap:10px;flex-wrap:wrap}
+.carreg{padding:80px 0;text-align:center;color:#9C8F78}
+</style>
+</head>
+<body>
+<header class="top"><div class="w">
+  <a class="logo" href="/proposta/painel.html"><b>DD</b><span>Propostas</span></a>
+  <nav><a class="sec" href="/admin">Estatísticas</a><button class="sec hidden" id="sair" type="button">Sair</button></nav>
+</div></header>
+<main id="app"><div class="carreg">Carregando…</div></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/apresentacao/conteudo.js"></script>
+<script src="modelo.js"></script>
+<script src="comum.js"></script>
+<script>
+(function(){
+var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
+var DEMO = /[?&]demo/.test(location.search);
+var sb = window.supabase ? window.supabase.createClient(P.SB, P.KEY) : null;
+var app = document.getElementById('app'), sair = document.getElementById('sair');
+var S = { lista: [], filtro: 'ativas', atual: null, eventos: [], sujo: false };
+var ORIGEM = location.origin.indexOf('localhost') > -1 ? location.origin : 'https://www.danieldonato.com.br';
+var PRECISA = { em_ajuste: 'Pediu ajuste', aprovada: 'Liberar contrato', contrato_em_ajuste: 'Ajustar contrato' };
+
+function toast(m){ var t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role','status'); t.textContent = m; document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 3200); }
+function chip(st){ var s = P.STATUS[st] || { t: st, c: 'cinza' }; return '<span class="chip ' + s.c + '">' + esc(s.t) + '</span>'; }
+function fone(s){ return String(s || '').replace(/\D/g, ''); }
+
+/* ---------------- banco (ou demonstração) ---------------- */
+var memoria = null;
+function demoBase(){
+  if (memoria) return memoria;
+  var d1 = P.copia(M.dados), d2 = P.copia(M.dados); d2.itens[0].valor = 9500; d2.solucao = 'Palestra Liderança que Inspira';
+  memoria = { propostas: [
+    { id: 'a1', codigo: 'demo', cliente: 'Hotel Praiano', vendedor: 'Vanessa Matos', fone: '', status: 'em_ajuste', versao: 1, dados: d1, contrato: P.copia(M.contrato), contratante: null, aceite: null, atualizado_em: new Date().toISOString(), publicado_em: new Date(Date.now()-3*864e5).toISOString() },
+    { id: 'a2', codigo: 'demo2', cliente: 'Colégio Christus', vendedor: 'Rômulo Hora', fone: '', status: 'aprovada', versao: 2, dados: d2, contrato: P.copia(M.contrato),
+      contratante: { razao: 'Colégio Christus Ltda.', cnpj: '12.345.678/0001-90', endereco: 'Rua X, 100, Fortaleza/CE', representante: 'João Lima', cpf: '123.456.789-00' },
+      aceite: { nome: 'João Lima', cargo: 'Diretor', email: 'joao@x.com', quando: new Date().toISOString() }, atualizado_em: new Date().toISOString() }
+  ], eventos: { a1: [ { tipo: 'ajuste_proposta', criado_em: new Date().toISOString(), detalhe: { nome: 'Maria Souza', temas: ['Parcelamento','Valor'], pedido: 'Conseguimos fazer 30% na assinatura e 70% no final? E um valor um pouco menor, perto de R$ 11 mil.', versao: 1 } },
+    { tipo: 'visualizou', criado_em: new Date(Date.now()-864e5).toISOString(), detalhe: { versao: 1 } } ] } };
+  return memoria;
+}
+var DB = {
+  listar: function(){
+    if (DEMO) return Promise.resolve(demoBase().propostas.slice());
+    return sb.from('propostas').select('id,codigo,cliente,vendedor,fone,status,versao,dados,atualizado_em,publicado_em').order('atualizado_em', { ascending: false }).limit(300)
+      .then(function(r){ if (r.error) throw r.error; return r.data; });
+  },
+  abrir: function(id){
+    if (DEMO){ var p = demoBase().propostas.filter(function(x){ return x.id === id; })[0]; return Promise.resolve([P.copia(p), (demoBase().eventos[id] || []).slice()]); }
+    return Promise.all([
+      sb.from('propostas').select('*').eq('id', id).single(),
+      sb.from('proposta_eventos').select('tipo,detalhe,criado_em').eq('proposta_id', id).order('criado_em', { ascending: false }).limit(200)
+    ]).then(function(rs){ if (rs[0].error) throw rs[0].error; return [rs[0].data, rs[1].data || []]; });
+  },
+  criar: function(p){
+    if (DEMO){ p.id = 'n' + Date.now(); p.codigo = Math.random().toString(36).slice(2, 14); p.versao = 1; p.atualizado_em = new Date().toISOString(); demoBase().propostas.unshift(P.copia(p)); return Promise.resolve(p); }
+    return sb.from('propostas').insert(p).select('*').single().then(function(r){ if (r.error) throw r.error; return r.data; });
+  },
+  atualizar: function(id, campos){
+    campos.atualizado_em = new Date().toISOString();
+    if (DEMO){ var p = demoBase().propostas.filter(function(x){ return x.id === id; })[0]; Object.assign(p, P.copia(campos)); return Promise.resolve(p); }
+    return sb.from('propostas').update(campos).eq('id', id).select('*').single().then(function(r){ if (r.error) throw r.error; return r.data; });
+  },
+  publicar: function(id, dados, contrato){
+    if (DEMO){ var p = demoBase().propostas.filter(function(x){ return x.id === id; })[0]; var mudou = !P.igual(p.dados, dados) || !P.igual(p.contrato, contrato);
+      p.dados = P.copia(dados); p.contrato = P.copia(contrato);
+      if (mudou && p.status !== 'rascunho'){ p.versao++; p.status = p.status === 'em_ajuste' ? 'enviada' : p.status === 'contrato_em_ajuste' ? 'contrato_liberado' : p.status; }
+      return Promise.resolve({ ok: true, versao: p.versao, status: p.status }); }
+    return sb.rpc('proposta_publicar', { p_id: id, p_dados: dados, p_contrato: contrato }).then(function(r){ if (r.error) throw r.error; return r.data; });
+  },
+  apagar: function(id){
+    if (DEMO){ demoBase().propostas = demoBase().propostas.filter(function(x){ return x.id !== id; }); return Promise.resolve(); }
+    return sb.from('propostas').delete().eq('id', id).then(function(r){ if (r.error) throw r.error; });
+  }
+};
+
+function erroTxt(e){
+  var m = String(e && (e.message || e.code) || e);
+  if (/relation .*propostas|does not exist|PGRST205|42P01/i.test(m)) return 'O banco ainda não tem as tabelas de propostas. Rode o arquivo _fonte/supabase-propostas.sql no SQL Editor do Supabase.';
+  if (/JWT|401|not authenticated/i.test(m)) return 'Sua sessão expirou. Entre de novo.';
+  return 'Não foi possível concluir agora. (Detalhe: ' + m + ')';
+}
+
+/* ---------------- login ---------------- */
+function telaLogin(msg){
+  sair.classList.add('hidden');
+  app.innerHTML = '<section class="login"><form class="card" id="f"><p class="eb">Área do administrador</p><h1>Propostas<br><em>e contratos</em></h1><p>Entre com o mesmo e-mail e senha do painel de estatísticas.</p>' +
+    (msg ? '<div class="erro" role="alert">' + esc(msg) + '</div>' : '') +
+    '<label for="em">E-mail</label><input id="em" type="email" autocomplete="username" required><label for="se">Senha</label><input id="se" type="password" autocomplete="current-password" required><button class="g" id="bt">Entrar</button></form></section>';
+  document.getElementById('f').addEventListener('submit', function(e){
+    e.preventDefault(); var b = document.getElementById('bt'); b.disabled = true; b.textContent = 'Entrando…';
+    sb.auth.signInWithPassword({ email: document.getElementById('em').value.trim().toLowerCase(), password: document.getElementById('se').value })
+      .then(function(r){ if (r.error) throw r.error; inicio(); })
+      .catch(function(err){ var m = String(err && err.message || err); telaLogin(/invalid login/i.test(m) ? 'E-mail ou senha incorretos.' : 'Não foi possível entrar. (' + m + ')'); });
+  });
+}
+sair.addEventListener('click', function(){ if (S.sujo && !confirm('Há alterações não salvas. Sair mesmo assim?')) return; if (sb) sb.auth.signOut(); S.sujo = false; telaLogin(); });
+
+function inicio(){
+  if (DEMO) return lista();
+  sb.auth.getSession().then(function(r){
+    var s = r.data && r.data.session; if (!s) return telaLogin();
+    try{ localStorage.setItem('dd_admin', '1'); }catch(e){}
+    sair.classList.remove('hidden');
+    return sb.rpc('eh_admin_proposta').then(function(x){
+      if (x.error){ app.innerHTML = '<div class="w painel"><div class="aviso">' + esc(erroTxt(x.error)) + '</div></div>'; return; }
+      if (!x.data){ app.innerHTML = '<div class="w painel"><div class="aviso">O e-mail <b>' + esc(s.user.email) + '</b> ainda não pode ver as propostas. No SQL Editor do Supabase, rode:<br><br><code>insert into proposta_admins (email) values (\'' + esc(s.user.email) + '\');</code></div></div>'; return; }
+      lista();
+    });
+  });
+}
+
+/* ---------------- lista ---------------- */
+function lista(){
+  S.atual = null; S.sujo = false;
+  app.innerHTML = '<div class="carreg">Carregando propostas…</div>';
+  DB.listar().then(function(l){ S.lista = l; desenhaLista(); }).catch(function(e){ app.innerHTML = '<div class="w painel"><div class="aviso">' + esc(erroTxt(e)) + '</div></div>'; });
+}
+function desenhaLista(){
+  var ativas = function(p){ return ['assinado','recusada','arquivada'].indexOf(p.status) < 0; };
+  var l = S.lista.filter(S.filtro === 'ativas' ? ativas : S.filtro === 'acao' ? function(p){ return PRECISA[p.status]; } : function(){ return true; });
+  var nAcao = S.lista.filter(function(p){ return PRECISA[p.status]; }).length;
+  var h = '<div class="w painel">' + (DEMO ? '<div class="aviso"><b>Modo demonstração.</b> Nada é salvo no banco.</div>' : '') +
+    '<div class="cab"><div><p class="eb">Painel</p><h1>Propostas <em>e contratos</em></h1></div><button class="g" id="nova">+ Nova proposta</button></div>' +
+    '<div class="cab" style="margin-bottom:14px"><div class="filtro" role="group" aria-label="Filtro">' +
+    [['acao','Precisam de você' + (nAcao ? ' (' + nAcao + ')' : '')],['ativas','Em andamento'],['todas','Todas']].map(function(o){ return '<button data-f="' + o[0] + '" class="' + (S.filtro === o[0] ? 'on' : '') + '">' + o[1] + '</button>'; }).join('') + '</div></div>';
+  if (!l.length) h += '<div class="vazio">' + (S.lista.length ? 'Nada por aqui neste filtro.' : 'Nenhuma proposta ainda. Toque em “Nova proposta” para começar.') + '</div>';
+  else h += '<div class="lista">' + l.map(function(p){
+    var d = p.dados || {};
+    return '<button class="prop" data-id="' + esc(p.id) + '"><div><b>' + esc(p.cliente) + '</b>' + (PRECISA[p.status] ? '<span class="vez">' + PRECISA[p.status] + '</span>' : '') +
+      '<br><small>' + esc(d.solucao || '') + (p.vendedor ? ' · ' + esc(p.vendedor) : '') + ' · v' + p.versao + ' · ' + P.dataHora(p.atualizado_em) + '</small></div>' +
+      '<div style="text-align:right"><div class="v">' + P.brl(P.total(d)) + '</div>' + chip(p.status) + '</div></button>';
+  }).join('') + '</div>';
+  app.innerHTML = h + '</div>';
+  document.getElementById('nova').onclick = novaProposta;
+  [].forEach.call(app.querySelectorAll('[data-f]'), function(b){ b.onclick = function(){ S.filtro = b.dataset.f; desenhaLista(); }; });
+  [].forEach.call(app.querySelectorAll('.prop'), function(b){ b.onclick = function(){ abrir(b.dataset.id); }; });
+}
+
+function novaProposta(){
+  var nome = prompt('Nome do cliente (como vai aparecer na proposta):'); if (!nome || !nome.trim()) return;
+  DB.criar({ cliente: nome.trim().slice(0, 80), status: 'rascunho', dados: P.copia(M.dados), contrato: P.copia(M.contrato) })
+    .then(function(p){ abrir(p.id); }).catch(function(e){ toast(erroTxt(e)); });
+}
+
+/* ---------------- editor ---------------- */
+function abrir(id){
+  app.innerHTML = '<div class="carreg">Abrindo…</div>';
+  DB.abrir(id).then(function(r){ S.atual = r[0]; S.eventos = r[1]; S.sujo = false; editor(); scrollTo(0, 0); })
+    .catch(function(e){ app.innerHTML = '<div class="w painel"><div class="aviso">' + esc(erroTxt(e)) + '</div></div>'; });
+}
+function linkProposta(p){ return ORIGEM + '/proposta/?p=' + p.codigo; }
+function linkApres(p){
+  var q = new URLSearchParams(); q.set('cliente', p.cliente); if (p.vendedor) q.set('vendedor', p.vendedor); if (p.fone) q.set('fone', p.fone); q.set('proposta', p.codigo);
+  return ORIGEM + '/apresentacao/?' + q.toString();
+}
+function inp(id, rot, v, tipo, cls, extra){ return '<div class="' + (cls || '') + '"><label for="' + id + '">' + rot + '</label><input id="' + id + '" type="' + (tipo || 'text') + '" value="' + esc(v == null ? '' : v) + '" ' + (extra || '') + '></div>'; }
+function area(id, rot, v, cls, extra){ return '<div class="' + (cls || '') + '"><label for="' + id + '">' + rot + '</label><textarea id="' + id + '" ' + (extra || '') + '>' + esc(v || '') + '</textarea></div>'; }
+
+var NOMES_EV = { visualizou: '👀 Abriu a proposta', aceite: '✅ Aceitou a proposta', ajuste_proposta: '✏️ Pediu ajuste na proposta', ajuste_contrato: '📝 Sugeriu alterações no contrato',
+  baixou_pdf_proposta: '⬇️ Baixou o PDF da proposta', baixou_pdf_contrato: '⬇️ Baixou o PDF do contrato', abriu_contrato: '📄 Abriu o contrato', enviou_assinado: '🖊️ Disse que enviou o contrato assinado',
+  falou_whatsapp: '💬 Tocou em “Prefiro conversar”', nova_versao: '🔄 Você publicou nova versão' };
+
+function pedidosPendentes(p){
+  var h = '';
+  if (p.status === 'em_ajuste' || p.status === 'contrato_em_ajuste'){
+    var tipo = p.status === 'em_ajuste' ? 'ajuste_proposta' : 'ajuste_contrato';
+    var ev = S.eventos.filter(function(e){ return e.tipo === tipo && (e.detalhe || {}).versao === p.versao; });
+    ev.forEach(function(e){
+      var d = e.detalhe || {};
+      h += '<div class="pedido"><small>' + (tipo === 'ajuste_proposta' ? 'Pedido de ajuste na proposta' : 'Sugestões no contrato') + ' · ' + esc(d.nome || '') + ' · ' + P.dataHora(e.criado_em) + '</small>' +
+        (d.temas && d.temas.length ? '<b>' + esc(d.temas.join(', ')) + '</b><br>' : '') + (d.pedido ? esc(d.pedido).replace(/\n/g, '<br>') : '') +
+        (d.sugestoes ? '<ul>' + d.sugestoes.map(function(s){ return '<li><b>Cláusula ' + s.clausula + 'ª · ' + esc(s.titulo) + ':</b> ' + esc(s.como) + (s.porque ? ' <i>(Por quê: ' + esc(s.porque) + ')</i>' : '') + '</li>'; }).join('') + '</ul>' : '') +
+        (d.fone ? '<br>WhatsApp: ' + esc(d.fone) : '') + '</div>';
+    });
+    h += '<p class="dica">Faça as mudanças abaixo e toque em <b>Publicar nova versão</b>. O cliente vê a versão nova no mesmo link, com os pontos alterados marcados.</p>';
+  }
+  if (p.status === 'aprovada'){
+    var a = p.aceite || {};
+    h += '<div class="pedido" style="border-color:rgba(127,192,143,.5);background:rgba(127,192,143,.07)"><small style="color:#8FD19F">Proposta aceita</small>' +
+      esc(a.nome || '') + (a.cargo ? ' · ' + esc(a.cargo) : '') + ' · ' + P.dataHora(a.quando) + (a.email ? '<br>' + esc(a.email) : '') + (a.fone ? ' · ' + esc(a.fone) : '') + '</div>' +
+      '<p class="dica">Confira os dados do contratante e as cláusulas na seção <b>Contrato</b>, depois toque em <b>Liberar contrato</b>.</p>';
+  }
+  return h ? '<section class="bloco destaque"><h2>Precisa de você</h2>' + h + '</section>' : '';
+}
+
+function editor(){
+  var p = S.atual, d = p.dados || {}, det = d.detalhes || {}, ct = p.contratante || {}, cons = (C.consultores || []).map(function(c){ return c.nome; });
+  var h = '<div class="w painel"><button class="volta" id="volta">← Todas as propostas</button>' +
+    '<div class="ed-cab"><div><p class="eb">Proposta · v' + p.versao + '</p><h1>' + esc(p.cliente) + '</h1><div style="margin-top:8px">' + chip(p.status) + '</div></div>' +
+    '<div class="links">' + (p.status !== 'rascunho' ? '<button class="sec" data-copia="prop">Copiar link da proposta</button><button class="sec" data-copia="apres">Copiar link da apresentação</button><button class="sec" data-acao="zap">Mandar no WhatsApp</button>' : '') +
+    '<a class="sec" target="_blank" rel="noopener" href="/proposta/?p=' + esc(p.codigo) + (DEMO ? '&demo' : '') + '">Ver como o cliente</a></div></div>' +
+    pedidosPendentes(p) +
+
+    '<section class="bloco"><h2>Cliente</h2><div class="g3">' + inp('fCliente', 'Nome na proposta', p.cliente) +
+    '<div><label for="fVend">Consultor de Experiência</label><input id="fVend" list="consList" value="' + esc(p.vendedor || '') + '"><datalist id="consList">' + cons.map(function(n){ return '<option value="' + esc(n) + '">'; }).join('') + '</datalist></div>' +
+    inp('fFone', 'WhatsApp do consultor', p.fone, 'tel', '', 'placeholder="Vazio = número do comercial"') + '</div></section>' +
+
+    '<section class="bloco"><h2>Proposta</h2><div class="g2">' + inp('fSol', 'Solução', d.solucao, 'text', 'full') + area('fAp', 'Texto de apresentação', d.apresentacao, 'full') + '</div>' +
+    '<div class="g3" style="margin-top:12px">' + inp('fFor', 'Formato', det.formato) + inp('fData', 'Data', det.data_evento) + inp('fLocal', 'Local', det.local) + inp('fCh', 'Carga horária', det.carga_horaria) + inp('fPart', 'Participantes', det.participantes) + '</div>' +
+    '<div class="g2" style="margin-top:12px">' + area('fInc', 'O que está incluído (um por linha)', (d.inclui || []).join('\n')) + area('fNao', 'Não incluso (um por linha)', (d.naoInclui || []).join('\n')) + '</div></section>' +
+
+    '<section class="bloco"><h2>Valores</h2><div id="itens"></div><button class="add" data-acao="addItem">+ Item</button>' +
+    '<div class="g3" style="margin-top:16px">' + inp('fDesc', 'Desconto (R$)', d.desconto || '', 'text', '', 'inputmode="decimal"') + inp('fForma', 'Forma de pagamento', d.formaPagamento) + inp('fVal', 'Validade (dias após enviar)', d.validadeDias || '', 'number') + '</div>' +
+    '<div class="tot" id="tot"></div>' +
+    '<h2 style="margin-top:20px">Parcelas</h2><div id="parcelas"></div><button class="add" data-acao="addParc">+ Parcela</button><p class="dica" id="somaPct"></p>' +
+    '<div style="margin-top:14px">' + area('fObs', 'Observações (opcional)', d.observacoes) + '</div></section>' +
+
+    '<section class="bloco"><h2>Contrato · dados do contratante</h2><p class="dica" style="margin:-8px 0 14px">O cliente preenche ao aceitar. Você pode corrigir aqui.</p><div class="g2">' +
+    inp('cRazao', 'Razão social', ct.razao) + inp('cCnpj', 'CNPJ / CPF', ct.cnpj) + inp('cEnd', 'Endereço', ct.endereco, 'text', 'full') + inp('cRep', 'Quem assina', ct.representante) + inp('cCpf', 'CPF de quem assina', ct.cpf) + '</div></section>' +
+
+    '<section class="bloco"><h2>Contrato · cláusulas</h2><div id="clausulas"></div><button class="add" data-acao="addCl">+ Cláusula</button>' +
+    '<div style="margin-top:14px;max-width:320px">' + inp('fForo', 'Foro (cidade/UF)', (p.contrato || {}).cidadeForo || M.cidadeForo) + '</div>' +
+    '<p class="dica">Campos automáticos: <code>{{contratante_razao}}</code> <code>{{contratante_cnpj}}</code> <code>{{contratante_endereco}}</code> <code>{{contratante_representante}}</code> <code>{{contratante_cpf}}</code> <code>{{solucao}}</code> <code>{{data_evento}}</code> <code>{{local}}</code> <code>{{carga_horaria}}</code> <code>{{participantes}}</code> <code>{{formato}}</code> <code>{{valor_total}}</code> <code>{{valor_extenso}}</code> <code>{{pagamento}}</code> <code>{{forma_pagamento}}</code> <code>{{cidade_foro}}</code>. Os dados da sua empresa ficam no arquivo <code>proposta/modelo.js</code>.</p></section>' +
+
+    '<section class="bloco"><h2>Histórico</h2>' + (S.eventos.length ? '<ul class="hist">' + S.eventos.map(function(e){ return '<li><time>' + P.dataHora(e.criado_em) + '</time><span>' + esc(NOMES_EV[e.tipo] || e.tipo) + ((e.detalhe || {}).versao ? ' · v' + e.detalhe.versao : '') + '</span></li>'; }).join('') + '</ul>' : '<p class="dica">Nada ainda.</p>') +
+    '<div class="links" style="margin-top:16px">' + (['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="recusada">Marcar como recusada</button>' : '') +
+    (['contrato_liberado','contrato_em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="aprovada">Esconder o contrato do cliente</button>' : '') +
+    (p.status !== 'arquivada' ? '<button class="sec" data-st="arquivada">Arquivar</button>' : '<button class="sec" data-st="enviada">Desarquivar</button>') +
+    '<button class="sec" data-acao="duplicar">Duplicar</button>' + (p.status === 'rascunho' ? '<button class="sec" data-acao="apagar">Apagar rascunho</button>' : '') + '</div></section></div>' +
+
+    '<div class="barra"><div class="w"><span class="st" id="estado">Tudo salvo</span>' + botoesBarra(p) + '</div></div>';
+  app.innerHTML = h;
+  desenhaItens(); desenhaParcelas(); desenhaClausulas(); recalcula();
+}
+function botoesBarra(p){
+  var s = p.status;
+  if (s === 'rascunho') return '<button class="sec" data-acao="salvar">Salvar rascunho</button><button class="g" data-acao="enviar">Salvar e enviar ao cliente</button>';
+  if (['enviada','visualizada','em_ajuste'].indexOf(s) > -1) return '<button class="g" data-acao="publicar">Publicar nova versão</button>';
+  if (s === 'aprovada') return '<button class="sec" data-acao="salvar">Salvar</button><button class="g" data-acao="liberar">Liberar contrato</button>';
+  if (['contrato_liberado','contrato_em_ajuste'].indexOf(s) > -1) return '<button class="sec" data-acao="publicar">Publicar nova versão</button><button class="g" data-st="assinado">Marcar como assinado</button>';
+  return '<button class="sec" data-acao="salvar">Salvar</button>';
+}
+function marcaSujo(e){ if (e && e.target && e.target.closest && !e.target.closest('.painel')) return; S.sujo = true; var el = document.getElementById('estado'); if (el) el.textContent = 'Alterações não salvas'; recalcula(); }
+app.addEventListener('input', function(e){ if (S.atual) marcaSujo(e); });
+addEventListener('beforeunload', function(e){ if (S.sujo){ e.preventDefault(); e.returnValue = ''; } });
+
+/* listas editáveis */
+function desenhaItens(){
+  var itens = (S.atual.dados.itens || []);
+  document.getElementById('itens').innerHTML = itens.map(function(it, i){
+    return '<div class="linha" data-i="' + i + '"><input class="nm" aria-label="Item" placeholder="Item" value="' + esc(it.nome) + '" data-k="nome"><input class="ds" aria-label="Descrição" placeholder="Descrição curta" value="' + esc(it.descricao || '') + '" data-k="descricao">' +
+      '<input aria-label="Valor" placeholder="Valor" inputmode="decimal" value="' + esc(it.valor === '' || it.valor == null ? '' : String(it.valor).replace('.', ',')) + '" data-k="valor"><button class="mini" data-acao="tiraItem" data-i="' + i + '" aria-label="Remover item">×</button></div>';
+  }).join('');
+}
+function desenhaParcelas(){
+  document.getElementById('parcelas').innerHTML = (S.atual.dados.pagamento || []).map(function(pg, i){
+    return '<div class="linha pg" data-p="' + i + '"><input aria-label="Percentual" inputmode="decimal" value="' + esc(pg.percentual) + '" data-k="percentual" placeholder="%"><input aria-label="Quando" value="' + esc(pg.quando) + '" data-k="quando" placeholder="Quando (ex.: na assinatura)"><button class="mini" data-acao="tiraParc" data-i="' + i + '" aria-label="Remover parcela">×</button></div>';
+  }).join('');
+}
+function desenhaClausulas(){
+  var cls = (S.atual.contrato && S.atual.contrato.clausulas) || [];
+  document.getElementById('clausulas').innerHTML = cls.map(function(c, i){
+    return '<div class="clausula" data-c="' + i + '"><div class="tt"><span>' + (i + 1) + 'ª</span><input aria-label="Título da cláusula" value="' + esc(c.titulo) + '" data-k="titulo">' +
+      '<button class="mini" data-acao="sobe" data-i="' + i + '" aria-label="Subir">↑</button><button class="mini" data-acao="tiraCl" data-i="' + i + '" aria-label="Remover cláusula">×</button></div>' +
+      '<textarea aria-label="Texto da cláusula ' + (i + 1) + '" data-k="texto">' + esc(c.texto) + '</textarea></div>';
+  }).join('');
+}
+
+/* lê o formulário */
+function v(id){ var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function linhas(id){ return v(id).split('\n').map(function(x){ return x.trim(); }).filter(Boolean); }
+function coleta(){
+  var p = S.atual, d = P.copia(p.dados);
+  d.solucao = v('fSol'); d.apresentacao = v('fAp');
+  d.detalhes = { formato: v('fFor'), data_evento: v('fData'), local: v('fLocal'), carga_horaria: v('fCh'), participantes: v('fPart') };
+  d.inclui = linhas('fInc'); d.naoInclui = linhas('fNao');
+  d.itens = [].map.call(document.querySelectorAll('#itens .linha'), function(l){
+    return { nome: l.querySelector('[data-k=nome]').value.trim(), descricao: l.querySelector('[data-k=descricao]').value.trim(), valor: P.num(l.querySelector('[data-k=valor]').value) };
+  });
+  d.pagamento = [].map.call(document.querySelectorAll('#parcelas .linha'), function(l){
+    return { percentual: P.num(l.querySelector('[data-k=percentual]').value), quando: l.querySelector('[data-k=quando]').value.trim() };
+  });
+  d.desconto = P.num(v('fDesc')); d.formaPagamento = v('fForma'); d.validadeDias = P.num(v('fVal')); d.observacoes = v('fObs');
+  var contrato = P.copia(p.contrato || {});
+  contrato.clausulas = [].map.call(document.querySelectorAll('#clausulas .clausula'), function(c){ return { titulo: c.querySelector('[data-k=titulo]').value.trim(), texto: c.querySelector('[data-k=texto]').value.trim() }; });
+  contrato.cidadeForo = v('fForo');
+  var ct = { razao: v('cRazao'), cnpj: v('cCnpj'), endereco: v('cEnd'), representante: v('cRep'), cpf: v('cCpf') };
+  var temCt = Object.keys(ct).some(function(k){ return ct[k]; });
+  return { cliente: v('fCliente') || p.cliente, vendedor: v('fVend') || null, fone: fone(v('fFone')) || null, dados: d, contrato: contrato, contratante: temCt ? ct : p.contratante };
+}
+function recalcula(){
+  if (!document.getElementById('tot')) return;
+  var c = coleta(), d = c.dados;
+  document.getElementById('tot').innerHTML = (P.num(d.desconto) ? '<span>Subtotal ' + P.brl(P.subtotal(d)) + '</span>' : '') + '<span>Total <b>' + P.brl(P.total(d)) + '</b></span>';
+  var soma = (d.pagamento || []).reduce(function(a, x){ return a + P.num(x.percentual); }, 0);
+  document.getElementById('somaPct').innerHTML = P.parcelas(d).map(function(x){ return x.percentual + '% = ' + P.brl(x.valor); }).join(' · ') + (soma !== 100 ? ' <b style="color:#F0B4A6">· As parcelas somam ' + soma + '%, não 100%.</b>' : '');
+}
+
+/* salvar / publicar */
+function valida(c){
+  if (!c.dados.itens.length || !c.dados.itens.some(function(i){ return i.nome && i.valor > 0; })) return 'Coloque pelo menos um item com valor.';
+  var soma = c.dados.pagamento.reduce(function(a, x){ return a + x.percentual; }, 0);
+  if (c.dados.pagamento.length && soma !== 100) return 'As parcelas precisam somar 100% (hoje somam ' + soma + '%).';
+  return '';
+}
+function guarda(acao){
+  var p = S.atual, c = coleta(), er = valida(c);
+  if (er && acao !== 'salvar') return toast(er);
+  var base = { cliente: c.cliente, vendedor: c.vendedor, fone: c.fone, contratante: c.contratante };
+  var prom;
+  if (p.status === 'rascunho'){
+    base.dados = c.dados; base.contrato = c.contrato;
+    if (acao === 'enviar'){ base.status = 'enviada'; base.publicado_em = new Date().toISOString(); }
+    prom = DB.atualizar(p.id, base);
+  } else {
+    prom = DB.atualizar(p.id, base).then(function(){ return DB.publicar(p.id, c.dados, c.contrato); }).then(function(r){
+      if (acao === 'liberar') return DB.atualizar(p.id, { status: 'contrato_liberado' });
+      return r;
+    });
+  }
+  botoes(true);
+  prom.then(function(){ return DB.abrir(p.id); }).then(function(r){
+    var antesV = p.versao; S.atual = r[0]; S.eventos = r[1]; S.sujo = false; editor();
+    if (acao === 'enviar') return janelaEnvio('Proposta pronta para enviar', mensagem('nova'));
+    if (acao === 'liberar') return janelaEnvio('Contrato liberado', mensagem('contrato'));
+    if (S.atual.versao > antesV) return janelaEnvio('Versão ' + S.atual.versao + ' publicada', mensagem(['contrato_liberado','contrato_em_ajuste'].indexOf(S.atual.status) > -1 ? 'contratoV' : 'versao'));
+    toast(acao === 'publicar' ? 'Nada mudou no conteúdo; dados salvos.' : 'Salvo.');
+  }).catch(function(e){ botoes(false); toast(erroTxt(e)); });
+}
+function botoes(off){ [].forEach.call(document.querySelectorAll('.barra button'), function(b){ b.disabled = off; }); var e = document.getElementById('estado'); if (e && off) e.textContent = 'Salvando…'; }
+function mudaStatus(st){
+  var nomes = { recusada: 'marcar como recusada', arquivada: 'arquivar', assinado: 'marcar o contrato como assinado', aprovada: 'esconder o contrato do cliente', enviada: 'desarquivar' };
+  if (!confirm('Quer ' + (nomes[st] || st) + '?')) return;
+  var c = S.sujo ? coleta() : null, campos = { status: st };
+  if (c){ campos.cliente = c.cliente; campos.vendedor = c.vendedor; campos.fone = c.fone; campos.contratante = c.contratante; }
+  DB.atualizar(S.atual.id, campos).then(function(){ return DB.abrir(S.atual.id); }).then(function(r){ S.atual = r[0]; S.eventos = r[1]; S.sujo = false; editor(); toast('Pronto.'); }).catch(function(e){ toast(erroTxt(e)); });
+}
+function mensagem(tipo){
+  var p = S.atual, primeiro = (p.cliente || '').split(' ')[0], link = linkProposta(p), apres = linkApres(p);
+  if (tipo === 'nova') return 'Olá! Preparamos a apresentação e a proposta do Daniel Donato para ' + p.cliente + '.\n\nApresentação: ' + apres + '\n\nProposta: ' + link + '\n\nPor lá você pode aceitar, pedir ajustes e baixar em PDF.';
+  if (tipo === 'versao') return 'Olá! Atualizamos a proposta para ' + p.cliente + ' conforme conversamos. Os pontos alterados estão marcados:\n' + link;
+  if (tipo === 'contrato') return 'Olá! Obrigado por aceitar a proposta. O contrato já está disponível na aba "Contrato":\n' + link + '\n\nDá para ler, sugerir alterações ou baixar o PDF e assinar gratuitamente pelo gov.br.';
+  return 'Olá! Atualizamos o contrato conforme as suas sugestões. As cláusulas alteradas estão marcadas:\n' + link + '&ver=contrato';
+}
+function janelaEnvio(titulo, msg){
+  var p = S.atual, num = fone((p.aceite || {}).fone);
+  if (num.length === 10 || num.length === 11) num = '55' + num;
+  var f = document.createElement('div'); f.className = 'fundo'; f.id = 'janela';
+  f.innerHTML = '<div class="jan" role="dialog" aria-modal="true"><p class="eb">Pronto</p><h3>' + esc(titulo) + '</h3><p>Mande esta mensagem para o cliente. Você pode editar antes.</p>' +
+    '<label for="msg">Mensagem</label><textarea id="msg">' + esc(msg) + '</textarea><div class="bts"><button class="g" id="mZap">Abrir no WhatsApp</button><button class="sec" id="mCop">Copiar</button><button class="sec" id="mFec">Fechar</button></div></div>';
+  document.body.appendChild(f);
+  f.querySelector('#mZap').onclick = function(){ open('https://api.whatsapp.com/send?' + (num.length >= 12 ? 'phone=' + num + '&' : '') + 'text=' + encodeURIComponent(f.querySelector('#msg').value), '_blank'); };
+  f.querySelector('#mCop').onclick = function(){ copia(f.querySelector('#msg').value); };
+  f.querySelector('#mFec').onclick = function(){ f.remove(); };
+  f.addEventListener('click', function(e){ if (e.target === f) f.remove(); });
+}
+function copia(t){
+  (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function(){ toast('Copiado!'); })
+    .catch(function(){ var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); toast('Copiado!'); }catch(e){ prompt('Copie:', t); } a.remove(); });
+}
+
+/* cliques do editor */
+app.addEventListener('click', function(e){
+  var b = e.target.closest('button'); if (!b || !S.atual) return;
+  if (b.id === 'volta'){ if (S.sujo && !confirm('Há alterações não salvas. Voltar mesmo assim?')) return; return lista(); }
+  if (b.dataset.copia) return copia(b.dataset.copia === 'prop' ? linkProposta(S.atual) : linkApres(S.atual));
+  if (b.dataset.st) return mudaStatus(b.dataset.st);
+  var a = b.dataset.acao; if (!a) return;
+  var c, i = +b.dataset.i;
+  if (a === 'addItem' || a === 'tiraItem'){ c = coleta(); S.atual.dados = c.dados; if (a === 'addItem') c.dados.itens.push({ nome: '', descricao: '', valor: '' }); else c.dados.itens.splice(i, 1); desenhaItens(); marcaSujo(); }
+  else if (a === 'addParc' || a === 'tiraParc'){ c = coleta(); S.atual.dados = c.dados; if (a === 'addParc') c.dados.pagamento.push({ percentual: 0, quando: '' }); else c.dados.pagamento.splice(i, 1); desenhaParcelas(); marcaSujo(); }
+  else if (a === 'addCl' || a === 'tiraCl' || a === 'sobe'){
+    c = coleta(); S.atual.contrato = c.contrato; var cl = c.contrato.clausulas;
+    if (a === 'addCl') cl.push({ titulo: 'Nova cláusula', texto: '' });
+    else if (a === 'tiraCl'){ if (!confirm('Remover a cláusula ' + (i + 1) + 'ª?')) return; cl.splice(i, 1); }
+    else if (i > 0){ var t = cl[i]; cl[i] = cl[i - 1]; cl[i - 1] = t; }
+    desenhaClausulas(); marcaSujo();
+  }
+  else if (a === 'salvar' || a === 'enviar' || a === 'publicar' || a === 'liberar') guarda(a);
+  else if (a === 'zap') janelaEnvio('Mandar no WhatsApp', mensagem(['contrato_liberado','contrato_em_ajuste','assinado'].indexOf(S.atual.status) > -1 ? 'contrato' : 'nova'));
+  else if (a === 'duplicar'){ c = coleta(); var nome = prompt('Nome do cliente da cópia:', c.cliente + ' (cópia)'); if (!nome) return;
+    DB.criar({ cliente: nome.trim().slice(0, 80), vendedor: c.vendedor, fone: c.fone, status: 'rascunho', dados: c.dados, contrato: c.contrato }).then(function(n){ abrir(n.id); toast('Cópia criada como rascunho.'); }).catch(function(e){ toast(erroTxt(e)); }); }
+  else if (a === 'apagar'){ if (!confirm('Apagar este rascunho para sempre?')) return; DB.apagar(S.atual.id).then(lista).catch(function(e){ toast(erroTxt(e)); }); }
+});
+
+if (!sb && !DEMO){ app.innerHTML = '<div class="w painel"><div class="aviso">Não foi possível carregar o sistema de login. Confira a internet e recarregue.</div></div>'; return; }
+inicio();
+})();
+</script>
+</body>
+</html>
