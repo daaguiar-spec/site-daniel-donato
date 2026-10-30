@@ -511,6 +511,7 @@ function vistaContrato(p, mud){
   h += '</section>';
 
   h += '<article class="papel"><h2>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2><p class="pref">' + esc(p.dados.solucao || '') + ' · versão ' + p.versao + '</p>';
+  if (p.contrato && p.contrato.abertura) h += '<div class="cl' + (mud.campos.abertura ? ' alt' : '') + '"><p>' + P.preenche(p.contrato.abertura, campos, true) + '</p></div>';
   cls.forEach(function(c, i){
     var tem = S.sugestoes.some(function(s){ return s.i === i; });
     h += '<div class="cl' + (mud.clausulas[i] ? ' alt' : '') + (tem ? ' sug' : '') + '" id="cl' + i + '"><h3>Cláusula ' + (i + 1) + 'ª · ' + esc(c.titulo) +

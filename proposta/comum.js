@@ -78,17 +78,26 @@ P.extenso = function(v){
 
 /* troca {{campos}} do contrato */
 P.campos = function(prop, modelo){
-  var d = prop.dados || {}, det = d.detalhes || {}, ct = prop.contratante || {}, cd = (modelo && modelo.contratada) || {};
-  var parc = P.parcelas(d).map(function(p){ return p.percentual + '% (' + P.brl(p.valor) + ') ' + p.quando; });
+  var d = prop.dados || {}, det = d.detalhes || {}, ct = prop.contratante || {}, cd = (modelo && modelo.contratada) || {}, pgc = (modelo && modelo.pagamento) || {};
+  var lista = P.parcelas(d);
+  var parc = lista.map(function(p){ return p.percentual + '% (' + P.brl(p.valor) + ') ' + p.quando; });
   var pg = parc.length > 1 ? parc.slice(0, -1).join('; ') + ' e ' + parc[parc.length - 1] : (parc[0] || '');
+  var ROM = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+  var itens = lista.map(function(p, i){ return (ROM[i] || (i + 1)) + '. ' + P.brl(p.valor) + ' (' + P.extenso(p.valor) + '), correspondentes a ' + p.percentual + '% do valor total, ' + p.quando + (i === lista.length - 1 ? '.' : ';'); }).join('\n');
+  function semPonto(x){ return String(x || '').trim().replace(/[.;]+$/, ''); }
+  var banco = [pgc.titular, pgc.pixExibido ? 'Chave Pix (' + (pgc.pixTipo || 'chave') + '): ' + pgc.pixExibido : '', pgc.banco ? 'Banco: ' + pgc.banco : '', pgc.agencia ? 'Agência: ' + pgc.agencia : '', pgc.conta ? 'Conta: ' + pgc.conta : ''].filter(Boolean).join(' · ');
   return {
     contratante_razao: ct.razao, contratante_cnpj: ct.cnpj, contratante_endereco: ct.endereco,
     contratante_representante: ct.representante, contratante_cpf: ct.cpf,
+    contratante_cargo: (prop.aceite && prop.aceite.cargo) || 'representante legal',
     contratada_razao: cd.razao, contratada_cnpj: cd.cnpj, contratada_endereco: cd.endereco, contratada_representante: cd.representante,
+    contratada_qualificacao: cd.qualificacao, contato_comprovante: cd.comprovantes,
     solucao: d.solucao, data_evento: det.data_evento, local: det.local, carga_horaria: det.carga_horaria,
     participantes: det.participantes, formato: det.formato,
-    valor_total: P.brl(P.total(d)), valor_extenso: P.extenso(P.total(d)), pagamento: pg, forma_pagamento: d.formaPagamento,
-    estrutura: (d.estrutura || []).filter(Boolean).join('; '),
+    valor_total: P.brl(P.total(d)), valor_extenso: P.extenso(P.total(d)), pagamento: pg, parcelas_lista: itens, forma_pagamento: d.formaPagamento,
+    dados_bancarios: banco,
+    inclui: (d.inclui || []).filter(Boolean).map(semPonto).join('; '),
+    estrutura: (d.estrutura || []).filter(Boolean).map(semPonto).join('; '),
     cidade_foro: (prop.contrato && prop.contrato.cidadeForo) || (modelo && modelo.cidadeForo), data_hoje: P.hoje()
   };
 };
@@ -98,7 +107,7 @@ P.preenche = function(texto, campos, html){
     if (!m) return html ? P.esc(parte).replace(/\n/g, '<br>') : parte;
     var v = campos[m[1]];
     if (v == null || String(v).trim() === '') return html ? '<mark class="falta">[a preencher]</mark>' : '[a preencher]';
-    return html ? '<span class="campo">' + P.esc(v) + '</span>' : String(v);
+    return html ? '<span class="campo">' + P.esc(v).replace(/\n/g, '<br>') + '</span>' : String(v);
   }).join('');
 };
 
@@ -119,6 +128,7 @@ P.mudancas = function(atual, anterior){
   if (atual.contrato && anterior.contrato) {
     var ca = atual.contrato.clausulas || [], cb = anterior.contrato.clausulas || [];
     ca.forEach(function(c, i){ if (!cb[i] || !P.igual(c, cb[i])) { m.clausulas[i] = true; m.alguma = true; } });
+    if (!P.igual(atual.contrato.abertura, anterior.contrato.abertura)) { m.campos.abertura = true; m.alguma = true; }
   }
   return m;
 };

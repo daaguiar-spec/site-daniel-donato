@@ -305,6 +305,7 @@ function marcaPago(i, sim){
 function editor(){
   ['estrutura','experiencia','objetivos','resultados'].forEach(function(k){ if (S.atual.dados && S.atual.dados[k] === undefined) S.atual.dados[k] = P.copia((M.dados || {})[k]); });
   if (S.atual.contrato && S.atual.contrato.cidadeForo === undefined) S.atual.contrato.cidadeForo = M.cidadeForo || '';
+  if (S.atual.contrato && S.atual.contrato.abertura === undefined) S.atual.contrato.abertura = '';
   var p = S.atual, d = p.dados || {}, det = d.detalhes || {}, ct = p.contratante || {}, cons = (C.consultores || []).map(function(c){ return c.nome; });
   var h = '<div class="w painel"><button class="volta" id="volta">← Todas as propostas</button>' +
     '<div class="ed-cab"><div><p class="eb">Proposta · v' + p.versao + '</p><h1>' + esc(p.cliente) + '</h1><div style="margin-top:8px">' + chip(p.status) + '</div></div>' +
@@ -335,9 +336,10 @@ function editor(){
     '<section class="bloco"><h2>Contrato · dados do contratante</h2><p class="dica" style="margin:-8px 0 14px">O cliente preenche ao aceitar. Você pode corrigir aqui.</p><div class="g2">' +
     inp('cRazao', 'Razão social', ct.razao) + inp('cCnpj', 'CNPJ / CPF', ct.cnpj) + inp('cEnd', 'Endereço', ct.endereco, 'text', 'full') + inp('cRep', 'Quem assina', ct.representante) + inp('cCpf', 'CPF de quem assina', ct.cpf) + '</div></section>' +
 
-    '<section class="bloco"><h2>Contrato · cláusulas</h2><div id="clausulas"></div><button class="add" data-acao="addCl">+ Cláusula</button>' +
+    '<section class="bloco"><h2>Contrato · cláusulas</h2><p class="dica" style="margin:-8px 0 14px"><button class="sec" data-acao="contratoPadrao">Trocar pelo contrato padrão</button> substitui a abertura e todas as cláusulas desta proposta pelo modelo atual.</p>' +
+    area('fAbert', 'Abertura (texto antes da Cláusula 1ª)', (p.contrato || {}).abertura) + '<div style="height:12px"></div><div id="clausulas"></div><button class="add" data-acao="addCl">+ Cláusula</button>' +
     '<div style="margin-top:14px;max-width:320px">' + inp('fForo', 'Foro (cidade/UF)', (p.contrato || {}).cidadeForo || M.cidadeForo) + '</div>' +
-    '<p class="dica">Campos automáticos: <code>{{contratante_razao}}</code> <code>{{contratante_cnpj}}</code> <code>{{contratante_endereco}}</code> <code>{{contratante_representante}}</code> <code>{{contratante_cpf}}</code> <code>{{solucao}}</code> <code>{{data_evento}}</code> <code>{{local}}</code> <code>{{carga_horaria}}</code> <code>{{participantes}}</code> <code>{{formato}}</code> <code>{{valor_total}}</code> <code>{{valor_extenso}}</code> <code>{{pagamento}}</code> <code>{{forma_pagamento}}</code> <code>{{estrutura}}</code> <code>{{cidade_foro}}</code>. Os dados da sua empresa ficam no arquivo <code>proposta/modelo.js</code>.</p></section>' +
+    '<p class="dica">Campos automáticos: <code>{{contratante_razao}}</code> <code>{{contratante_cnpj}}</code> <code>{{contratante_endereco}}</code> <code>{{contratante_representante}}</code> <code>{{contratante_cpf}}</code> <code>{{contratante_cargo}}</code> <code>{{solucao}}</code> <code>{{data_evento}}</code> <code>{{local}}</code> <code>{{carga_horaria}}</code> <code>{{participantes}}</code> <code>{{formato}}</code> <code>{{valor_total}}</code> <code>{{valor_extenso}}</code> <code>{{pagamento}}</code> <code>{{parcelas_lista}}</code> <code>{{forma_pagamento}}</code> <code>{{dados_bancarios}}</code> <code>{{inclui}}</code> <code>{{estrutura}}</code> <code>{{cidade_foro}}</code>. Os dados da Sinapse (CONTRATADA) já entram sozinhos.</p></section>' +
 
     '<section class="bloco"><h2>Histórico</h2>' + (S.eventos.length ? '<ul class="hist">' + S.eventos.map(function(e){ return '<li><time>' + P.dataHora(e.criado_em) + '</time><span>' + esc(NOMES_EV[e.tipo] || e.tipo) + ((e.detalhe || {}).versao ? ' · v' + e.detalhe.versao : '') + '</span></li>'; }).join('') + '</ul>' : '<p class="dica">Nada ainda.</p>') +
     '<div class="links" style="margin-top:16px">' + (['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="recusada">Marcar como recusada</button>' : '') +
@@ -408,7 +410,7 @@ function coleta(){
   d.desconto = P.num(v('fDesc')); d.formaPagamento = v('fForma'); d.validadeDias = P.num(v('fVal')); d.observacoes = v('fObs');
   var contrato = P.copia(p.contrato || {});
   contrato.clausulas = [].map.call(document.querySelectorAll('#clausulas .clausula'), function(c){ return { titulo: c.querySelector('[data-k=titulo]').value.trim(), texto: c.querySelector('[data-k=texto]').value.trim() }; });
-  contrato.cidadeForo = v('fForo');
+  contrato.cidadeForo = v('fForo'); contrato.abertura = v('fAbert');
   var ct = { razao: v('cRazao'), cnpj: v('cCnpj'), endereco: v('cEnd'), representante: v('cRep'), cpf: v('cCpf') };
   var temCt = Object.keys(ct).some(function(k){ return ct[k]; });
   return { cliente: v('fCliente') || p.cliente, vendedor: v('fVend') || null, fone: fone(v('fFone')) || null, dados: d, contrato: contrato, contratante: temCt ? ct : p.contratante };
@@ -507,6 +509,11 @@ app.addEventListener('click', function(e){
     else if (a === 'tiraCl'){ if (!confirm('Remover a cláusula ' + (i + 1) + 'ª?')) return; cl.splice(i, 1); }
     else if (i > 0){ var t = cl[i]; cl[i] = cl[i - 1]; cl[i - 1] = t; }
     desenhaClausulas(); marcaSujo();
+  }
+  else if (a === 'contratoPadrao'){
+    if (!confirm('Trocar a abertura e todas as cláusulas desta proposta pelo contrato padrão? As mudanças feitas nas cláusulas desta proposta serão perdidas.')) return;
+    c = coleta(); S.atual.dados = c.dados; S.atual.cliente = c.cliente; S.atual.vendedor = c.vendedor; S.atual.fone = c.fone; S.atual.contratante = c.contratante; S.atual.contrato = P.copia(M.contrato); S.atual.contrato.cidadeForo = c.contrato.cidadeForo || M.cidadeForo;
+    var y = scrollY; editor(); scrollTo(0, y); marcaSujo(); toast('Contrato padrão aplicado. Toque em Salvar/Publicar para gravar.');
   }
   else if (a === 'salvar' || a === 'enviar' || a === 'publicar' || a === 'liberar') guarda(a);
   else if (a === 'zap') janelaEnvio('Mandar no WhatsApp', mensagem(['contrato_liberado','contrato_em_ajuste','assinado'].indexOf(S.atual.status) > -1 ? 'contrato' : 'nova'));
