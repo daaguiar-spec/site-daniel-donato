@@ -24,3 +24,7 @@ Use o `gerar-link.html`, ou monte o link à mão:
 
 ## Durante a visita
 Clique em **Apresentar** (ou aperte F) para abrir em tela cheia. As setas do teclado ou a barra de espaço passam de uma tela para a outra.
+
+## PDF da apresentação
+O botão "Baixar esta apresentação em PDF" baixa o arquivo `apresentacao-daniel-donato.pdf` (uma página por seção, como na tela do computador).
+Mudou textos, fotos ou vídeos? Peça ao Claude para gerar o PDF de novo (scripts em `_fonte/gerar-pdf-apresentacao.js` e `_fonte/juntar-pdf.py`).

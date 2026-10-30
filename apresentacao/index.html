@@ -621,7 +621,7 @@ em{color:var(--gold);font-style:italic}
         <div><small>Entre em contato</small><span class="vend-cargo">Consultor de Experiência</span><b id="vendNome"></b><span id="vendFone" class="vend-fone"></span></div>
       </div>
     </div>
-    <button class="pdf-link r" style="--d:.55s" id="btnPdf" type="button">Baixar esta apresentação em PDF</button>
+    <a class="pdf-link r" style="--d:.55s" id="btnPdf" href="apresentacao-daniel-donato.pdf" download="Apresentação Daniel Donato.pdf" target="_blank" rel="noopener">Baixar esta apresentação em PDF</a>
     <div class="rodape">
       <div id="contatoRod"></div>
       <div>Conteúdo independente, sem vínculo oficial com The Walt Disney Company.</div>
@@ -676,13 +676,7 @@ em{color:var(--gold);font-style:italic}
     $('btnZap').classList.add('sec');
   }
   $('btnPdf').dataset.rot = 'Baixou PDF da apresentação';
-  $('btnPdf').addEventListener('click', function(){
-    var t = document.title; document.title = 'Apresentação Daniel Donato' + (cliente ? ' - ' + cliente : '');
-    document.querySelectorAll('.tela').forEach(function(s){ s.classList.add('on'); });
-    document.querySelectorAll('img[loading=lazy]').forEach(function(i){ i.loading = 'eager'; });
-    window.print(); /* chamado direto no toque: iPhone/iPad bloqueiam a impressão se houver espera */
-    setTimeout(function(){ document.title = t; }, 1000);
-  });
+
   addEventListener('beforeprint', function(){
     document.querySelectorAll('.tela').forEach(function(s){ s.classList.add('on'); });
     document.querySelectorAll('[data-valor]').forEach(function(b){ b.dataset.feito = 1; b.textContent = (b.dataset.pre || '') + b.dataset.valor + (b.dataset.suf || ''); });
