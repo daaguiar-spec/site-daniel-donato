@@ -639,6 +639,17 @@ em{color:var(--gold);font-style:italic}
   function img(src, alt, lazy){ var i=document.createElement('img'); i.src=src; i.alt=alt||''; if(lazy) i.loading='lazy'; return i; }
   function txt(id, v){ $(id).textContent = v || ''; }
 
+  /* ---------- links internos (#secao) ----------
+     Por causa do <base href="/apresentacao/">, um link "#final" levaria para /apresentacao/#final
+     e perderia o ?cliente=...&proposta=... do endereço. Aqui ele só rola a página e mantém o endereço. */
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
+    var h = a.getAttribute('href'); if (!h || h.charAt(0) !== '#') return;
+    e.preventDefault();
+    if (h.length > 1){ var alvo = document.getElementById(h.slice(1)); if (alvo) alvo.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
+    try{ history.replaceState(null, '', location.pathname + location.search + (h.length > 1 ? h : '')); }catch(err){}
+  });
+
   /* ---------- personalização pelo link ---------- */
   var q = new URLSearchParams(location.search);
   var cliente = (q.get('cliente')||'').trim().slice(0,80);
