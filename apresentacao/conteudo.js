@@ -201,5 +201,13 @@ window.CONTEUDO = {
     destaque: "para a sua equipe.",
     texto: "Conte sobre o seu evento ou desafio e receba uma proposta personalizada.",
     botao: "Falar no WhatsApp"
+  },
+
+  /* Final quando o link traz uma proposta (?proposta=...). {cliente} vira o nome do cliente. */
+  finalComProposta: {
+    titulo: "Preparamos uma proposta",
+    destaque: "só para você.",
+    texto: "Veja os valores e as condições pensados para {cliente}. Se estiver tudo certo, é só aceitar.",
+    botao: "Tirar dúvidas no WhatsApp"
   }
 };

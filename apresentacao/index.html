@@ -1010,7 +1010,9 @@ em{color:var(--gold);font-style:italic}
   });
 
   /* ---------- 7 final ---------- */
-  txt('finalTitulo', C.final.titulo); txt('finalDestaque', C.final.destaque); txt('finalTexto', C.final.texto); txt('btnZapTxt', C.final.botao);
+  var FIM = (codProposta && C.finalComProposta) ? C.finalComProposta : C.final;
+  txt('finalTitulo', FIM.titulo); txt('finalDestaque', FIM.destaque);
+  txt('finalTexto', String(FIM.texto || '').replace('{cliente}', cliente || 'a sua empresa')); txt('btnZapTxt', FIM.botao || C.final.botao);
   txt('contatoRod', C.email);
   if (C.instagram){ var ig = String(C.instagram).replace(/^@/, ''); $('insta').href = 'https://instagram.com/' + ig; txt('instaUser', '@' + ig); $('insta').classList.remove('hidden'); }
 
