@@ -284,6 +284,7 @@ function pedidosPendentes(p){
 }
 
 function editor(){
+  if (S.atual.dados && S.atual.dados.estrutura === undefined) S.atual.dados.estrutura = P.copia((M.dados || {}).estrutura || []);
   var p = S.atual, d = p.dados || {}, det = d.detalhes || {}, ct = p.contratante || {}, cons = (C.consultores || []).map(function(c){ return c.nome; });
   var h = '<div class="w painel"><button class="volta" id="volta">← Todas as propostas</button>' +
     '<div class="ed-cab"><div><p class="eb">Proposta · v' + p.versao + '</p><h1>' + esc(p.cliente) + '</h1><div style="margin-top:8px">' + chip(p.status) + '</div></div>' +

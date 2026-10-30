@@ -49,10 +49,10 @@ window.MODELO_PROPOSTA = {
       participantes: "Até 40 pessoas"
     },
     inclui: [
-      "Diagnóstico rápido com a liderança antes do treinamento",
-      "Conteúdo adaptado ao seu setor, com exemplos reais",
-      "Material de apoio digital para os participantes",
-      "Certificado de participação"
+      "Certificado digital para os participantes.",
+      "Versão digital do livro “Checklist Cliente Feliz”",
+      "E-book “Além dos Bastidores da Disney”",
+      "Material de apoio digital para os participantes."
     ],
     estrutura: [
       "Sala com cadeiras para todos os participantes",
