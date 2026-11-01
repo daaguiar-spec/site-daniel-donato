@@ -310,10 +310,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261031a"></script>
-<script src="modelo.js?v=20261031a"></script>
-<script src="comum.js?v=20261031a"></script>
-<script src="qrcode.js?v=20261031a"></script>
+<script src="/apresentacao/conteudo.js?v=20261031b"></script>
+<script src="modelo.js?v=20261031b"></script>
+<script src="comum.js?v=20261031b"></script>
+<script src="qrcode.js?v=20261031b"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -609,16 +609,36 @@ function bandeja(){
 }
 
 /* ---------------- janelas ---------------- */
+/* rascunho: o que o cliente digita fica guardado neste aparelho até ele enviar */
+function chaveRasc(form){ return 'dd_rasc_' + (S.prop ? S.prop.codigo : '') + '_' + form.id + (form.dataset.k || ''); }
+function camposForm(form){ return [].slice.call(form.querySelectorAll('input,textarea,select')).filter(function(el){ return el.id || el.name; }); }
+function idCampo(el){ return el.type === 'checkbox' && el.name ? el.name + ':' + el.value : (el.id || el.name); }
+function guardaRasc(form){
+  var o = {}; camposForm(form).forEach(function(el){ o[idCampo(el)] = el.type === 'checkbox' ? el.checked : el.value; });
+  try{ localStorage.setItem(chaveRasc(form), JSON.stringify(o)); }catch(e){}
+}
+function voltaRasc(form){
+  var o = null; try{ o = JSON.parse(localStorage.getItem(chaveRasc(form)) || 'null'); }catch(e){}
+  if (!o) return;
+  camposForm(form).forEach(function(el){ var k = idCampo(el); if (!(k in o)) return; if (el.type === 'checkbox') el.checked = !!o[k]; else el.value = o[k]; });
+}
+function apagaRasc(form){ try{ localStorage.removeItem(chaveRasc(form)); }catch(e){} }
+
 function janela(html, aoMontar){
   fecha();
   var f = document.createElement('div'); f.className = 'fundo noprint'; f.id = 'janela';
   f.innerHTML = '<div class="jan" role="dialog" aria-modal="true"><button class="x" type="button" data-fechar aria-label="Fechar">×</button>' + html + '</div>';
-  f.addEventListener('click', function(e){ if (e.target === f || e.target.hasAttribute('data-fechar')) fecha(); });
+  var temForm = !!f.querySelector('form');
+  /* com formulário, clicar fora não fecha (só o ×); sem formulário, fecha */
+  f.addEventListener('click', function(e){ if (e.target.hasAttribute('data-fechar') || (e.target === f && !temForm)) fecha(); });
   document.body.appendChild(f); document.body.style.overflow = 'hidden';
+  var form = f.querySelector('form[id]');
+  if (form){ voltaRasc(form); form.addEventListener('input', function(){ guardaRasc(form); }); form.addEventListener('change', function(){ guardaRasc(form); }); }
   var primeiro = f.querySelector('input,textarea,select'); if (primeiro && innerWidth > 700) primeiro.focus();
   if (aoMontar) aoMontar(f.querySelector('.jan'));
 }
 function fecha(){ var f = $('janela'); if (f) f.remove(); document.body.style.overflow = ''; }
+function concluiForm(id){ var fm = document.getElementById(id); if (fm) apagaRasc(fm); }
 document.addEventListener('keydown', function(e){ if (e.key === 'Escape') fecha(); });
 function campo(id, rot, tipo, valor, extra){
   return '<label for="' + id + '">' + rot + '</label>' + (tipo === 'area'
@@ -667,7 +687,7 @@ function abreAceite(){
             'Assina o contrato': dados.contratante.representante + ' · CPF ' + dados.contratante.cpf,
             'Próximo passo': 'Revise o contrato no painel e toque em "Liberar contrato".' });
           S.prop.aceite = Object.assign({ quando: new Date().toISOString() }, dados.aceite); S.prop.contratante = dados.contratante;
-          fecha(); desenha(); scrollTo({ top: document.querySelector('.acoes').offsetTop - 90, behavior: 'smooth' }); toast('Proposta aceita! Obrigado.');
+          concluiForm('fAceite'); fecha(); desenha(); scrollTo({ top: document.querySelector('.acoes').offsetTop - 90, behavior: 'smooth' }); toast('Proposta aceita! Obrigado.');
         }).catch(function(err){ b.disabled = false; b.innerHTML = ICON.ok + ' Confirmar aceite'; er.hidden = false; er.textContent = 'Não foi possível enviar agora. Tente de novo ou fale com a gente pelo WhatsApp. (' + err.message + ')'; });
       });
     });
@@ -697,7 +717,7 @@ function abreAjuste(){
         var b = j.querySelector('button[type=submit]'); b.disabled = true; b.textContent = 'Enviando…';
         responder('ajuste_proposta', dados).then(function(){
           aviso('✏️ ' + S.prop.cliente + ' pediu AJUSTE na proposta', { 'Quem pediu': dados.nome + (dados.fone ? ' · ' + dados.fone : ''), 'O que ajustar': temas.join(', ') || '—', 'Pedido': dados.pedido });
-          fecha(); desenha(); toast('Pedido enviado! Em breve você recebe a nova versão.');
+          concluiForm('fAj'); fecha(); desenha(); toast('Pedido enviado! Em breve você recebe a nova versão.');
         }).catch(function(err){ b.disabled = false; b.textContent = 'Enviar pedido de ajuste'; er.hidden = false; er.textContent = 'Não foi possível enviar agora. (' + err.message + ')'; });
       });
     });
@@ -708,7 +728,7 @@ function abreSugestao(i){
   var campos = P.campos(S.prop, M);
   janela('<div class="kicker">Cláusula ' + (i + 1) + 'ª · ' + esc(c.titulo) + '</div><h3>Sugerir alteração</h3>' +
     '<div class="citacao cl">' + paragrafos(c.texto, campos) + '</div>' +
-    '<form id="fSug" novalidate>' + campo('sgComo', 'Como gostaria que ficasse', 'area', ja.como, 'required placeholder="Escreva o novo texto ou explique a mudança"') +
+    '<form id="fSug" data-k="' + i + '" novalidate>' + campo('sgComo', 'Como gostaria que ficasse', 'area', ja.como, 'required placeholder="Escreva o novo texto ou explique a mudança"') +
     campo('sgPq', 'Por quê? (opcional)', 'text', ja.porque) +
     '<div class="erro" id="sgErro" role="alert" hidden></div><button class="bt" type="submit">' + (ja.como ? 'Atualizar sugestão' : 'Adicionar à lista') + '</button>' +
     (ja.como ? '<div class="botoes"><button class="bt-link" type="button" id="sgTira">Retirar esta sugestão</button></div>' : '') + '</form>', function(j){
@@ -718,9 +738,9 @@ function abreSugestao(i){
         S.sugestoes = S.sugestoes.filter(function(s){ return s.i !== i; });
         S.sugestoes.push({ i: i, titulo: c.titulo, como: val('sgComo').slice(0, 2000), porque: val('sgPq').slice(0, 500) });
         S.sugestoes.sort(function(a, b){ return a.i - b.i; });
-        fecha(); redesenhaContrato(); toast('Sugestão guardada. Envie quando terminar.');
+        concluiForm('fSug'); fecha(); redesenhaContrato(); toast('Sugestão guardada. Envie quando terminar.');
       });
-      var t = j.querySelector('#sgTira'); if (t) t.addEventListener('click', function(){ S.sugestoes = S.sugestoes.filter(function(s){ return s.i !== i; }); fecha(); redesenhaContrato(); });
+      var t = j.querySelector('#sgTira'); if (t) t.addEventListener('click', function(){ concluiForm('fSug'); S.sugestoes = S.sugestoes.filter(function(s){ return s.i !== i; }); fecha(); redesenhaContrato(); });
     });
 }
 function redesenhaContrato(){ var y = scrollY; desenha(); scrollTo(0, y); }
@@ -745,7 +765,7 @@ function abreEnvioSug(){
           var campos = { 'Quem pediu': dados.nome };
           dados.sugestoes.forEach(function(s){ campos['Cláusula ' + s.clausula + 'ª · ' + s.titulo] = s.como + (s.porque ? ' (Por quê: ' + s.porque + ')' : ''); });
           aviso('📝 ' + S.prop.cliente + ' sugeriu ' + dados.sugestoes.length + ' alteração(ões) no CONTRATO', campos);
-          S.sugestoes = []; fecha(); desenha(); toast('Sugestões enviadas! Avisamos quando a nova versão estiver pronta.');
+          concluiForm('fEnv'); S.sugestoes = []; fecha(); desenha(); toast('Sugestões enviadas! Avisamos quando a nova versão estiver pronta.');
         }).catch(function(err){ b.disabled = false; b.textContent = 'Enviar'; var er = j.querySelector('#enErro'); er.hidden = false; er.textContent = 'Não foi possível enviar agora. (' + err.message + ')'; });
       });
     });
