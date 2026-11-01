@@ -107,9 +107,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261030b"></script>
-<script src="modelo.js?v=20261030b"></script>
-<script src="comum.js?v=20261030b"></script>
+<script src="/apresentacao/conteudo.js?v=20261031a"></script>
+<script src="modelo.js?v=20261031a"></script>
+<script src="comum.js?v=20261031a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -166,6 +166,13 @@ var DB = {
       if (mudou && p.status !== 'rascunho'){ p.versao++; p.status = p.status === 'em_ajuste' ? 'enviada' : p.status === 'contrato_em_ajuste' ? 'contrato_liberado' : p.status; }
       return Promise.resolve({ ok: true, versao: p.versao, status: p.status }); }
     return sb.rpc('proposta_publicar', { p_id: id, p_dados: dados, p_contrato: contrato }).then(function(r){ if (r.error) throw r.error; return r.data; });
+  },
+  zerar: function(id){
+    if (DEMO){ var p = demoBase().propostas.filter(function(x){ return x.id === id; })[0]; p.versao = 1; if (p.dados) p.dados.ocultarMudancas = false; return Promise.resolve(); }
+    return sb.from('proposta_versoes').delete().eq('proposta_id', id).then(function(r){ if (r.error) throw r.error;
+      return sb.from('propostas').select('dados').eq('id', id).single(); }).then(function(r){ if (r.error) throw r.error;
+      var d = r.data.dados || {}; d.ocultarMudancas = false;
+      return sb.from('propostas').update({ versao: 1, dados: d, atualizado_em: new Date().toISOString() }).eq('id', id); }).then(function(r){ if (r.error) throw r.error; });
   },
   apagar: function(id){
     if (DEMO){ demoBase().propostas = demoBase().propostas.filter(function(x){ return x.id !== id; }); return Promise.resolve(); }
@@ -345,6 +352,7 @@ function editor(){
     '<div class="links" style="margin-top:16px">' + (['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="recusada">Marcar como recusada</button>' : '') +
     (['contrato_liberado','contrato_em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="aprovada">Esconder o contrato do cliente</button>' : '') +
     (p.status !== 'arquivada' ? '<button class="sec" data-st="arquivada">Arquivar</button>' : '<button class="sec" data-st="enviada">Desarquivar</button>') +
+    (p.versao > 1 ? '<button class="sec" data-acao="zerar">Limpar histórico de versões</button>' : '') +
     '<button class="sec" data-acao="duplicar">Duplicar</button>' + (p.status === 'rascunho' ? '<button class="sec" data-acao="apagar">Apagar rascunho</button>' : '') + '</div></section></div>' +
 
     '<div class="barra"><div class="w"><span class="st" id="estado">Tudo salvo</span>' + botoesBarra(p) + '</div></div>';
@@ -353,11 +361,13 @@ function editor(){
 }
 function botoesBarra(p){
   var s = p.status;
+  var corr = '<button class="sec" data-acao="salvar" title="Grava sem avisar o cliente e sem marcar o que mudou">Salvar correção</button>';
+  var pub = '<button class="%c" data-acao="publicar" title="O cliente vê o aviso de proposta atualizada e o que mudou marcado">Publicar nova versão</button>';
   if (s === 'rascunho') return '<button class="sec" data-acao="salvar">Salvar rascunho</button><button class="g" data-acao="enviar">Salvar e enviar ao cliente</button>';
-  if (['enviada','visualizada','em_ajuste'].indexOf(s) > -1) return '<button class="g" data-acao="publicar">Publicar nova versão</button>';
-  if (s === 'aprovada') return '<button class="sec" data-acao="salvar">Salvar</button><button class="g" data-acao="liberar">Liberar contrato</button>';
-  if (['contrato_liberado','contrato_em_ajuste'].indexOf(s) > -1) return '<button class="sec" data-acao="publicar">Publicar nova versão</button><button class="g" data-st="assinado">Marcar como assinado</button>';
-  return '<button class="sec" data-acao="salvar">Salvar</button>';
+  if (['enviada','visualizada','em_ajuste'].indexOf(s) > -1) return corr + pub.replace('%c', 'g');
+  if (s === 'aprovada') return corr + '<button class="g" data-acao="liberar">Liberar contrato</button>';
+  if (['contrato_liberado','contrato_em_ajuste'].indexOf(s) > -1) return corr + pub.replace('%c', 'sec') + '<button class="g" data-st="assinado">Marcar como assinado</button>';
+  return corr;
 }
 function marcaSujo(e){ if (e && e.target && e.target.closest && !e.target.closest('.painel')) return; S.sujo = true; var el = document.getElementById('estado'); if (el) el.textContent = 'Alterações não salvas'; recalcula(); }
 app.addEventListener('input', function(e){ if (S.atual) marcaSujo(e); });
@@ -439,9 +449,12 @@ function guarda(acao){
     base.dados = c.dados; base.contrato = c.contrato;
     if (acao === 'enviar'){ base.status = 'enviada'; base.publicado_em = new Date().toISOString(); }
     prom = DB.atualizar(p.id, base);
-  } else if (soContato(c, S.salvo || p) && acao !== 'liberar'){
-    base.dados = c.dados; prom = DB.atualizar(p.id, base); /* mudar só o nome do contato não cria nova versão */
+  } else if (acao === 'salvar'){
+    /* correção: grava sem nova versão e sem marcas de "alterado" para o cliente */
+    c.dados.ocultarMudancas = true; base.dados = c.dados; base.contrato = c.contrato;
+    prom = DB.atualizar(p.id, base);
   } else {
+    c.dados.ocultarMudancas = false;
     prom = DB.atualizar(p.id, base).then(function(){ return DB.publicar(p.id, c.dados, c.contrato); }).then(function(r){
       if (acao === 'liberar') return DB.atualizar(p.id, { status: 'contrato_liberado' });
       return r;
@@ -453,7 +466,7 @@ function guarda(acao){
     if (acao === 'enviar') return janelaEnvio('Proposta pronta para enviar', mensagem('nova'));
     if (acao === 'liberar') return janelaEnvio('Contrato liberado', mensagem('contrato'));
     if (S.atual.versao > antesV) return janelaEnvio('Versão ' + S.atual.versao + ' publicada', mensagem(['contrato_liberado','contrato_em_ajuste'].indexOf(S.atual.status) > -1 ? 'contratoV' : 'versao'));
-    toast(acao === 'publicar' ? 'Nada mudou no conteúdo; dados salvos.' : 'Salvo.');
+    toast(acao === 'publicar' ? 'Nada mudou no conteúdo; dados salvos.' : acao === 'salvar' && S.atual.status !== 'rascunho' ? 'Correção salva. O cliente vê o conteúdo novo, sem aviso nem marcas.' : 'Salvo.');
   }).catch(function(e){ botoes(false); toast(erroTxt(e)); });
 }
 function soContato(c, p){ var a = P.copia(c.dados), b = P.copia(p.dados); delete a.contato; delete b.contato; return P.igual(a, b) && P.igual(c.contrato, p.contrato); }
@@ -509,6 +522,11 @@ app.addEventListener('click', function(e){
     else if (a === 'tiraCl'){ if (!confirm('Remover a cláusula ' + (i + 1) + 'ª?')) return; cl.splice(i, 1); }
     else if (i > 0){ var t = cl[i]; cl[i] = cl[i - 1]; cl[i - 1] = t; }
     desenhaClausulas(); marcaSujo();
+  }
+  else if (a === 'zerar'){
+    if (S.sujo) return toast('Salve as alterações antes.');
+    if (!confirm('Limpar o histórico de versões desta proposta? Ela volta a ser a versão 1 e o cliente deixa de ver o aviso de atualização e as marcas de "alterado".')) return;
+    DB.zerar(S.atual.id).then(function(){ return DB.abrir(S.atual.id); }).then(function(r){ S.atual = r[0]; S.salvo = P.copia(r[0]); S.eventos = r[1]; S.sujo = false; editor(); toast('Histórico limpo. Agora é a versão 1.'); }).catch(function(e){ toast(erroTxt(e)); });
   }
   else if (a === 'contratoPadrao'){
     if (!confirm('Trocar a abertura e todas as cláusulas desta proposta pelo contrato padrão? As mudanças feitas nas cláusulas desta proposta serão perdidas.')) return;

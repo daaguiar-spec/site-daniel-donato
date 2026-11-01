@@ -310,10 +310,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261030b"></script>
-<script src="modelo.js?v=20261030b"></script>
-<script src="comum.js?v=20261030b"></script>
-<script src="qrcode.js?v=20261030b"></script>
+<script src="/apresentacao/conteudo.js?v=20261031a"></script>
+<script src="modelo.js?v=20261031a"></script>
+<script src="comum.js?v=20261031a"></script>
+<script src="qrcode.js?v=20261031a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -411,7 +411,7 @@ function contratoDisponivel(){ return !!S.prop.contrato && ['contrato_liberado',
 /* ---------------- telas ---------------- */
 function desenha(){
   var p = S.prop, d = p.dados || {}, st = P.STATUS[p.status] || { t: p.status, c: 'cinza' };
-  var mud = P.mudancas(p, p.anterior);
+  var mud = P.mudancas(p, (p.dados || {}).ocultarMudancas ? null : p.anterior);
   document.title = 'Proposta · ' + p.cliente + ' · Daniel Donato';
   $('linkApres').href = $('topoApres').href = linkApresentacao();
   $('topoPdf').hidden = false;
@@ -432,7 +432,7 @@ function desenha(){
 
 function vistaProposta(p, d, st, mud){
   var det = d.detalhes || {}, h = '';
-  var meta = ['Versão ' + p.versao + ' · ' + P.data(p.publicado_em)];
+  var meta = [(p.versao > 1 ? 'Atualizada em ' : 'Enviada em ') + P.data(p.publicado_em)];
   var val = P.validade(d, p.publicado_em); if (val) meta.push('Válida até ' + val);
   h += '<section class="capa"><div class="kicker">Proposta comercial</div>' +
     '<h1>Para <em>' + esc(p.cliente) + '</em></h1>' +
@@ -538,7 +538,7 @@ function vistaContrato(p, mud){
   h += '</section>';
 
   var cab = '<div class="timbre"><img src="img/sinapse.png" alt="Sinapse"><b>' + esc((M.contratada || {}).razao || '') + '</b></div>';
-  h += '<article class="papel"><table class="folha"><thead><tr><td>' + cab + '</td></tr></thead><tbody><tr><td><h2>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2><p class="pref">' + esc(p.dados.solucao || '') + ' · versão ' + p.versao + '</p>';
+  h += '<article class="papel"><table class="folha"><thead><tr><td>' + cab + '</td></tr></thead><tbody><tr><td><h2>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h2><p class="pref">' + esc(p.dados.solucao || '') + '</p>';
   if (p.contrato && p.contrato.abertura) h += '<div class="cl' + (mud.campos.abertura ? ' alt' : '') + '">' + paragrafos(p.contrato.abertura, campos) + '</div>';
   cls.forEach(function(c, i){
     var tem = S.sugestoes.some(function(s){ return s.i === i; });
