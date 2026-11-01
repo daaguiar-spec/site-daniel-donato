@@ -310,10 +310,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261031b"></script>
-<script src="modelo.js?v=20261031b"></script>
-<script src="comum.js?v=20261031b"></script>
-<script src="qrcode.js?v=20261031b"></script>
+<script src="/apresentacao/conteudo.js?v=20261031c"></script>
+<script src="modelo.js?v=20261031c"></script>
+<script src="comum.js?v=20261031c"></script>
+<script src="qrcode.js?v=20261031c"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -333,7 +333,10 @@ var ICON = {
 };
 
 /* ---------------- dados ---------------- */
+function comoCliente(){ try{ return sessionStorage.getItem('dd_comocliente') === '1'; }catch(e){ return false; } }
+function temSessaoAdmin(){ try{ for (var i = 0; i < localStorage.length; i++){ if (/^sb-.*-auth-token$/.test(localStorage.key(i))) return true; } }catch(e){} return false; }
 function tokenAdmin(){
+  if (comoCliente()) return null;
   try{
     for (var i = 0; i < localStorage.length; i++){
       var k = localStorage.key(i);
@@ -422,7 +425,11 @@ function desenha(){
     '<button role="tab" data-vista="proposta" class="' + (S.vista === 'proposta' ? 'on' : '') + '" aria-selected="' + (S.vista === 'proposta') + '">Proposta</button>' +
     '<button role="tab" data-vista="contrato" class="' + (S.vista === 'contrato' ? 'on' : '') + '" aria-selected="' + (S.vista === 'contrato') + '"' + (temContrato ? '' : ' disabled title="O contrato aparece aqui depois que a proposta for aceita"') + '>' + (temContrato ? '' : ICON.cad) + 'Contrato</button></div>';
 
-  var h = '<div class="wrap">' + (p.previa ? '<div class="aviso noprint">' + ICON.info + '<span><b>Prévia do administrador.</b> Suas visitas e cliques não são registrados.</span></div>' : '') + abas;
+  var h = '<div class="wrap">' +
+    (p.previa ? '<div class="aviso noprint">' + ICON.info + '<span><b>Prévia do administrador.</b> Aqui você só olha: aceite, pedidos de ajuste e cliques <b>não são registrados</b>. ' +
+      '<button class="bt-link" data-acao="testarCliente" style="color:inherit;padding:0">Testar como cliente</button> para fazer o caminho completo (fica registrado de verdade).</span></div>' :
+    (comoCliente() && temSessaoAdmin() ? '<div class="aviso noprint">' + ICON.info + '<span><b>Testando como cliente.</b> Tudo o que você fizer aqui é registrado e gera avisos. ' +
+      '<button class="bt-link" data-acao="voltarPrevia" style="color:inherit;padding:0">Voltar à prévia</button></span></div>' : '')) + abas;
   h += '<div id="vistaProposta"' + (S.vista === 'proposta' ? '' : ' class="hidden"') + '>' + vistaProposta(p, d, st, mud) + '</div>';
   h += '<div id="vistaContrato"' + (S.vista === 'contrato' ? '' : ' class="hidden"') + '>' + (temContrato ? vistaContrato(p, mud) : '') + '</div>';
   h += rodape(p) + '</div>';
@@ -804,6 +811,11 @@ document.addEventListener('click', function(e){
     return;
   }
   var ac = a.dataset.acao;
+  if (ac === 'testarCliente'){ try{ sessionStorage.setItem('dd_comocliente', '1'); }catch(err){} location.reload(); return; }
+  if (ac === 'voltarPrevia'){ try{ sessionStorage.removeItem('dd_comocliente'); }catch(err){} location.reload(); return; }
+  if (S.prop.previa && ['aceitar','ajustar','enviarSug','assinei','comprovante','sugerir'].indexOf(ac) > -1){
+    e.preventDefault(); toast('Na prévia do administrador nada é registrado. Toque em "Testar como cliente", no aviso do topo.'); scrollTo({ top: 0, behavior: 'smooth' }); return;
+  }
   if (ac === 'aceitar') abreAceite();
   else if (ac === 'ajustar') abreAjuste();
   else if (ac === 'sugerir') abreSugestao(+a.dataset.i);
