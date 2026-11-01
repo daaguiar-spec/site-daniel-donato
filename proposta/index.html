@@ -310,10 +310,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261101b"></script>
-<script src="modelo.js?v=20261101b"></script>
-<script src="comum.js?v=20261101b"></script>
-<script src="qrcode.js?v=20261101b"></script>
+<script src="/apresentacao/conteudo.js?v=20261101c"></script>
+<script src="modelo.js?v=20261101c"></script>
+<script src="comum.js?v=20261101c"></script>
+<script src="qrcode.js?v=20261101c"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -611,8 +611,7 @@ function foneExibido(p){
 }
 function rodape(p){
   var tel = foneExibido(p);
-  var v = p.vendedor ? '<div class="vend"><div class="av">' + esc(p.vendedor.charAt(0).toUpperCase()) + '</div><div><small>Consultor de Experiência</small><b>' + esc(p.vendedor) + '</b>' + (tel ? '<br><span>' + esc(tel) + '</span>' : '') + '</div></div><br>' : '';
-  return '<footer class="rodape">' + v + 'Daniel Donato · Palestras, treinamentos e imersões' + (tel ? ' · ' + esc(tel) : '') + (C.email ? ' · ' + esc(C.email) : '') + '</footer>';
+  return '<footer class="rodape">' + 'Daniel Donato · Palestras, treinamentos e imersões' + (tel ? ' · ' + esc(tel) : '') + (C.email ? ' · ' + esc(C.email) : '') + '</footer>';
 }
 
 function bandeja(){
