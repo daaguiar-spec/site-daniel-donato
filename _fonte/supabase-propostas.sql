@@ -112,6 +112,25 @@ begin
 end $$;
 
 -- ---------- o cliente responde (aceite, ajustes, PDF, contrato assinado) ----------
+create or replace function public.proposta_contrato_completo(p_id uuid)
+returns boolean language plpgsql stable security definer set search_path = public as $$
+declare r public.propostas; d jsonb; c jsonb; k text;
+begin
+  select * into r from public.propostas where id = p_id;
+  if not found then return false; end if;
+  d := coalesce(r.dados, '{}'::jsonb); c := coalesce(r.contratante, '{}'::jsonb);
+  if jsonb_array_length(coalesce(r.contrato->'clausulas', '[]'::jsonb)) = 0 then return false; end if;
+  foreach k in array array['razao','cnpj','endereco','representante','cpf'] loop
+    if coalesce(trim(c->>k), '') = '' then return false; end if;
+  end loop;
+  foreach k in array array['data_evento','local','carga_horaria','formato','participantes'] loop
+    if coalesce(trim(d->'detalhes'->>k), '') = '' or lower(trim(d->'detalhes'->>k)) in ('a combinar','a definir','[a preencher]') then return false; end if;
+  end loop;
+  foreach k in array array['estrutura','inclui','pagamento','itens'] loop
+    if jsonb_typeof(d->k) is distinct from 'array' or jsonb_array_length(d->k) = 0 then return false; end if;
+  end loop;
+  return true;
+end $$;
 create or replace function public.proposta_responder(p_codigo text, p_tipo text, p_dados jsonb default '{}'::jsonb)
 returns jsonb language plpgsql security definer set search_path = public as $$
 declare r public.propostas; novo text;
@@ -129,6 +148,12 @@ begin
       aceite = coalesce(p_dados->'aceite','{}'::jsonb) || jsonb_build_object('quando', now(), 'versao', r.versao),
       contratante = p_dados->'contratante'
     where id = r.id;
+    -- contrato completo (sem campos a preencher): libera na hora
+    if public.proposta_contrato_completo(r.id) then
+      novo := 'contrato_liberado';
+      update public.propostas set status = novo where id = r.id;
+      insert into public.proposta_eventos (proposta_id, tipo, detalhe) values (r.id, 'contrato_liberado_auto', jsonb_build_object('versao', r.versao));
+    end if;
   elsif p_tipo = 'ajuste_proposta' then
     if r.status not in ('enviada','visualizada','em_ajuste') then raise exception 'proposta ja respondida'; end if;
     novo := 'em_ajuste';
@@ -176,3 +201,5 @@ grant execute on function public.proposta_ver(text, boolean) to anon, authentica
 grant execute on function public.proposta_responder(text, text, jsonb) to anon, authenticated;
 grant execute on function public.proposta_publicar(uuid, jsonb, jsonb) to authenticated;
 grant execute on function public.eh_admin_proposta() to anon, authenticated;
+revoke execute on function public.proposta_contrato_completo(uuid) from public, anon;
+grant execute on function public.proposta_contrato_completo(uuid) to authenticated;

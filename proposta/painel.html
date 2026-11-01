@@ -107,9 +107,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261031c"></script>
-<script src="modelo.js?v=20261031c"></script>
-<script src="comum.js?v=20261031c"></script>
+<script src="/apresentacao/conteudo.js?v=20261101a"></script>
+<script src="modelo.js?v=20261101a"></script>
+<script src="comum.js?v=20261101a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -134,7 +134,7 @@ function demoBase(){
     { id: 'a2', codigo: 'demo2', cliente: 'Colégio Christus', vendedor: 'Rômulo Hora', fone: '', status: 'aprovada', versao: 2, dados: d2, contrato: P.copia(M.contrato),
       contratante: { razao: 'Colégio Christus Ltda.', cnpj: '12.345.678/0001-90', endereco: 'Rua X, 100, Fortaleza/CE', representante: 'João Lima', cpf: '123.456.789-00' },
       aceite: { nome: 'João Lima', cargo: 'Diretor', email: 'joao@x.com', quando: new Date().toISOString() }, pagamentos: [], atualizado_em: new Date().toISOString() }
-  ], eventos: { a1: [ { tipo: 'ajuste_proposta', criado_em: new Date().toISOString(), detalhe: { nome: 'Maria Souza', temas: ['Parcelamento','Valor'], pedido: 'Conseguimos fazer 30% na assinatura e 70% no final? E um valor um pouco menor, perto de R$ 11 mil.', versao: 1 } },
+  ], eventos: { a1: [ { tipo: 'ajuste_proposta', criado_em: new Date().toISOString(), detalhe: { nome: 'Maria Souza', fone: '(85) 99999-8888', temas: ['Parcelamento','Valor'], pedido: 'Conseguimos fazer 30% na assinatura e 70% no final? E um valor um pouco menor, perto de R$ 11 mil.', versao: 1 } },
     { tipo: 'visualizou', criado_em: new Date(Date.now()-864e5).toISOString(), detalhe: { versao: 1 } } ] } };
   return memoria;
 }
@@ -265,7 +265,7 @@ function area(id, rot, v, cls, extra){ return '<div class="' + (cls || '') + '">
 
 var NOMES_EV = { visualizou: '👀 Abriu a proposta', aceite: '✅ Aceitou a proposta', ajuste_proposta: '✏️ Pediu ajuste na proposta', ajuste_contrato: '📝 Sugeriu alterações no contrato',
   baixou_pdf_proposta: '⬇️ Baixou o PDF da proposta', baixou_pdf_contrato: '⬇️ Baixou o PDF do contrato', abriu_contrato: '📄 Abriu o contrato', enviou_assinado: '🖊️ Disse que enviou o contrato assinado',
-  falou_whatsapp: '💬 Tocou em “Prefiro conversar”', nova_versao: '🔄 Você publicou nova versão' };
+  falou_whatsapp: '💬 Tocou em “Prefiro conversar”', nova_versao: '🔄 Você publicou nova versão', contrato_liberado_auto: '📄 Contrato liberado na hora (estava completo)', enviou_comprovante: '💰 Disse que pagou uma parcela' };
 
 function pedidosPendentes(p){
   var h = '';
@@ -309,6 +309,16 @@ function marcaPago(i, sim){
   DB.atualizar(S.atual.id, { pagamentos: pagos }).then(function(){ return DB.abrir(S.atual.id); }).then(function(r){ var y = scrollY; S.atual = r[0]; S.salvo = P.copia(r[0]); S.eventos = r[1]; editor(); scrollTo(0, y); toast(sim ? 'Parcela marcada como recebida.' : 'Desmarcado.'); })
     .catch(function(e){ toast(/pagamentos/.test(String(e && e.message)) ? 'Rode no Supabase o arquivo supabase-propostas-pagamentos.sql.' : erroTxt(e)); });
 }
+function statusCompleto(d){
+  var det = d.detalhes || {}, falta = [];
+  [['data_evento','Data'],['local','Local'],['carga_horaria','Carga horária'],['formato','Formato'],['participantes','Participantes']].forEach(function(x){
+    var v = String(det[x[0]] || '').trim(); if (!v || /^(a combinar|a definir|\[a preencher\])$/i.test(v)) falta.push(x[1]); });
+  if (!(d.estrutura || []).length) falta.push('Estrutura necessária');
+  if (!(d.inclui || []).length) falta.push('O que está incluído');
+  return falta.length
+    ? '<div class="pedido" style="margin-bottom:14px">⏳ <b>O contrato vai esperar você liberar</b> depois do aceite, porque falta: ' + esc(falta.join(', ')) + '. Preencha e salve para ele sair na hora.</div>'
+    : '<div class="pedido" style="margin-bottom:14px;border-color:rgba(127,192,143,.5);background:rgba(127,192,143,.07)">✅ <b>Contrato completo:</b> quando o cliente aceitar, ele já recebe o contrato na hora (com os dados que ele preencher).</div>';
+}
 function editor(){
   ['estrutura','experiencia','objetivos','resultados'].forEach(function(k){ if (S.atual.dados && S.atual.dados[k] === undefined) S.atual.dados[k] = P.copia((M.dados || {})[k]); });
   if (S.atual.contrato && S.atual.contrato.cidadeForo === undefined) S.atual.contrato.cidadeForo = M.cidadeForo || '';
@@ -344,6 +354,7 @@ function editor(){
     inp('cRazao', 'Razão social', ct.razao) + inp('cCnpj', 'CNPJ / CPF', ct.cnpj) + inp('cEnd', 'Endereço', ct.endereco, 'text', 'full') + inp('cRep', 'Quem assina', ct.representante) + inp('cCpf', 'CPF de quem assina', ct.cpf) + '</div></section>' +
 
     '<section class="bloco"><h2>Contrato · cláusulas</h2><p class="dica" style="margin:-8px 0 14px"><button class="sec" data-acao="contratoPadrao">Trocar pelo contrato padrão</button> substitui a abertura e todas as cláusulas desta proposta pelo modelo atual.</p>' +
+    (['rascunho','enviada','visualizada','em_ajuste'].indexOf(p.status) > -1 ? statusCompleto(d) : '') +
     area('fAbert', 'Abertura (texto antes da Cláusula 1ª)', (p.contrato || {}).abertura) + '<div style="height:12px"></div><div id="clausulas"></div><button class="add" data-acao="addCl">+ Cláusula</button>' +
     '<div style="margin-top:14px;max-width:320px">' + inp('fForo', 'Foro (cidade/UF)', (p.contrato || {}).cidadeForo || M.cidadeForo) + '</div>' +
     '<p class="dica">Campos automáticos: <code>{{contratante_razao}}</code> <code>{{contratante_cnpj}}</code> <code>{{contratante_endereco}}</code> <code>{{contratante_representante}}</code> <code>{{contratante_cpf}}</code> <code>{{contratante_cargo}}</code> <code>{{solucao}}</code> <code>{{data_evento}}</code> <code>{{local}}</code> <code>{{carga_horaria}}</code> <code>{{participantes}}</code> <code>{{formato}}</code> <code>{{valor_total}}</code> <code>{{valor_extenso}}</code> <code>{{pagamento}}</code> <code>{{parcelas_lista}}</code> <code>{{forma_pagamento}}</code> <code>{{dados_bancarios}}</code> <code>{{inclui}}</code> <code>{{estrutura}}</code> <code>{{cidade_foro}}</code>. Os dados da Sinapse (CONTRATADA) já entram sozinhos.</p></section>' +
@@ -485,12 +496,16 @@ function mensagem(tipo){
   if (tipo === 'contrato') return 'Olá! Obrigado por aceitar a proposta. O contrato já está disponível na aba "Contrato":\n' + link + '\n\nDá para ler, sugerir alterações ou baixar o PDF e assinar gratuitamente pelo gov.br.';
   return 'Olá! Atualizamos o contrato conforme as suas sugestões. As cláusulas alteradas estão marcadas:\n' + link + '&ver=contrato';
 }
+function foneCliente(p){
+  var ev = S.eventos.filter(function(e){ return e.detalhe && e.detalhe.fone; })[0];
+  return fone((ev && ev.detalhe.fone) || (p.aceite || {}).fone);
+}
 function janelaEnvio(titulo, msg){
-  var p = S.atual, num = fone((p.aceite || {}).fone);
+  var p = S.atual, num = foneCliente(p);
   if (num.length === 10 || num.length === 11) num = '55' + num;
   var f = document.createElement('div'); f.className = 'fundo'; f.id = 'janela';
   f.innerHTML = '<div class="jan" role="dialog" aria-modal="true"><p class="eb">Pronto</p><h3>' + esc(titulo) + '</h3><p>Mande esta mensagem para o cliente. Você pode editar antes.</p>' +
-    '<label for="msg">Mensagem</label><textarea id="msg">' + esc(msg) + '</textarea><div class="bts"><button class="g" id="mZap">Abrir no WhatsApp</button><button class="sec" id="mCop">Copiar</button><button class="sec" id="mFec">Fechar</button></div></div>';
+    (num.length >= 10 ? '<p style="margin:-4px 0 10px">Vai para o WhatsApp do cliente: <b>' + esc(num) + '</b></p>' : '<p style="margin:-4px 0 10px">O cliente ainda não informou WhatsApp: escolha o contato ao abrir.</p>') + '<label for="msg">Mensagem</label><textarea id="msg">' + esc(msg) + '</textarea><div class="bts"><button class="g" id="mZap">Abrir no WhatsApp</button><button class="sec" id="mCop">Copiar</button><button class="sec" id="mFec">Fechar</button></div></div>';
   document.body.appendChild(f);
   f.querySelector('#mZap').onclick = function(){ open('https://api.whatsapp.com/send?' + (num.length >= 12 ? 'phone=' + num + '&' : '') + 'text=' + encodeURIComponent(f.querySelector('#msg').value), '_blank'); };
   f.querySelector('#mCop').onclick = function(){ copia(f.querySelector('#msg').value); };

@@ -310,10 +310,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261031c"></script>
-<script src="modelo.js?v=20261031c"></script>
-<script src="comum.js?v=20261031c"></script>
-<script src="qrcode.js?v=20261031c"></script>
+<script src="/apresentacao/conteudo.js?v=20261101a"></script>
+<script src="modelo.js?v=20261101a"></script>
+<script src="comum.js?v=20261101a"></script>
+<script src="qrcode.js?v=20261101a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -653,6 +653,8 @@ function campo(id, rot, tipo, valor, extra){
     : '<input id="' + id + '" type="' + (tipo || 'text') + '" value="' + esc(valor || '') + '" ' + (extra || '') + '>');
 }
 function val(id){ var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function foneConhecido(){ try{ return localStorage.getItem('dd_fone_cli') || ''; }catch(e){ return ''; } }
+function lembraFone(f){ try{ if (f) localStorage.setItem('dd_fone_cli', f); }catch(e){} }
 function digitos(s){ return String(s || '').replace(/\D/g, ''); }
 
 function abreAceite(){
@@ -660,7 +662,7 @@ function abreAceite(){
   janela('<div class="kicker">Aceite da proposta</div><h3>Falta pouco.</h3><p class="ex">Com estes dados nós já preparamos o contrato. Leva um minuto.</p>' +
     '<form id="fAceite" novalidate>' +
     '<div class="dupla"><div>' + campo('acNome', 'Seu nome', 'text', ac.nome, 'autocomplete="name" required') + '</div><div>' + campo('acCargo', 'Cargo', 'text', ac.cargo, 'autocomplete="organization-title"') + '</div></div>' +
-    '<div class="dupla"><div>' + campo('acEmail', 'E-mail', 'email', ac.email, 'autocomplete="email" required') + '</div><div>' + campo('acFone', 'WhatsApp', 'tel', ac.fone, 'autocomplete="tel" inputmode="tel"') + '</div></div>' +
+    '<div class="dupla"><div>' + campo('acEmail', 'E-mail', 'email', ac.email, 'autocomplete="email" required') + '</div><div>' + campo('acFone', 'WhatsApp (com DDD)', 'tel', ac.fone || foneConhecido(), 'autocomplete="tel" inputmode="tel" required') + '</div></div>' +
     '<fieldset><legend>Dados para o contrato</legend>' +
     campo('ctRazao', 'Razão social (ou nome completo)', 'text', ct.razao || S.prop.cliente, 'autocomplete="organization" required') +
     campo('ctCnpj', 'CNPJ (ou CPF)', 'text', ct.cnpj, 'inputmode="numeric" required') +
@@ -675,6 +677,7 @@ function abreAceite(){
         var er = j.querySelector('#acErro'), falta = [];
         if (!val('acNome')) falta.push('seu nome');
         if (!/^\S+@\S+\.\S+$/.test(val('acEmail'))) falta.push('um e-mail válido');
+        if (digitos(val('acFone')).length < 10) falta.push('o WhatsApp com DDD');
         if (!val('ctRazao')) falta.push('a razão social');
         var doc = digitos(val('ctCnpj')); if (doc.length !== 14 && doc.length !== 11) falta.push('o CNPJ (14 números) ou CPF (11 números)');
         if (!val('ctEnd')) falta.push('o endereço');
@@ -687,14 +690,19 @@ function abreAceite(){
           contratante: { razao: val('ctRazao'), cnpj: formataDoc(val('ctCnpj')), endereco: val('ctEnd'), representante: val('ctRep'), cpf: formataDoc(val('ctCpf')) }
         };
         var b = j.querySelector('button[type=submit]'); b.disabled = true; b.textContent = 'Enviando…';
-        responder('aceite', dados).then(function(){
-          aviso('✅ ' + S.prop.cliente + ' ACEITOU a proposta (' + P.brl(P.total(S.prop.dados)) + ')', {
+        lembraFone(dados.aceite.fone);
+        responder('aceite', dados).then(function(r){
+          var liberado = r && r.status === 'contrato_liberado';
+          aviso('✅ ' + S.prop.cliente + ' ACEITOU a proposta (' + P.brl(P.total(S.prop.dados)) + ')' + (liberado ? ' · contrato liberado' : ' · libere o contrato'), {
             'Quem aceitou': dados.aceite.nome + (dados.aceite.cargo ? ' · ' + dados.aceite.cargo : ''), 'E-mail': dados.aceite.email, 'WhatsApp': dados.aceite.fone || '—',
             'Razão social': dados.contratante.razao, 'CNPJ/CPF': dados.contratante.cnpj, 'Endereço': dados.contratante.endereco,
             'Assina o contrato': dados.contratante.representante + ' · CPF ' + dados.contratante.cpf,
-            'Próximo passo': 'Revise o contrato no painel e toque em "Liberar contrato".' });
+            'Próximo passo': liberado ? 'O contrato estava completo e já foi liberado para o cliente. Acompanhe a assinatura pelo painel.' : 'O contrato tem campos a preencher. Complete no painel e toque em "Liberar contrato".' });
           S.prop.aceite = Object.assign({ quando: new Date().toISOString() }, dados.aceite); S.prop.contratante = dados.contratante;
-          concluiForm('fAceite'); fecha(); desenha(); scrollTo({ top: document.querySelector('.acoes').offsetTop - 90, behavior: 'smooth' }); toast('Proposta aceita! Obrigado.');
+          concluiForm('fAceite'); fecha();
+          var fim = function(){ desenha(); scrollTo({ top: document.querySelector('.acoes').offsetTop - 90, behavior: 'smooth' }); toast(liberado ? 'Proposta aceita! O contrato já está pronto na aba Contrato.' : 'Proposta aceita! Obrigado.'); };
+          if (liberado && !DEMO) rpc('proposta_ver', { p_codigo: S.prop.codigo, p_registrar: false }).then(function(p2){ if (p2) S.prop = p2; fim(); }).catch(fim);
+          else fim();
         }).catch(function(err){ b.disabled = false; b.innerHTML = ICON.ok + ' Confirmar aceite'; er.hidden = false; er.textContent = 'Não foi possível enviar agora. Tente de novo ou fale com a gente pelo WhatsApp. (' + err.message + ')'; });
       });
     });
@@ -713,14 +721,14 @@ function abreAjuste(){
     '<form id="fAj" novalidate><label>Escolha um ou mais</label><div class="chips">' +
     TEMAS.map(function(t, i){ return '<label><input type="checkbox" name="tema" value="' + esc(t) + '" id="tm' + i + '"><span>' + esc(t) + '</span></label>'; }).join('') + '</div>' +
     campo('ajComo', 'Como gostaria que ficasse', 'area', '', 'placeholder="Ex.: parcelar em 3 vezes, ou fazer em duas turmas de 4 horas" required') +
-    '<div class="dupla"><div>' + campo('ajNome', 'Seu nome', 'text', ac.nome, 'autocomplete="name" required') + '</div><div>' + campo('ajFone', 'WhatsApp (opcional)', 'tel', '', 'autocomplete="tel"') + '</div></div>' +
+    '<div class="dupla"><div>' + campo('ajNome', 'Seu nome', 'text', ac.nome, 'autocomplete="name" required') + '</div><div>' + campo('ajFone', 'WhatsApp (com DDD)', 'tel', ac.fone || foneConhecido(), 'autocomplete="tel" inputmode="tel" required') + '</div></div>' +
     '<div class="erro" id="ajErro" role="alert" hidden></div><button class="bt" type="submit">Enviar pedido de ajuste</button></form>', function(j){
       j.querySelector('#fAj').addEventListener('submit', function(e){
         e.preventDefault();
         var temas = [].slice.call(j.querySelectorAll('input[name=tema]:checked')).map(function(x){ return x.value; });
         var er = j.querySelector('#ajErro');
-        if (!val('ajComo') || !val('ajNome')){ er.hidden = false; er.textContent = 'Conte como gostaria que ficasse e diga o seu nome.'; return; }
-        var dados = { temas: temas, pedido: val('ajComo').slice(0, 3000), nome: val('ajNome'), fone: val('ajFone') };
+        if (!val('ajComo') || !val('ajNome') || digitos(val('ajFone')).length < 10){ er.hidden = false; er.textContent = 'Conte como gostaria que ficasse e informe seu nome e WhatsApp com DDD (é por lá que avisamos quando a nova versão estiver pronta).'; return; }
+        var dados = { temas: temas, pedido: val('ajComo').slice(0, 3000), nome: val('ajNome'), fone: val('ajFone') }; lembraFone(dados.fone);
         var b = j.querySelector('button[type=submit]'); b.disabled = true; b.textContent = 'Enviando…';
         responder('ajuste_proposta', dados).then(function(){
           aviso('✏️ ' + S.prop.cliente + ' pediu AJUSTE na proposta', { 'Quem pediu': dados.nome + (dados.fone ? ' · ' + dados.fone : ''), 'O que ajustar': temas.join(', ') || '—', 'Pedido': dados.pedido });
@@ -760,16 +768,16 @@ function abreEnvioSug(){
   var ac = S.prop.aceite || {};
   janela('<div class="kicker">Sugestões no contrato</div><h3>Revise e envie</h3><p class="ex">Vamos analisar e publicar uma nova versão do contrato neste mesmo link.</p>' +
     '<ul class="lista-sug">' + S.sugestoes.map(function(s, k){ return '<li><b>Cláusula ' + (s.i + 1) + 'ª · ' + esc(s.titulo) + '</b>' + esc(s.como) + (s.porque ? '<br><i>Por quê: ' + esc(s.porque) + '</i>' : '') + '<br><button type="button" data-tira="' + k + '">Retirar</button></li>'; }).join('') + '</ul>' +
-    '<form id="fEnv" novalidate>' + campo('enNome', 'Seu nome', 'text', ac.nome, 'autocomplete="name" required') +
+    '<form id="fEnv" novalidate>' + '<div class="dupla"><div>' + campo('enNome', 'Seu nome', 'text', ac.nome, 'autocomplete="name" required') + '</div><div>' + campo('enFone', 'WhatsApp (com DDD)', 'tel', ac.fone || foneConhecido(), 'autocomplete="tel" inputmode="tel" required') + '</div></div>' +
     '<div class="erro" id="enErro" role="alert" hidden></div><button class="bt" type="submit">Enviar ' + S.sugestoes.length + (S.sugestoes.length > 1 ? ' sugestões' : ' sugestão') + '</button></form>', function(j){
       [].forEach.call(j.querySelectorAll('[data-tira]'), function(b){ b.addEventListener('click', function(){ S.sugestoes.splice(+b.dataset.tira, 1); redesenhaContrato(); abreEnvioSug(); }); });
       j.querySelector('#fEnv').addEventListener('submit', function(e){
         e.preventDefault();
-        if (!val('enNome')){ var er = j.querySelector('#enErro'); er.hidden = false; er.textContent = 'Diga o seu nome.'; return; }
-        var dados = { nome: val('enNome'), sugestoes: S.sugestoes.map(function(s){ return { clausula: s.i + 1, titulo: s.titulo, como: s.como, porque: s.porque }; }) };
+        if (!val('enNome') || digitos(val('enFone')).length < 10){ var er = j.querySelector('#enErro'); er.hidden = false; er.textContent = 'Informe seu nome e WhatsApp com DDD (é por lá que avisamos quando o contrato novo estiver pronto).'; return; }
+        var dados = { nome: val('enNome'), fone: val('enFone'), sugestoes: S.sugestoes.map(function(s){ return { clausula: s.i + 1, titulo: s.titulo, como: s.como, porque: s.porque }; }) };
         var b = j.querySelector('button[type=submit]'); b.disabled = true; b.textContent = 'Enviando…';
         responder('ajuste_contrato', dados).then(function(){
-          var campos = { 'Quem pediu': dados.nome };
+          var campos = { 'Quem pediu': dados.nome + ' · ' + dados.fone };
           dados.sugestoes.forEach(function(s){ campos['Cláusula ' + s.clausula + 'ª · ' + s.titulo] = s.como + (s.porque ? ' (Por quê: ' + s.porque + ')' : ''); });
           aviso('📝 ' + S.prop.cliente + ' sugeriu ' + dados.sugestoes.length + ' alteração(ões) no CONTRATO', campos);
           concluiForm('fEnv'); S.sugestoes = []; fecha(); desenha(); toast('Sugestões enviadas! Avisamos quando a nova versão estiver pronta.');
