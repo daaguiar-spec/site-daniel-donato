@@ -366,6 +366,7 @@ function editor(){
     '<div class="links" style="margin-top:16px">' + (['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="recusada">Marcar como recusada</button>' : '') +
     (['contrato_liberado','contrato_em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="aprovada">Esconder o contrato do cliente</button>' : '') +
     (p.status !== 'arquivada' ? '<button class="sec" data-st="arquivada">Arquivar</button>' : '<button class="sec" data-st="enviada">Desarquivar</button>') +
+    (p.aceite ? '<button class="sec" data-acao="reabrir">Desfazer aceite (reabrir proposta)</button>' : '') +
     (p.versao > 1 ? '<button class="sec" data-acao="zerar">Limpar histórico de versões</button>' : '') +
     '<button class="sec" data-acao="duplicar">Duplicar</button>' + (p.status === 'rascunho' ? '<button class="sec" data-acao="apagar">Apagar rascunho</button>' : '') + '</div></section></div>' +
 
@@ -540,6 +541,13 @@ app.addEventListener('click', function(e){
     else if (a === 'tiraCl'){ if (!confirm('Remover a cláusula ' + (i + 1) + 'ª?')) return; cl.splice(i, 1); }
     else if (i > 0){ var t = cl[i]; cl[i] = cl[i - 1]; cl[i - 1] = t; }
     desenhaClausulas(); marcaSujo();
+  }
+  else if (a === 'reabrir'){
+    if (S.sujo) return toast('Salve as alterações antes.');
+    if (!confirm('Desfazer o aceite? A proposta volta a ficar aberta para o cliente aceitar, e são apagados: quem aceitou, os dados do contratante e os pagamentos marcados. Use isso depois de um teste.')) return;
+    DB.atualizar(S.atual.id, { status: 'enviada', aceite: null, contratante: null, pagamentos: [] }).then(function(){ return DB.abrir(S.atual.id); })
+      .then(function(r){ S.atual = r[0]; S.salvo = P.copia(r[0]); S.eventos = r[1]; S.sujo = false; editor(); toast('Proposta reaberta. O cliente pode aceitar pelo mesmo link.'); })
+      .catch(function(e){ toast(erroTxt(e)); });
   }
   else if (a === 'zerar'){
     if (S.sujo) return toast('Salve as alterações antes.');
