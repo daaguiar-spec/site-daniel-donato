@@ -83,6 +83,18 @@
   ],
   "rewrites": [
     {
+      "source": "/apresentacao/",
+      "destination": "/api/og?pagina=apresentacao"
+    },
+    {
+      "source": "/proposta",
+      "destination": "/api/og?pagina=proposta"
+    },
+    {
+      "source": "/proposta/",
+      "destination": "/api/og?pagina=proposta"
+    },
+    {
       "source": "/blog",
       "destination": "/api/blog"
     },
@@ -123,5 +135,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/og.js": {
+      "includeFiles": "{proposta,apresentacao}/pagina.html"
+    }
+  }
 }

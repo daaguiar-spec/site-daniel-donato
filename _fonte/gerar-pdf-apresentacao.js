@@ -6,7 +6,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 (async () => {
-  const URL = process.env.URL || 'http://localhost:8080/apresentacao/';
+  const URL = process.env.URL || 'http://localhost:8080/apresentacao/pagina.html';
   const OUT = process.env.OUT || '/tmp/pdf-apres';
   fs.mkdirSync(OUT, { recursive: true });
   fs.readdirSync(OUT).forEach(f => fs.unlinkSync(OUT + '/' + f));
