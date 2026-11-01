@@ -32,6 +32,13 @@ window.MODELO_PROPOSTA = {
 
   cidadeForo: "Fortaleza/CE",
 
+  /* Contato que aparece nas propostas quando o campo "WhatsApp do consultor" do painel está vazio.
+     (A apresentação continua usando o contato do arquivo apresentacao/conteudo.js.) */
+  contatoProposta: {
+    whatsapp: "5585999711108",
+    telefoneExibido: "(85) 99971-1108"
+  },
+
   /* Dados para o cliente pagar (aparecem na aba Contrato, depois que você libera o contrato).
      nome e cidade vão dentro do código Pix (sem acento, até 25 e 15 letras). */
   pagamento: {

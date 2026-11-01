@@ -310,10 +310,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261101a"></script>
-<script src="modelo.js?v=20261101a"></script>
-<script src="comum.js?v=20261101a"></script>
-<script src="qrcode.js?v=20261101a"></script>
+<script src="/apresentacao/conteudo.js?v=20261101b"></script>
+<script src="modelo.js?v=20261101b"></script>
+<script src="comum.js?v=20261101b"></script>
+<script src="qrcode.js?v=20261101b"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -400,7 +400,7 @@ function aparelho(){ var w = Math.min(innerWidth, screen.width || innerWidth); r
 function numeroZap(){
   var f = String((S.prop && S.prop.fone) || '').replace(/\D/g, '');
   if (f.length === 10 || f.length === 11) f = '55' + f;
-  return f.length >= 12 ? f : (C.whatsapp || '');
+  return f.length >= 12 ? f : ((M.contatoProposta || {}).whatsapp || C.whatsapp || '');
 }
 function zap(msg){ return 'https://api.whatsapp.com/send?phone=' + numeroZap() + '&text=' + encodeURIComponent(msg); }
 function toast(m){ var t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 3800); }
@@ -602,9 +602,17 @@ function copiar(t){
     .catch(function(){ var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); toast('Copiado!'); }catch(e){} a.remove(); });
 }
 
+function foneExibido(p){
+  var f = String((p && p.fone) || '').replace(/\D/g, '');
+  if (f.length >= 12 && f.indexOf('55') === 0) f = f.slice(2);
+  if (f.length === 11) return '(' + f.slice(0, 2) + ') ' + f.slice(2, 7) + '-' + f.slice(7);
+  if (f.length === 10) return '(' + f.slice(0, 2) + ') ' + f.slice(2, 6) + '-' + f.slice(6);
+  return (M.contatoProposta || {}).telefoneExibido || C.telefoneExibido || '';
+}
 function rodape(p){
-  var v = p.vendedor ? '<div class="vend"><div class="av">' + esc(p.vendedor.charAt(0).toUpperCase()) + '</div><div><small>Consultor de Experiência</small><b>' + esc(p.vendedor) + '</b></div></div><br>' : '';
-  return '<footer class="rodape">' + v + 'Daniel Donato · Palestras, treinamentos e imersões' + (C.telefoneExibido ? ' · ' + esc(C.telefoneExibido) : '') + (C.email ? ' · ' + esc(C.email) : '') + '</footer>';
+  var tel = foneExibido(p);
+  var v = p.vendedor ? '<div class="vend"><div class="av">' + esc(p.vendedor.charAt(0).toUpperCase()) + '</div><div><small>Consultor de Experiência</small><b>' + esc(p.vendedor) + '</b>' + (tel ? '<br><span>' + esc(tel) + '</span>' : '') + '</div></div><br>' : '';
+  return '<footer class="rodape">' + v + 'Daniel Donato · Palestras, treinamentos e imersões' + (tel ? ' · ' + esc(tel) : '') + (C.email ? ' · ' + esc(C.email) : '') + '</footer>';
 }
 
 function bandeja(){
