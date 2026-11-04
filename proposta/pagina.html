@@ -123,6 +123,21 @@ em{color:var(--gold);font-style:italic}
 .res span{color:var(--txt2);font-size:15.5px}
 @media (min-width:800px){.res{grid-template-columns:repeat(5,1fr);gap:18px}.res li{grid-template-columns:1fr;border-top:0;border-left:1px solid var(--line);padding:4px 0 4px 18px}.res li:first-child{border-left:0;padding-left:0}.res li::before{grid-row:auto;margin-bottom:10px}}
 
+/* PDF da proposta em versão clara (economiza tinta) */
+.pdf-caixa{background:#fff!important;color:#1A1712!important}
+.pdf-caixa .capa h1,.pdf-caixa .bloco h2,.pdf-caixa h3,.pdf-caixa b,.pdf-caixa .det b,.pdf-caixa .lista-ok li,.pdf-caixa .item b,.pdf-caixa .res b,.pdf-caixa .cond b{color:#1A1712!important}
+.pdf-caixa em,.pdf-caixa .kicker,.pdf-caixa .capa .sol,.pdf-caixa .parc small,.pdf-caixa .res li::before{color:#8A6A2E!important}
+.pdf-caixa .capa p.ap,.pdf-caixa .meta,.pdf-caixa .exp-txt,.pdf-caixa .res span,.pdf-caixa .item span,.pdf-caixa .det small,.pdf-caixa .sub,.pdf-caixa .total small,.pdf-caixa .cond,.pdf-caixa .parc span,.pdf-caixa .sub-t,.pdf-caixa .nao{color:#5C5446!important}
+.pdf-caixa .bloco{background:#fff!important;border-color:#E3DACB!important}
+.pdf-caixa .det div,.pdf-caixa .parc div{background:#FBF8F2!important;border-color:#E3DACB!important}
+.pdf-caixa .itens,.pdf-caixa .item,.pdf-caixa .sub,.pdf-caixa .res li{border-color:#E3DACB!important}
+.pdf-caixa .total b{color:#8A6A2E!important}
+.pdf-caixa .formato span{background:#FBF8F2!important;border-color:#E3DACB!important;color:#5C4A20!important}
+.pdf-caixa .lista-ok li::before{background-color:#F3EBDA!important;filter:brightness(.75)}
+.pdf-caixa .pdf-topo b{color:#8A6A2E!important;border-color:#C9A24A!important}
+.pdf-caixa .pdf-topo span{color:#5C5446!important}
+.pdf-caixa .pdf-rodape{color:#5C5446!important;border-color:#E3DACB!important}
+
 /* pagamento */
 .parcs{display:grid;gap:10px;margin-bottom:22px}
 .parcs div{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg)}
@@ -310,10 +325,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261104d"></script>
-<script src="modelo.js?v=20261104d"></script>
-<script src="comum.js?v=20261104d"></script>
-<script src="qrcode.js?v=20261104d"></script>
+<script src="/apresentacao/conteudo.js?v=20261104e"></script>
+<script src="modelo.js?v=20261104e"></script>
+<script src="comum.js?v=20261104e"></script>
+<script src="qrcode.js?v=20261104e"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -820,7 +835,7 @@ function pdfProposta(){
   var libs = (window.html2canvas ? Promise.resolve() : carregaScript('vendor/html2canvas.min.js?v=1')).then(function(){ return window.jspdf ? null : carregaScript('vendor/jspdf.umd.min.js?v=1'); });
   var caixa = document.createElement('div');
   caixa.className = 'pdf-caixa';
-  caixa.style.cssText = 'position:fixed;left:-12000px;top:0;width:860px;background:#0B0A08;color:#F3EDE2;padding:0';
+  caixa.style.cssText = 'position:fixed;left:-12000px;top:0;width:860px;padding:0';
   var vp = $('vistaProposta').cloneNode(true); vp.removeAttribute('id'); vp.classList.remove('hidden');
   [].forEach.call(vp.querySelectorAll('.acoes,.noprint,.aviso,.mudou,.chip,button'), function(x){ x.remove(); });
   [].forEach.call(vp.querySelectorAll('s'), function(x){ x.remove(); });
@@ -828,14 +843,14 @@ function pdfProposta(){
   var blocos = [].slice.call(vp.children).filter(function(x){ return x.offsetHeight !== 0 || true; });
   blocos.forEach(function(b){ b.style.margin = '0 0 18px'; caixa.appendChild(b); });
   var rod = document.createElement('div'); rod.className = 'pdf-rodape';
-  rod.style.cssText = 'padding:10px 4px 4px;border-top:1px solid #2E2A22;color:#A79F92;font-size:12px;text-align:center';
+  rod.style.cssText = 'padding:10px 4px 4px;border-top:1px solid #E3DACB;font-size:12px;text-align:center';
   rod.textContent = 'Daniel Donato · Palestras, treinamentos e imersões · ' + foneExibido(S.prop) + (C.email ? ' · ' + C.email : '');
   caixa.appendChild(rod);
   document.body.appendChild(caixa);
   var fim = function(){ caixa.remove(); gerandoPdf = false; };
   libs.then(function(){ return document.fonts && document.fonts.ready; }).then(function(){
     var partes = [caixa.querySelector('.pdf-topo')].concat(blocos, [rod]);
-    var op = { backgroundColor: '#0B0A08', scale: 2, useCORS: true, logging: false };
+    var op = { backgroundColor: '#FFFFFF', scale: 2, useCORS: true, logging: false };
     return partes.reduce(function(prom, el){ return prom.then(function(lista){ return html2canvas(el, op).then(function(cv){ lista.push(cv); return lista; }); }); }, Promise.resolve([]));
   }).then(function(canvases){
     var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
@@ -845,7 +860,6 @@ function pdfProposta(){
     var areaTopo = M + hTopo + 2, areaFim = H - M - hRod - 2;
     function novaPagina(primeira){
       if (!primeira) doc.addPage();
-      doc.setFillColor(11, 10, 8); doc.rect(0, 0, W, H, 'F');
       doc.addImage(topo.toDataURL('image/jpeg', .9), 'JPEG', M, M, LW, hTopo);
       doc.addImage(rodape.toDataURL('image/jpeg', .9), 'JPEG', M, H - M - hRod, LW, hRod);
       return areaTopo;
