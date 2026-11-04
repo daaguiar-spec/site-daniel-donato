@@ -162,7 +162,7 @@ begin
     if r.status not in ('contrato_liberado','contrato_em_ajuste') then raise exception 'contrato indisponivel'; end if;
     novo := 'contrato_em_ajuste';
     update public.propostas set status = novo where id = r.id;
-  elsif p_tipo not in ('baixou_pdf_proposta','baixou_pdf_contrato','abriu_contrato','enviou_assinado','falou_whatsapp','enviou_comprovante') then
+  elsif p_tipo not in ('baixou_pdf_proposta','baixou_pdf_contrato','abriu_contrato','enviou_assinado','falou_whatsapp','enviou_comprovante','resumo') then
     raise exception 'tipo invalido';
   end if;
 

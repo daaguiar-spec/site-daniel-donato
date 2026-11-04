@@ -310,10 +310,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261104a"></script>
-<script src="modelo.js?v=20261104a"></script>
-<script src="comum.js?v=20261104a"></script>
-<script src="qrcode.js?v=20261104a"></script>
+<script src="/apresentacao/conteudo.js?v=20261104b"></script>
+<script src="modelo.js?v=20261104b"></script>
+<script src="comum.js?v=20261104b"></script>
+<script src="qrcode.js?v=20261104b"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -435,6 +435,7 @@ function desenha(){
   h += rodape(p) + '</div>';
   $('app').innerHTML = h;
   bandeja();
+  if (window.__rastro) window.__rastro.observa();
 }
 
 function vistaProposta(p, d, st, mud){
@@ -844,6 +845,72 @@ document.addEventListener('click', function(e){
 $('topoPdf').addEventListener('click', baixaPdf);
 addEventListener('beforeprint', function(){ if (!document.body.className.match(/imprime-/)) document.body.classList.add('imprime-' + S.vista); });
 addEventListener('afterprint', function(){ document.body.classList.remove('imprime-proposta', 'imprime-contrato'); });
+
+
+/* ---------------- acompanhamento: até onde o cliente foi, tempo e cliques ---------------- */
+(function(){
+  var NOMES_SEC = { capa: 'Capa', experiencia: 'A experiência', objetivos: 'Objetivos', resultados: 'Resultados', inclui: 'O que está incluído', estrutura: 'Estrutura', valores: 'Valores e condições', acoes: 'Botões de aceite' };
+  var KICK = [[/experi/i, 'experiencia'], [/objetiv/i, 'objetivos'], [/resultad/i, 'resultados'], [/recebe/i, 'inclui'], [/estrutura/i, 'estrutura'], [/investimento/i, 'valores']];
+  var carga = Math.random().toString(36).slice(2) + Date.now().toString(36);
+  var vistas = {}, ordem = [], clausulas = 0, totalCl = 0, viuPagamento = false, cliques = [], ativo = 0, marca = Date.now(), visivel = document.visibilityState !== 'hidden', envios = 0, assinatura = '', io = null;
+  function ok(){ return S.prop && !S.prop.previa && !DEMO; }
+  function marcaSecoes(){
+    var vp = $('vistaProposta'); if (vp){
+      var c = vp.querySelector('.capa'); if (c) c.dataset.sec = 'capa';
+      [].forEach.call(vp.querySelectorAll('.bloco'), function(b){ var k = (b.querySelector('.kicker') || {}).textContent || ''; KICK.some(function(x){ if (x[0].test(k)){ b.dataset.sec = x[1]; return true; } return false; }); });
+      var a = vp.querySelector('.acoes'); if (a) a.dataset.sec = 'acoes';
+    }
+    var vc = $('vistaContrato'); if (vc){
+      var cls = vc.querySelectorAll('.cl[id^="cl"]'); totalCl = cls.length;
+      [].forEach.call(cls, function(cl){ cl.dataset.sec = 'c' + (+cl.id.slice(2) + 1); });
+      var pg = $('pagamento'); if (pg) pg.dataset.sec = 'pagamento';
+    }
+  }
+  function observa(){
+    if (!ok() || !('IntersectionObserver' in window)) return;
+    marcaSecoes();
+    if (io) io.disconnect();
+    io = new IntersectionObserver(function(es){ es.forEach(function(e){
+      if (!e.isIntersecting || e.intersectionRect.height < Math.min(e.boundingClientRect.height * .4, innerHeight * .4)) return;
+      var k = e.target.dataset.sec;
+      if (/^c\d+$/.test(k)){ clausulas = Math.max(clausulas, +k.slice(1)); return; }
+      if (k === 'pagamento'){ viuPagamento = true; return; }
+      if (!vistas[k]){ vistas[k] = 1; ordem.push(k); }
+    }); }, { threshold: [0, .2, .4, .6] });
+    [].forEach.call(document.querySelectorAll('[data-sec]'), function(el){ io.observe(el); });
+  }
+  function rotulo(el){
+    if (el.dataset.acao) return ({ aceitar: 'Aceito a proposta', ajustar: 'Quero ajustar algo', conversar: 'Prefiro conversar (WhatsApp)', sugerir: 'Sugerir alteração em cláusula', enviarSug: 'Enviar sugestões do contrato', assinei: 'Já assinei', pdf: 'Baixar PDF do contrato', comprovante: 'Enviar comprovante (Pix)' })[el.dataset.acao] || el.dataset.acao;
+    if (el.dataset.vista) return 'Aba ' + (el.dataset.vista === 'contrato' ? 'Contrato' : 'Proposta');
+    if (el.dataset.copiar) return /^000201/.test(el.dataset.copiar) ? 'Copiou o Pix copia e cola' : 'Copiou dado bancário';
+    if (el.id === 'topoPdf') return 'Baixar PDF (topo)';
+    if (el.id === 'topoApres' || el.id === 'linkApres') return 'Ver apresentação';
+    var h = el.getAttribute('href') || '';
+    if (/assinador\.iti/.test(h)) return 'Abrir assinador gov.br';
+    if (/whatsapp|wa\.me/.test(h)) return 'WhatsApp';
+    if (/^mailto:/.test(h)) return 'E-mail';
+    return (el.textContent || '').trim().slice(0, 40);
+  }
+  document.addEventListener('click', function(e){
+    if (!ok()) return;
+    var el = e.target.closest && e.target.closest('[data-acao],[data-vista],[data-copiar],a[href],#topoPdf'); if (!el) return;
+    var r = rotulo(el); if (r && cliques.length < 30) cliques.push(r);
+  }, true);
+  function conta(){ if (visivel) ativo += Date.now() - marca; marca = Date.now(); }
+  function aparelho2(){ var w = Math.min(innerWidth, screen.width || innerWidth); return w <= 680 ? 'Celular' : w <= 1024 ? 'Tablet' : 'Computador'; }
+  function envia(){
+    if (!ok()) return; conta(); if (ativo < 5000 || envios >= 3) return;
+    var dados = { carga: carga, tempo: Math.round(ativo / 1000), aparelho: aparelho2(), secoes: ordem.slice(), nomes: ordem.map(function(k){ return NOMES_SEC[k] || k; }),
+      contrato: totalCl ? { ate: clausulas, total: totalCl } : null, pagamento: viuPagamento, cliques: cliques.slice(0, 30) };
+    var a = JSON.stringify([dados.secoes, dados.contrato, dados.pagamento, dados.cliques, Math.round(dados.tempo / 30)]);
+    if (a === assinatura) return; assinatura = a; envios++;
+    var h = { apikey: P.KEY, 'Content-Type': 'application/json' };
+    try{ fetch(P.SB + '/rest/v1/rpc/proposta_responder', { method: 'POST', keepalive: true, headers: h, body: JSON.stringify({ p_codigo: S.prop.codigo, p_tipo: 'resumo', p_dados: dados }) }).catch(function(){}); }catch(e){}
+  }
+  document.addEventListener('visibilitychange', function(){ conta(); visivel = document.visibilityState !== 'hidden'; if (!visivel) envia(); });
+  addEventListener('pagehide', envia);
+  window.__rastro = { observa: observa };
+})();
 
 /* ---------------- início ---------------- */
 function semProposta(msg){
