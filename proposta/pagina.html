@@ -310,10 +310,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261101c"></script>
-<script src="modelo.js?v=20261101c"></script>
-<script src="comum.js?v=20261101c"></script>
-<script src="qrcode.js?v=20261101c"></script>
+<script src="/apresentacao/conteudo.js?v=20261104a"></script>
+<script src="modelo.js?v=20261104a"></script>
+<script src="comum.js?v=20261104a"></script>
+<script src="qrcode.js?v=20261104a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -477,7 +477,6 @@ function vistaProposta(p, d, st, mud){
     h += '<section class="bloco"><div class="kicker">O que você recebe' + (mud.campos.detalhes || mud.campos.inclui ? ' <span class="mudou">alterado</span>' : '') + '</div><h2>Tudo o que está <em>incluído.</em></h2>';
     if (campos.length) h += '<div class="det">' + campos.map(function(x){ return '<div><small>' + esc(x[0]) + '</small><b>' + esc(x[1]) + '</b></div>'; }).join('') + '</div>';
     if ((d.inclui || []).length) h += '<ul class="lista-ok">' + d.inclui.filter(Boolean).map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
-    if ((d.naoInclui || []).filter(Boolean).length) h += '<p class="nao"><b>Não incluso:</b> ' + d.naoInclui.filter(Boolean).map(esc).join(' · ') + '</p>';
     h += '</section>';
   }
 
@@ -501,6 +500,7 @@ function vistaProposta(p, d, st, mud){
   var parc = P.parcelas(d);
   if (parc.length) h += '<div class="parc">' + parc.map(function(x){ return '<div><small>' + x.percentual + '%' + (mud.campos.pagamento ? ' · alterado' : '') + '</small><b>' + P.brl(x.valor) + '</b><span>' + esc(x.quando) + '</span></div>'; }).join('') + '</div>';
   h += '<div class="cond">' + (d.formaPagamento ? '<span><b>Forma de pagamento:</b> ' + esc(d.formaPagamento) + (mud.campos.formaPagamento ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
+    ((d.naoInclui || []).filter(Boolean).length ? '<span><b>Não incluso no valor:</b> ' + d.naoInclui.filter(Boolean).map(esc).join(' · ') + (mud.campos.naoInclui ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
     (val ? '<span><b>Validade da proposta:</b> ' + esc(val) + '</span>' : '') +
     (d.observacoes ? '<span>' + esc(d.observacoes).replace(/\n/g, '<br>') + '</span>' : '') + '</div></section>';
 
