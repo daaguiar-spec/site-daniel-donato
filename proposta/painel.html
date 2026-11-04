@@ -117,9 +117,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261104b"></script>
-<script src="modelo.js?v=20261104b"></script>
-<script src="comum.js?v=20261104b"></script>
+<script src="/apresentacao/conteudo.js?v=20261104c"></script>
+<script src="modelo.js?v=20261104c"></script>
+<script src="comum.js?v=20261104c"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -371,7 +371,7 @@ function resumoLinha(evs){
 var NOMES_AP = { capa: 'Capa', sobre: 'Quem é o Daniel', videos: 'Portfólio em vídeo', depoimentos: 'Depoimentos', solucoes: 'Soluções', presenca: 'Presença Nacional', clientes: 'Clientes', como: 'Como funciona', final: 'Contato (final)' };
 function blocoAcompanhamento(p){
   var evs = S.eventos || [], abre = evs.filter(function(e){ return e.tipo === 'visualizou'; }), vs = visitasDe(evs);
-  var h = '<section class="bloco"><h2>Acompanhamento</h2>';
+  var h = '<section class="bloco" id="acompanhamento" style="scroll-margin-top:80px"><h2>Acompanhamento</h2>';
   h += '<p class="dica" style="margin:-8px 0 12px">' + (abre.length ? 'Abriu a proposta ' + abre.length + (abre.length > 1 ? ' vezes' : ' vez') + ' · última ' + esc(quando(abre[0].criado_em)) : 'O cliente ainda não abriu a proposta.') + ' Suas visitas como administrador não contam.</p>';
   h += '<div class="sub2">Proposta e contrato</div>';
   if (!vs.length) h += '<p class="dica">Sem visitas detalhadas ainda (aparecem depois que o cliente sai da página).</p>';
@@ -412,7 +412,7 @@ function editor(){
   var h = '<div class="w painel"><button class="volta" id="volta">← Todas as propostas</button>' +
     '<div class="ed-cab"><div><p class="eb">Proposta · v' + p.versao + '</p><h1>' + esc(p.cliente) + '</h1><div style="margin-top:8px">' + chip(p.status) + '</div></div>' +
     '<div class="links">' + (p.status !== 'rascunho' ? '<button class="sec" data-copia="prop">Copiar link da proposta</button><button class="sec" data-copia="apres">Copiar link da apresentação</button><button class="sec" data-acao="zap">Mandar no WhatsApp</button>' : '') +
-    '<a class="sec" target="_blank" rel="noopener" href="/proposta/?p=' + esc(p.codigo) + (DEMO ? '&demo' : '') + '">Ver como o cliente</a></div></div>' +
+    '<button class="sec" data-acao="irAcomp">📊 Acompanhamento</button>' + '<a class="sec" target="_blank" rel="noopener" href="/proposta/?p=' + esc(p.codigo) + (DEMO ? '&demo' : '') + '">Ver como o cliente</a></div></div>' +
     pedidosPendentes(p) +
 
     '<section class="bloco"><h2>Cliente</h2><div class="g2" style="margin-bottom:12px">' + inp('fCliente', 'Empresa (aparece na proposta)', p.cliente) + inp('fContato', 'Nome do contato (aparece no "Olá, …" da apresentação)', d.contato, 'text', '', 'placeholder="Ex.: Maria"') + '</div><div class="g2">' +
@@ -626,6 +626,7 @@ app.addEventListener('click', function(e){
     else if (i > 0){ var t = cl[i]; cl[i] = cl[i - 1]; cl[i - 1] = t; }
     desenhaClausulas(); marcaSujo();
   }
+  else if (a === 'irAcomp'){ var al = document.getElementById('acompanhamento'); if (al) al.scrollIntoView({ behavior: 'smooth' }); }
   else if (a === 'reabrir'){
     if (S.sujo) return toast('Salve as alterações antes.');
     if (!confirm('Desfazer o aceite? A proposta volta a ficar aberta para o cliente aceitar, e são apagados: quem aceitou, os dados do contratante e os pagamentos marcados. Use isso depois de um teste.')) return;
