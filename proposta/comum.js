@@ -27,6 +27,31 @@ P.hoje = function(){ return new Date().toLocaleDateString('pt-BR', { timeZone: '
 
 P.subtotal = function(d){ return (d.itens || []).reduce(function(a, i){ return a + P.num(i.valor); }, 0); };
 P.total = function(d){ return Math.max(0, P.subtotal(d) - P.num(d.desconto)); };
+/* ---------- proposta com opções (Palestra / Treinamento / Imersão) ---------- */
+P.opcoesValidas = function(d){
+  d = d || {};
+  if (!d.opcoes || !d.opcoes.ativo) return [];
+  return (d.opcoes.lista || []).map(function(o, i){ var c = P.copia(o); c.i = i; return c; })
+    .filter(function(o){ return String(o.nome || '').trim() && P.num(o.valor) > 0; });
+};
+P.dadosOpcao = function(d, o){
+  var x = P.copia(d || {}), det = x.detalhes || {};
+  x.itens = [{ nome: o.nome, descricao: [o.carga_horaria, o.participantes].filter(Boolean).join(' · '), valor: P.num(o.valor) }];
+  x.desconto = P.num(o.desconto);
+  x.detalhes = Object.assign({}, det, { carga_horaria: o.carga_horaria || det.carga_horaria, participantes: o.participantes || det.participantes });
+  x.solucao = o.nome + (d.solucao ? ' – ' + d.solucao : '');
+  x.opcaoEscolhida = o.nome;
+  return x;
+};
+P.opcaoDe = function(prop){
+  var vs = P.opcoesValidas(prop && prop.dados); if (!vs.length) return null;
+  var idx = prop.aceite && prop.aceite.opcao;
+  return vs.filter(function(o){ return o.i === idx; })[0] || (vs.length === 1 ? vs[0] : null) || vs.filter(function(o){ return o.recomendada; })[0] || vs[0];
+};
+/* dados "valendo": com opções, usa a opção escolhida (ou a recomendada, antes do aceite) */
+P.efetivo = function(prop){
+  var o = P.opcaoDe(prop); return o ? P.dadosOpcao(prop.dados, o) : (prop.dados || {});
+};
 P.parcelas = function(d){
   var t = P.total(d), lista = d.pagamento || [], soma = 0;
   return lista.map(function(p, i){
@@ -78,7 +103,7 @@ P.extenso = function(v){
 
 /* troca {{campos}} do contrato */
 P.campos = function(prop, modelo){
-  var d = prop.dados || {}, det = d.detalhes || {}, ct = prop.contratante || {}, cd = (modelo && modelo.contratada) || {}, pgc = (modelo && modelo.pagamento) || {};
+  var d = P.efetivo(prop), det = d.detalhes || {}, ct = prop.contratante || {}, cd = (modelo && modelo.contratada) || {}, pgc = (modelo && modelo.pagamento) || {};
   var lista = P.parcelas(d);
   var parc = lista.map(function(p){ return p.percentual + '% (' + P.brl(p.valor) + ') ' + p.quando; });
   var pg = parc.length > 1 ? parc.slice(0, -1).join('; ') + ' e ' + parc[parc.length - 1] : (parc[0] || '');
@@ -121,7 +146,7 @@ P.mudancas = function(atual, anterior){
     var velho = (b.itens || [])[i];
     if (!velho || !P.igual(it, velho)) { m.itens[i] = velho ? { antes: velho } : { novo: true }; m.alguma = true; }
   });
-  ['desconto','pagamento','formaPagamento','inclui','naoInclui','estrutura','experiencia','objetivos','resultados','detalhes','solucao','apresentacao','observacoes'].forEach(function(k){
+  ['desconto','pagamento','formaPagamento','inclui','naoInclui','estrutura','experiencia','objetivos','resultados','opcoes','detalhes','solucao','apresentacao','observacoes'].forEach(function(k){
     if (!P.igual(a[k], b[k])) { m.campos[k] = true; m.alguma = true; }
   });
   if (P.total(a) !== P.total(b)) { m.campos.total = { antes: P.total(b) }; m.alguma = true; }
