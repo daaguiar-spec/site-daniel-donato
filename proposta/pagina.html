@@ -55,6 +55,8 @@ em{color:var(--gold);font-style:italic}
 /* capa */
 .capa{padding:44px 0 10px;text-align:center}
 .capa h1{font-size:clamp(34px,7vw,60px);margin:14px 0 14px}
+/* nome da empresa em dourado, mas sem itálico: o itálico da Playfair deixa letras como J parecidas com F */
+.capa h1 em{font-style:normal;font-weight:600}
 .capa .sol{font-family:var(--serif);font-size:clamp(20px,3.4vw,26px);color:var(--gold2);margin:0 0 10px}
 .capa p.ap{max-width:620px;margin:0 auto;color:var(--txt2);font-size:16px}
 .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;margin-top:18px;color:var(--txt3);font-size:13px}
@@ -349,10 +351,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261105a"></script>
-<script src="modelo.js?v=20261105a"></script>
-<script src="comum.js?v=20261105a"></script>
-<script src="qrcode.js?v=20261105a"></script>
+<script src="/apresentacao/conteudo.js?v=20261106a"></script>
+<script src="modelo.js?v=20261106a"></script>
+<script src="comum.js?v=20261106a"></script>
+<script src="qrcode.js?v=20261106a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
