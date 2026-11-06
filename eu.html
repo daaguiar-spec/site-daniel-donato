@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Este aparelho é meu · Daniel Donato</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#0B0A08;color:#EDE6D8;font-family:'Manrope',system-ui,sans-serif}
+main{max-width:520px;margin:0 auto;padding:56px 22px;text-align:center}
+.eb{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#C9A45C;margin:0 0 10px}
+h1{font-family:Cormorant,Georgia,serif;font-weight:500;font-size:40px;line-height:1.08;margin:0 0 16px}
+p{color:#B5AA95;line-height:1.65;font-size:15.5px}
+.st{border:1px solid rgba(127,192,143,.5);background:rgba(127,192,143,.08);color:#BFE3C6;border-radius:14px;padding:16px;margin:22px 0;font-weight:700}
+.st.nao{border-color:rgba(229,163,90,.5);background:rgba(229,163,90,.07);color:#F0C98F}
+button{background:#C9A45C;color:#1A140A;border:0;border-radius:99px;padding:13px 22px;font:inherit;font-weight:800;cursor:pointer}
+button.sec{background:none;border:1px solid #3A3226;color:#C9BEA8}
+small{display:block;color:#7D725F;margin-top:26px;font-size:12.5px;line-height:1.6}
+</style>
+</head>
+<body>
+<main>
+  <div class="eb">Daniel Donato · uso interno</div>
+  <h1>Este aparelho é meu</h1>
+  <p>Com o aparelho marcado, o que você abrir aqui (apresentações e propostas) não conta como visita do cliente e não gera aviso de "abriu".</p>
+  <div id="st" class="st"></div>
+  <button id="bt"></button>
+  <small>A marca fica neste navegador. No celular, abra este link também pelo WhatsApp (mande para você mesmo e toque nele), porque o navegador do WhatsApp guarda as coisas separado. Se limpar os dados do navegador, abra de novo.</small>
+</main>
+<script>
+(function(){
+  var st = document.getElementById('st'), bt = document.getElementById('bt');
+  function marcado(){ try{ return localStorage.getItem('dd_admin') === '1'; }catch(e){ return false; } }
+  function poe(v){ try{ if (v) localStorage.setItem('dd_admin', '1'); else localStorage.removeItem('dd_admin'); }catch(e){} mostra(); }
+  function mostra(){
+    var m = marcado();
+    st.className = 'st' + (m ? '' : ' nao');
+    st.textContent = m ? '✅ Pronto: este aparelho está marcado como seu.' : 'Este aparelho NÃO está marcado. As visitas daqui contam como do cliente.';
+    bt.textContent = m ? 'Desmarcar este aparelho' : 'Marcar como meu';
+    bt.className = m ? 'sec' : '';
+  }
+  bt.onclick = function(){ poe(!marcado()); };
+  if (!/[?&]nao\b/.test(location.search)) poe(true); else mostra();
+})();
+</script>
+</body>
+</html>

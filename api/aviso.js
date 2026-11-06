@@ -6,6 +6,8 @@
 const DESTINO = process.env.AVISO_EMAIL || "comercial@sinapseonline.com";
 const SITE = "https://www.danieldonato.com.br";
 
+function dec(v) { try { return decodeURIComponent(String(v || "")); } catch (e) { return String(v || ""); } }
+function local(h) { const c = dec(h["x-vercel-ip-city"]), uf = dec(h["x-vercel-ip-country-region"]), p = dec(h["x-vercel-ip-country"]); return [c, uf].filter(Boolean).join("/") + (p && p !== "BR" ? " (" + p + ")" : ""); }
 function limpa(v, n) { return String(v || "").replace(/[\u0000-\u001f<>]/g, " ").trim().slice(0, n); }
 
 module.exports = async (req, res) => {
@@ -28,6 +30,7 @@ module.exports = async (req, res) => {
         Cliente: cliente,
         "Consultor de Experiência": vendedor || "—",
         Aparelho: dispositivo || "—",
+        "Local aproximado": local(req.headers) || "—",
         Quando: quando,
         Dica: "Bom momento para entrar em contato, enquanto a apresentação está fresca."
       })

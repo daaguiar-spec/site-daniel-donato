@@ -110,6 +110,8 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .tags i{font-style:normal;font-size:12px;padding:3px 9px;border-radius:99px;border:1px solid #3A3226;color:#C9BEA8}
 .tags i.ok{border-color:rgba(127,192,143,.5);color:#8FD19F}
+.mini{white-space:nowrap;display:inline-block;width:auto;vertical-align:middle;background:none;border:1px solid #3A3226;color:#C9BEA8;border-radius:99px;padding:4px 12px!important;min-height:0!important;font:inherit;font-size:12px!important;line-height:1.5;cursor:pointer}.mini:hover{border-color:#C9A45C;color:#E8CF95}
+.hist input{width:16px;height:16px;accent-color:#C9A45C;flex:none;margin:2px 0 0}
 .sub2{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;margin:18px 0 10px}
 </style>
 </head>
@@ -121,9 +123,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261106b"></script>
-<script src="modelo.js?v=20261106b"></script>
-<script src="comum.js?v=20261106b"></script>
+<script src="/apresentacao/conteudo.js?v=20261106c"></script>
+<script src="modelo.js?v=20261106c"></script>
+<script src="comum.js?v=20261106c"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -149,9 +151,10 @@ function demoBase(){
       contratante: { razao: 'Colégio Christus Ltda.', cnpj: '12.345.678/0001-90', endereco: 'Rua X, 100, Fortaleza/CE', representante: 'João Lima', cpf: '123.456.789-00' },
       aceite: { nome: 'João Lima', cargo: 'Diretor', email: 'joao@x.com', quando: new Date().toISOString() }, pagamentos: [], atualizado_em: new Date().toISOString() }
   ], eventos: { a1: [ { tipo: 'ajuste_proposta', criado_em: new Date().toISOString(), detalhe: { nome: 'Maria Souza', fone: '(85) 99999-8888', temas: ['Parcelamento','Valor'], pedido: 'Conseguimos fazer 30% na assinatura e 70% no final? E um valor um pouco menor, perto de R$ 11 mil.', versao: 1 } },
-    { tipo: 'visualizou', criado_em: new Date(Date.now()-864e5).toISOString(), detalhe: { versao: 1 } } ] } };
+    { tipo: 'visualizou', criado_em: new Date(Date.now()-864e5).toISOString(), detalhe: { versao: 1 } } ].map(function(e, i){ e.id = 800 + i; return e; }) } };
   return memoria;
 }
+var DEMO_APAGADOS = [];
 function demoEventos(){
   var agora = Date.now();
   return [
@@ -159,7 +162,7 @@ function demoEventos(){
     { proposta_id: 'a1', tipo: 'visualizou', criado_em: new Date(agora - 37e5).toISOString(), detalhe: { versao: 1 } },
     { proposta_id: 'a1', tipo: 'resumo', criado_em: new Date(agora - 864e5).toISOString(), detalhe: { carga: 'x0', tempo: 62, aparelho: 'Computador', secoes: ['capa','experiencia'], nomes: ['Capa','A experiência'], contrato: null, cliques: [], versao: 1 } },
     { proposta_id: 'a1', tipo: 'visualizou', criado_em: new Date(agora - 865e5).toISOString(), detalhe: { versao: 1 } }
-  ];
+  ].map(function(e, i){ e.id = 900 + i; return e; }).filter(function(e){ return DEMO_APAGADOS.indexOf(e.id) < 0; });
 }
 var DB = {
   eventosTodos: function(){
@@ -180,7 +183,7 @@ var DB = {
     if (DEMO){ var p = demoBase().propostas.filter(function(x){ return x.id === id; })[0]; var ev = (demoBase().eventos[id] || []).concat(demoEventos().filter(function(e){ return e.proposta_id === id; })); ev.sort(function(a, b){ return b.criado_em.localeCompare(a.criado_em); }); return Promise.resolve([P.copia(p), ev]); }
     return Promise.all([
       sb.from('propostas').select('*').eq('id', id).single(),
-      sb.from('proposta_eventos').select('tipo,detalhe,criado_em').eq('proposta_id', id).order('criado_em', { ascending: false }).limit(200)
+      sb.from('proposta_eventos').select('id,tipo,detalhe,criado_em').eq('proposta_id', id).order('criado_em', { ascending: false }).limit(200)
     ]).then(function(rs){ if (rs[0].error) throw rs[0].error; return [rs[0].data, rs[1].data || []]; });
   },
   criar: function(p){
@@ -205,6 +208,10 @@ var DB = {
       return sb.from('propostas').select('dados').eq('id', id).single(); }).then(function(r){ if (r.error) throw r.error;
       var d = r.data.dados || {}; d.ocultarMudancas = false;
       return sb.from('propostas').update({ versao: 1, dados: d, atualizado_em: new Date().toISOString() }).eq('id', id); }).then(function(r){ if (r.error) throw r.error; });
+  },
+  apagarEventos: function(ids){
+    if (DEMO){ var b = demoBase(); Object.keys(b.eventos).forEach(function(k){ b.eventos[k] = b.eventos[k].filter(function(e){ return ids.indexOf(e.id) < 0; }); }); DEMO_APAGADOS = DEMO_APAGADOS.concat(ids); return Promise.resolve(); }
+    return sb.from('proposta_eventos').delete().in('id', ids).then(function(r){ if (r.error) throw r.error; });
   },
   apagar: function(id){
     if (DEMO){ demoBase().propostas = demoBase().propostas.filter(function(x){ return x.id !== id; }); return Promise.resolve(); }
@@ -376,19 +383,65 @@ var NOMES_AP = { capa: 'Capa', sobre: 'Quem é o Daniel', videos: 'Portfólio em
 function blocoAcompanhamento(p){
   var evs = S.eventos || [], abre = evs.filter(function(e){ return e.tipo === 'visualizou'; }), vs = visitasDe(evs);
   var h = '<section class="bloco" id="acompanhamento" style="scroll-margin-top:80px"><h2>Acompanhamento</h2>';
-  h += '<p class="dica" style="margin:-8px 0 12px">' + (abre.length ? 'Abriu a proposta ' + abre.length + (abre.length > 1 ? ' vezes' : ' vez') + ' · última ' + esc(quando(abre[0].criado_em)) : 'O cliente ainda não abriu a proposta.') + ' Suas visitas como administrador não contam.</p>';
+  h += '<p class="dica" style="margin:-8px 0 12px">' + (abre.length ? 'Abriu a proposta ' + abre.length + (abre.length > 1 ? ' vezes' : ' vez') + ' · última ' + esc(quando(abre[0].criado_em)) : 'O cliente ainda não abriu a proposta.') + '</p>' + avisoAparelho();
   h += '<div class="sub2">Proposta e contrato</div>';
   if (!vs.length) h += '<p class="dica">Sem visitas detalhadas ainda (aparecem depois que o cliente sai da página).</p>';
   else h += '<div class="visitas">' + vs.slice(0, 20).map(function(e){
     var d = e.detalhe || {}, n = d.nomes || [];
-    return '<div class="visita"><div class="cab"><b>' + esc(P.dataHora(e.criado_em)) + '</b><span>' + esc([d.aparelho, mmss(d.tempo)].filter(Boolean).join(' · ')) + '</span></div>' +
+    return '<div class="visita"><div class="cab"><b>' + esc(P.dataHora(e.criado_em)) + '</b><span>' + esc([d.aparelho, d.sistema, d.local, mmss(d.tempo)].filter(Boolean).join(' · ')) + '</span></div>' +
       (n.length ? 'Chegou até: <b>' + esc(n[n.length - 1]) + '</b>' : 'Ficou no início da proposta') +
       (d.contrato && d.contrato.ate ? ' · Contrato: leu até a <b>' + d.contrato.ate + 'ª</b> de ' + d.contrato.total + ' cláusulas' : '') + (d.pagamento ? ' · Viu o Pix' : '') +
       (n.length ? '<div class="tags">' + n.map(function(x){ return '<i>' + esc(x) + '</i>'; }).join('') + '</div>' : '') +
-      ((d.cliques || []).length ? '<div class="tags">' + d.cliques.map(function(x){ return '<i class="ok">👆 ' + esc(x) + '</i>'; }).join('') + '</div>' : '') + '</div>';
+      ((d.cliques || []).length ? '<div class="tags">' + d.cliques.map(function(x){ return '<i class="ok">👆 ' + esc(x) + '</i>'; }).join('') + '</div>' : '') +
+      '<div style="margin-top:8px"><button class="mini" data-acao="fuiEu" data-carga="' + esc(d.carga || e.criado_em) + '">Fui eu · apagar esta visita</button></div></div>';
   }).join('') + '</div>';
   h += '<div class="sub2">Apresentação</div><div id="acompApres"><p class="dica">Carregando…</p></div></section>';
   return h;
+}
+/* ---- visitas de teste: aparelho do Daniel e apagar ---- */
+var APAGAVEIS = { visualizou: 1, resumo: 1, abriu_contrato: 1, baixou_pdf_proposta: 1, baixou_pdf_contrato: 1, falou_whatsapp: 1 };
+function meuAparelho(){ try{ return localStorage.getItem('dd_admin') === '1'; }catch(e){ return false; } }
+function avisoAparelho(){
+  return '<p class="dica" style="margin:-4px 0 12px">' + (meuAparelho() ? '✅ <b>Este aparelho está marcado como seu:</b> o que você abrir nele não conta.' : '⚠️ Este aparelho não está marcado como seu.') +
+    ' Para marcar outro (o celular, o navegador do WhatsApp, outro computador), abra nele <b>danieldonato.com.br/eu</b> uma vez. ' +
+    '<button class="mini" data-copia="eu">Copiar o link</button></p>';
+}
+function eventosDaVisita(carga){
+  var evs = S.eventos || [];
+  var rs = evs.filter(function(e){ return e.tipo === 'resumo' && ((e.detalhe || {}).carga || e.criado_em) === carga; });
+  if (!rs.length) return [];
+  var fim = Math.max.apply(null, rs.map(function(e){ return +new Date(e.criado_em); })) + 5000;
+  var d0 = rs[0].detalhe || {}, ini = d0.inicio ? +new Date(d0.inicio) - 15000 : null;
+  if (ini == null){ /* visitas antigas: começa na última abertura antes do primeiro resumo */
+    var pri = Math.min.apply(null, rs.map(function(e){ return +new Date(e.criado_em); }));
+    var ab = evs.filter(function(e){ return e.tipo === 'visualizou' && +new Date(e.criado_em) <= pri; }).map(function(e){ return +new Date(e.criado_em); });
+    ini = ab.length ? Math.max.apply(null, ab) - 1000 : pri - (d0.tempo || 0) * 1000 - 60000;
+  }
+  return evs.filter(function(e){ var t = +new Date(e.criado_em); return APAGAVEIS[e.tipo] && t >= ini && t <= fim && (e.tipo !== 'resumo' || rs.indexOf(e) > -1 || ((e.detalhe || {}).carga === carga)); });
+}
+function blocoHistorico(){
+  var evs = (S.eventos || []).filter(function(e){ return e.tipo !== 'resumo'; });
+  if (!evs.length) return '<p class="dica">Nada ainda.</p>';
+  var algum = evs.some(function(e){ return APAGAVEIS[e.tipo] && e.id; });
+  return (algum ? '<p class="dica" style="margin:-8px 0 10px">Marque as aberturas que foram suas e toque em <b>Apagar marcadas</b>. Aceite, pedidos e pagamentos não podem ser apagados aqui.</p>' : '') +
+    '<ul class="hist">' + evs.map(function(e){
+      var pode = APAGAVEIS[e.tipo] && e.id;
+      return '<li>' + (pode ? '<input type="checkbox" class="marcaEv" value="' + e.id + '" aria-label="Marcar para apagar">' : (algum ? '<span style="width:16px;flex:none"></span>' : '')) +
+        '<time>' + P.dataHora(e.criado_em) + '</time><span>' + esc(NOMES_EV[e.tipo] || e.tipo) + ((e.detalhe || {}).versao ? ' · v' + e.detalhe.versao : '') + '</span></li>';
+    }).join('') + '</ul>' +
+    (algum ? '<div class="links" style="margin-top:10px"><button class="sec" data-acao="apagaMarcadas" id="btApagaMarc" disabled>Apagar marcadas</button></div>' : '');
+}
+function apagaEventos(ids, msg){
+  if (!ids.length) return;
+  var id = S.atual.id;
+  DB.apagarEventos(ids).then(function(){ return DB.abrir(id); }).then(function(r){
+    if (!S.atual || S.atual.id !== id) return;
+    S.eventos = r[1];
+    var a = document.getElementById('acompanhamento'); if (a){ a.outerHTML = blocoAcompanhamento(S.atual); carregaApresentacao(S.atual); }
+    var h = document.getElementById('histLista'); if (h) h.innerHTML = blocoHistorico();
+    if (S.evLista) S.evLista[id] = (S.evLista[id] || []).filter(function(e){ return !e.id || ids.indexOf(e.id) < 0; });
+    toast(msg);
+  }).catch(function(e){ toast(erroTxt(e)); });
 }
 function carregaApresentacao(p){
   DB.apresentacao().then(function(a){
@@ -470,7 +523,7 @@ function editor(){
     '<p class="dica">Campos automáticos: <code>{{contratante_razao}}</code> <code>{{contratante_cnpj}}</code> <code>{{contratante_endereco}}</code> <code>{{contratante_representante}}</code> <code>{{contratante_cpf}}</code> <code>{{contratante_cargo}}</code> <code>{{solucao}}</code> <code>{{data_evento}}</code> <code>{{local}}</code> <code>{{carga_horaria}}</code> <code>{{participantes}}</code> <code>{{formato}}</code> <code>{{valor_total}}</code> <code>{{valor_extenso}}</code> <code>{{pagamento}}</code> <code>{{parcelas_lista}}</code> <code>{{forma_pagamento}}</code> <code>{{dados_bancarios}}</code> <code>{{inclui}}</code> <code>{{estrutura}}</code> <code>{{cidade_foro}}</code>. Os dados da Sinapse (CONTRATADA) já entram sozinhos.</p></section>' +
 
     blocoAcompanhamento(p) +
-    '<section class="bloco"><h2>Histórico</h2>' + (S.eventos.length ? '<ul class="hist">' + S.eventos.filter(function(e){ return e.tipo !== 'resumo'; }).map(function(e){ return '<li><time>' + P.dataHora(e.criado_em) + '</time><span>' + esc(NOMES_EV[e.tipo] || e.tipo) + ((e.detalhe || {}).versao ? ' · v' + e.detalhe.versao : '') + '</span></li>'; }).join('') + '</ul>' : '<p class="dica">Nada ainda.</p>') +
+    '<section class="bloco"><h2>Histórico</h2>' + '<div id="histLista">' + blocoHistorico() + '</div>' +
     '<div class="links" style="margin-top:16px">' + (['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="recusada">Marcar como recusada</button>' : '') +
     (['contrato_liberado','contrato_em_ajuste'].indexOf(p.status) > -1 ? '<button class="sec" data-st="aprovada">Esconder o contrato do cliente</button>' : '') +
     (p.status !== 'arquivada' ? '<button class="sec" data-st="arquivada">Arquivar</button>' : '<button class="sec" data-st="enviada">Desarquivar</button>') +
@@ -648,11 +701,13 @@ function copia(t){
     .catch(function(){ var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); toast('Copiado!'); }catch(e){ prompt('Copie:', t); } a.remove(); });
 }
 
+app.addEventListener('change', function(e){ if (e.target.classList && e.target.classList.contains('marcaEv')){ e.stopPropagation(); var n = document.querySelectorAll('.marcaEv:checked').length, bt = document.getElementById('btApagaMarc'); if (bt){ bt.disabled = !n; bt.textContent = n ? 'Apagar marcadas (' + n + ')' : 'Apagar marcadas'; } } }, true);
+app.addEventListener('input', function(e){ if (e.target.classList && e.target.classList.contains('marcaEv')) e.stopPropagation(); }, true);
 /* cliques do editor */
 app.addEventListener('click', function(e){
   var b = e.target.closest('button'); if (!b || !S.atual) return;
   if (b.id === 'volta'){ if (S.sujo && !confirm('Há alterações não salvas. Voltar mesmo assim?')) return; return lista(); }
-  if (b.dataset.copia) return copia(b.dataset.copia === 'prop' ? linkProposta(S.atual) : linkApres(S.atual));
+  if (b.dataset.copia) return copia(b.dataset.copia === 'eu' ? 'https://www.danieldonato.com.br/eu' : b.dataset.copia === 'prop' ? linkProposta(S.atual) : linkApres(S.atual));
   if (b.dataset.st) return mudaStatus(b.dataset.st);
   if (b.dataset.pago) return marcaPago(+b.dataset.pago, b.dataset.v === '1');
   if (b.dataset.cobrar){ var k = +b.dataset.cobrar, px = P.parcelas(P.efetivo(S.atual))[k];
@@ -670,6 +725,25 @@ app.addEventListener('click', function(e){
     desenhaClausulas(); marcaSujo();
   }
   else if (a === 'semDestaque'){ [].forEach.call(document.querySelectorAll('input[name="opRec"]'), function(r){ r.checked = false; }); marcaSujo(); }
+  else if (a === 'fuiEu'){
+    var ids = eventosDaVisita(b.dataset.carga).map(function(e){ return e.id; }).filter(Boolean);
+    if (!ids.length) return toast('Não achei os registros desta visita.');
+    if (!confirm('Apagar esta visita do Acompanhamento e do Histórico (' + ids.length + (ids.length > 1 ? ' registros' : ' registro') + ')? Use só se foi você.')) return;
+    apagaEventos(ids, 'Visita apagada.');
+  }
+  else if (a === 'apagaMarcadas'){
+    var mids = [].map.call(document.querySelectorAll('.marcaEv:checked'), function(x){ return +x.value; });
+    if (!mids.length) return;
+    /* junto com cada abertura marcada, vai o resumo daquela visita */
+    var evs = S.eventos || [], extra = [];
+    mids.forEach(function(mid){ var e = evs.filter(function(x){ return x.id === mid; })[0]; if (!e || e.tipo !== 'visualizou') return;
+      var t = +new Date(e.criado_em), prox = evs.filter(function(x){ return x.tipo === 'visualizou' && +new Date(x.criado_em) > t; }).map(function(x){ return +new Date(x.criado_em); });
+      var ate = prox.length ? Math.min.apply(null, prox) : Infinity;
+      evs.forEach(function(x){ var tx = +new Date(x.criado_em); if (x.tipo === 'resumo' && tx >= t && tx < ate && (!(x.detalhe || {}).inicio || +new Date(x.detalhe.inicio) < t + 60000)) extra.push(x.id); }); });
+    var todos = mids.concat(extra.filter(function(x){ return x && mids.indexOf(x) < 0; }));
+    if (!confirm('Apagar ' + mids.length + (mids.length > 1 ? ' registros marcados' : ' registro marcado') + (extra.length ? ' e os detalhes dessas visitas no Acompanhamento' : '') + '? Não dá para desfazer.')) return;
+    apagaEventos(todos, 'Apagado.');
+  }
   else if (a === 'irAcomp'){ var al = document.getElementById('acompanhamento'); if (al) al.scrollIntoView({ behavior: 'smooth' }); }
   else if (a === 'reabrir'){
     if (S.sujo) return toast('Salve as alterações antes.');

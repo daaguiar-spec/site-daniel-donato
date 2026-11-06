@@ -11,6 +11,11 @@
       "permanent": false
     },
     {
+      "source": "/eu",
+      "destination": "/eu.html",
+      "permanent": false
+    },
+    {
       "source": "/admin",
       "destination": "/admin.html",
       "permanent": false

@@ -356,10 +356,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261106b"></script>
-<script src="modelo.js?v=20261106b"></script>
-<script src="comum.js?v=20261106b"></script>
-<script src="qrcode.js?v=20261106b"></script>
+<script src="/apresentacao/conteudo.js?v=20261106c"></script>
+<script src="modelo.js?v=20261106c"></script>
+<script src="comum.js?v=20261106c"></script>
+<script src="qrcode.js?v=20261106c"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -422,6 +422,8 @@ function demo(){
   return Promise.resolve(p);
 }
 function responder(tipo, dados){
+  /* no aparelho do Daniel, cliques passivos não entram no histórico (aceite e ajustes entram) */
+  if (!DEMO && meuAparelho() && /^(baixou_pdf_|abriu_contrato|falou_whatsapp)/.test(tipo)) return Promise.resolve({ ok: true });
   if (DEMO){
     var mapa = { aceite: 'aprovada', ajuste_proposta: 'em_ajuste', ajuste_contrato: 'contrato_em_ajuste' };
     if (mapa[tipo]) S.prop.status = mapa[tipo];
@@ -448,6 +450,22 @@ function aviso(assunto, campos){
   try{ fetch('https://formsubmit.co/ajax/' + encodeURIComponent(C.avisoEmail), { method: 'POST', mode: 'no-cors', keepalive: true, body: f }).catch(function(){}); }catch(e){}
 }
 function aparelho(){ var w = Math.min(innerWidth, screen.width || innerWidth); return w <= 680 ? 'Celular' : w <= 1024 ? 'Tablet' : 'Computador'; }
+/* aparelho marcado como do Daniel (painel ou /eu): visitas não contam */
+function meuAparelho(){ try{ return localStorage.getItem('dd_admin') === '1'; }catch(e){ return false; } }
+function sistema(){
+  var u = navigator.userAgent || '';
+  var so = /iPhone/.test(u) ? 'iPhone' : (/iPad/.test(u) || (/Macintosh/.test(u) && navigator.maxTouchPoints > 1)) ? 'iPad' : /Android/.test(u) ? 'Android' : /Windows/.test(u) ? 'Windows' : /Mac OS X|Macintosh/.test(u) ? 'Mac' : /Linux/.test(u) ? 'Linux' : '';
+  var nav = /WhatsApp/i.test(u) ? 'WhatsApp' : /Instagram/.test(u) ? 'Instagram' : /FBAN|FBAV|FB_IAB/.test(u) ? 'Facebook' : /LinkedInApp/.test(u) ? 'LinkedIn' : /Edg[A]?\//.test(u) ? 'Edge' : /OPR\//.test(u) ? 'Opera' : /SamsungBrowser/.test(u) ? 'Samsung Internet' : /CriOS|Chrome\//.test(u) ? 'Chrome' : /FxiOS|Firefox\//.test(u) ? 'Firefox' : /Safari\//.test(u) ? 'Safari' : '';
+  return [so, nav].filter(Boolean).join(' · ');
+}
+var ONDE = null;
+function onde(){
+  if (!ONDE) ONDE = new Promise(function(ok){
+    var t = setTimeout(function(){ ok(''); }, 2500);
+    fetch('/api/onde', { cache: 'no-store' }).then(function(r){ return r.json(); }).then(function(j){ clearTimeout(t); ok([j.cidade, j.uf].filter(Boolean).join('/') + (j.pais && j.pais !== 'BR' ? ' (' + j.pais + ')' : '')); }).catch(function(){ clearTimeout(t); ok(''); });
+  });
+  return ONDE;
+}
 
 /* ---------------- utilidades ---------------- */
 function numeroZap(){
@@ -481,8 +499,10 @@ function desenha(){
   var h = '<div class="wrap">' +
     (p.previa ? '<div class="aviso noprint">' + ICON.info + '<span><b>Prévia do administrador.</b> Aqui você só olha: aceite, pedidos de ajuste e cliques <b>não são registrados</b>. ' +
       '<button class="bt-link" data-acao="testarCliente" style="color:inherit;padding:0">Testar como cliente</button> para fazer o caminho completo (fica registrado de verdade).</span></div>' :
-    (comoCliente() && temSessaoAdmin() ? '<div class="aviso noprint">' + ICON.info + '<span><b>Testando como cliente.</b> Tudo o que você fizer aqui é registrado e gera avisos. ' +
-      '<button class="bt-link" data-acao="voltarPrevia" style="color:inherit;padding:0">Voltar à prévia</button></span></div>' : '')) + abas;
+    (comoCliente() && temSessaoAdmin() ? '<div class="aviso noprint">' + ICON.info + '<span><b>Testando como cliente.</b> Aceite e pedidos de ajuste são registrados e geram avisos. As visitas não entram no Acompanhamento, porque este aparelho é seu. ' +
+      '<button class="bt-link" data-acao="voltarPrevia" style="color:inherit;padding:0">Voltar à prévia</button></span></div>' :
+    (meuAparelho() && !DEMO ? '<div class="aviso noprint">' + ICON.info + '<span><b>Este aparelho é seu.</b> Suas visitas aqui não contam no Acompanhamento. Aceite e pedidos de ajuste continuam valendo. ' +
+      '<a class="bt-link" href="/eu" style="color:inherit;padding:0">Mudar</a></span></div>' : ''))) + abas;
   h += '<div id="vistaProposta"' + (S.vista === 'proposta' ? '' : ' class="hidden"') + '>' + vistaProposta(p, d, st, mud) + '</div>';
   h += '<div id="vistaContrato"' + (S.vista === 'contrato' ? '' : ' class="hidden"') + '>' + (temContrato ? vistaContrato(p, mud) : '') + '</div>';
   h += rodape(p) + '</div>';
@@ -999,7 +1019,8 @@ addEventListener('afterprint', function(){ document.body.classList.remove('impri
   var KICK = [[/experi/i, 'experiencia'], [/objetiv/i, 'objetivos'], [/resultad/i, 'resultados'], [/recebe/i, 'inclui'], [/estrutura/i, 'estrutura'], [/investimento/i, 'valores']];
   var carga = Math.random().toString(36).slice(2) + Date.now().toString(36);
   var vistas = {}, ordem = [], clausulas = 0, totalCl = 0, viuPagamento = false, cliques = [], ativo = 0, marca = Date.now(), visivel = document.visibilityState !== 'hidden', envios = 0, assinatura = '', io = null;
-  function ok(){ return S.prop && !S.prop.previa && !DEMO; }
+  var inicio = new Date().toISOString(), local = '';
+  function ok(){ return S.prop && !S.prop.previa && !DEMO && !meuAparelho(); }
   function marcaSecoes(){
     var vp = $('vistaProposta'); if (vp){
       var c = vp.querySelector('.capa'); if (c) c.dataset.sec = 'capa';
@@ -1047,7 +1068,7 @@ addEventListener('afterprint', function(){ document.body.classList.remove('impri
   function envia(){
     if (!ok()) return; conta(); if (ativo < 5000 || envios >= 3) return;
     var dados = { carga: carga, tempo: Math.round(ativo / 1000), aparelho: aparelho2(), secoes: ordem.slice(), nomes: ordem.map(function(k){ return NOMES_SEC[k] || k; }),
-      contrato: totalCl ? { ate: clausulas, total: totalCl } : null, pagamento: viuPagamento, cliques: cliques.slice(0, 30) };
+      contrato: totalCl ? { ate: clausulas, total: totalCl } : null, pagamento: viuPagamento, cliques: cliques.slice(0, 30), sistema: sistema(), local: local, inicio: inicio };
     var a = JSON.stringify([dados.secoes, dados.contrato, dados.pagamento, dados.cliques, Math.round(dados.tempo / 30)]);
     if (a === assinatura) return; assinatura = a; envios++;
     var h = { apikey: P.KEY, 'Content-Type': 'application/json' };
@@ -1055,6 +1076,7 @@ addEventListener('afterprint', function(){ document.body.classList.remove('impri
   }
   document.addEventListener('visibilitychange', function(){ conta(); visivel = document.visibilityState !== 'hidden'; if (!visivel) envia(); });
   addEventListener('pagehide', envia);
+  if (ok()) onde().then(function(l){ local = l; });
   window.__rastro = { observa: observa };
 })();
 
@@ -1065,15 +1087,15 @@ function semProposta(msg){
 }
 if (DEMO) $('faixaDemo').classList.remove('hidden');
 if (!CODIGO && !DEMO) return semProposta('Proposta não encontrada');
-(DEMO ? demo() : rpc('proposta_ver', { p_codigo: CODIGO, p_registrar: true }))
+(DEMO ? demo() : rpc('proposta_ver', { p_codigo: CODIGO, p_registrar: !meuAparelho() }))
   .then(function(p){
     if (!p) return semProposta('Proposta não encontrada');
     S.prop = p; desenha();
     if (location.hash === '#pagamento' && $('pagamento')) setTimeout(function(){ $('pagamento').scrollIntoView(); scrollBy(0, -80); }, 150);
-    if (!p.previa && !DEMO){
+    if (!p.previa && !DEMO && !meuAparelho()){
       var ch = 'dd_prop_' + p.codigo + '_v' + p.versao, n = 0;
       try{ n = +localStorage.getItem(ch) || 0; localStorage.setItem(ch, String(n + 1)); }catch(e){}
-      if (!n) aviso('👀 ' + p.cliente + ' abriu a proposta' + (p.versao > 1 ? ' (versão ' + p.versao + ')' : ''), { 'Aparelho': aparelho(), 'Situação': (P.STATUS[p.status] || {}).t || p.status });
+      if (!n) onde().then(function(l){ aviso('👀 ' + p.cliente + ' abriu a proposta' + (p.versao > 1 ? ' (versão ' + p.versao + ')' : ''), { 'Aparelho': [aparelho(), sistema()].filter(Boolean).join(' · '), 'Local aproximado': l || '—', 'Situação': (P.STATUS[p.status] || {}).t || p.status }); });
     }
   })
   .catch(function(err){ console.error(err); semProposta('Não conseguimos abrir agora'); });
