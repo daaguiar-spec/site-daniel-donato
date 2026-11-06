@@ -164,6 +164,11 @@ em{color:var(--gold);font-style:italic}
 .pdf-caixa .op-det,.pdf-caixa .op-desc,.pdf-caixa .op-parc,.pdf-caixa .op-de{color:#5C5446!important;border-color:#E3DACB!important}
 @media print{.opcao{background:#fff;border-color:#DDD3C2}.op-val{color:#8A6A2E}.op-det,.op-desc,.op-parc{color:#4A4338}.opcao h3,.op-parc b{color:#1A1712}}
 
+.selo-desc{display:inline-block;margin:-4px 0 12px;padding:5px 12px;border-radius:99px;background:rgba(127,192,143,.12);border:1px solid rgba(127,192,143,.45);color:#BFE3C6;font-size:12.5px;font-weight:700;line-height:1.4}
+.total + .selo-desc{margin:6px 0 4px}
+.pdf-caixa .selo-desc{background:#EEF6EF!important;border-color:#A9CDB0!important;color:#2F6B3B!important}
+@media print{.selo-desc{background:none;border-color:#7FC08F;color:#2F6B3B}}
+
 /* pagamento */
 .parcs{display:grid;gap:10px;margin-bottom:22px}
 .parcs div{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg)}
@@ -351,10 +356,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261106a"></script>
-<script src="modelo.js?v=20261106a"></script>
-<script src="comum.js?v=20261106a"></script>
-<script src="qrcode.js?v=20261106a"></script>
+<script src="/apresentacao/conteudo.js?v=20261106b"></script>
+<script src="modelo.js?v=20261106b"></script>
+<script src="comum.js?v=20261106b"></script>
+<script src="qrcode.js?v=20261106b"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -406,6 +411,7 @@ function demo(){
       { nome: 'Palestra', carga_horaria: '2 horas', participantes: 'até 160 pessoas', valor: 11000, desconto: 0, descricao: 'Para toda a equipe, em um único encontro inspirador.' },
       { nome: 'Treinamento', carga_horaria: '8 horas', participantes: 'até 40 pessoas', valor: 18000, desconto: 2000, descricao: 'Prática, dinâmicas e plano de ação para o dia a dia.', recomendada: true },
       { nome: 'Imersão', carga_horaria: '', participantes: '', valor: 0 } ] };
+    d.opcoes.lista[0].desconto = 5500; d.motivoDesconto = 'Condição especial para quem participou do Almoço Mágico';
   }
   if (etapa === 'contrato'){
     p.status = 'contrato_liberado'; p.contrato = c;
@@ -546,7 +552,7 @@ function vistaProposta(p, d, st, mud){
           (es ? '<span class="selo">Opção escolhida</span>' : o.recomendada && escolhida == null ? '<span class="selo">Recomendada</span>' : '') +
           '<h3>' + esc(o.nome) + '</h3>' + ([o.carga_horaria, o.participantes].filter(Boolean).length ? '<p class="op-det">' + esc([o.carga_horaria, o.participantes].filter(Boolean).join(' · ')) + '</p>' : '') +
           (o.descricao ? '<p class="op-desc">' + esc(o.descricao) + '</p>' : '') +
-          (P.num(o.desconto) ? '<s class="op-de">' + P.brl(o.valor) + '</s>' : '') + '<b class="op-val">' + P.brl(P.total(dd)) + '</b>' +
+          (P.num(o.desconto) ? '<s class="op-de">' + P.brl(o.valor) + '</s>' : '') + '<b class="op-val">' + P.brl(P.total(dd)) + '</b>' + seloDesconto(o.valor, o.desconto, d.motivoDesconto) +
           '<ul class="op-parc">' + pc.map(function(x){ return '<li><b>' + x.percentual + '% · ' + P.brl(x.valor) + '</b> ' + esc(x.quando) + '</li>'; }).join('') + '</ul></div>';
       }).join('') + '</div>';
   } else {
@@ -561,10 +567,11 @@ function vistaProposta(p, d, st, mud){
   h += '</div>';
   if (P.num(d.desconto)) h += '<div class="sub"><span>Subtotal</span><span>' + P.brl(P.subtotal(d)) + '</span></div><div class="sub"><span>Desconto' + (mud.campos.desconto ? '<span class="mudou">alterado</span>' : '') + '</span><span>− ' + P.brl(d.desconto) + '</span></div>';
   h += '<div class="total"><small>Investimento total</small><b>' + (mud.campos.total ? '<s>' + P.brl(mud.campos.total.antes) + '</s>' : '') + P.brl(P.total(d)) + '</b></div>';
+  if (P.num(d.desconto)) h += seloDesconto(P.subtotal(d), d.desconto, d.motivoDesconto);
   var parc = P.parcelas(d);
   if (parc.length) h += '<div class="parc">' + parc.map(function(x){ return '<div><small>' + x.percentual + '%' + (mud.campos.pagamento ? ' <span class="mudou">alterado</span>' : '') + '</small><b>' + P.brl(x.valor) + '</b><span>' + esc(x.quando) + '</span></div>'; }).join('') + '</div>';
   }
-  h += '<div class="cond">' + (d.formaPagamento ? '<span><b>Forma de pagamento:</b> ' + esc(d.formaPagamento) + (mud.campos.formaPagamento ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
+  h += '<div class="cond">' + (String(d.motivoDesconto || '').trim() && (P.num(d.desconto) || P.opcoesValidas(d).some(function(o){ return P.num(o.desconto); })) ? '<span><b>Condição especial:</b> ' + esc(d.motivoDesconto) + (mud.campos.motivoDesconto ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') + (d.formaPagamento ? '<span><b>Forma de pagamento:</b> ' + esc(d.formaPagamento) + (mud.campos.formaPagamento ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
     ((d.naoInclui || []).filter(Boolean).length ? '<span><b>Não incluso no valor:</b> ' + d.naoInclui.filter(Boolean).map(esc).join(' · ') + (mud.campos.naoInclui ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
     (val ? '<span><b>Validade da proposta:</b> ' + esc(val) + '</span>' : '') +
     (d.observacoes ? '<span>' + esc(d.observacoes).replace(/\n/g, '<br>') + '</span>' : '') + '</div></section>';
@@ -574,8 +581,14 @@ function vistaProposta(p, d, st, mud){
   return h;
 }
 
+function seloDesconto(base, desconto, motivo){
+  base = P.num(base); desconto = P.num(desconto); if (!desconto || !base) return '';
+  var pct = Math.round(desconto / base * 1000) / 10;
+  return '<span class="selo-desc">' + String(pct).replace('.', ',') + '% de desconto' + (String(motivo || '').trim() ? ' · ' + esc(motivo) : '') + '</span>';
+}
 function acoesProposta(p){
   var ac = p.aceite || {};
+  if (p.status === 'rascunho') return '<div class="feito" style="border-color:var(--line);background:none"><h3>Rascunho</h3><p>Esta proposta ainda não foi enviada. No painel, toque em <b>Salvar e enviar ao cliente</b> para ele poder aceitar.</p></div>';
   if (['enviada','visualizada','em_ajuste'].indexOf(p.status) > -1)
     return '<h2>Vamos <em>começar?</em></h2><p>Se estiver tudo certo, aceite a proposta e já preparamos o contrato. Se quiser mudar algo, é só pedir.</p>' +
       '<div class="botoes"><button class="bt" data-acao="aceitar">' + ICON.ok + ' Aceito a proposta</button>' +

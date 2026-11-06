@@ -146,7 +146,7 @@ P.mudancas = function(atual, anterior){
     var velho = (b.itens || [])[i];
     if (!velho || !P.igual(it, velho)) { m.itens[i] = velho ? { antes: velho } : { novo: true }; m.alguma = true; }
   });
-  ['desconto','pagamento','formaPagamento','inclui','naoInclui','estrutura','experiencia','objetivos','resultados','opcoes','detalhes','solucao','apresentacao','observacoes'].forEach(function(k){
+  ['desconto','pagamento','formaPagamento','inclui','naoInclui','estrutura','experiencia','objetivos','resultados','opcoes','motivoDesconto','detalhes','solucao','apresentacao','observacoes'].forEach(function(k){
     if (!P.igual(a[k], b[k])) { m.campos[k] = true; m.alguma = true; }
   });
   if (P.total(a) !== P.total(b)) { m.campos.total = { antes: P.total(b) }; m.alguma = true; }

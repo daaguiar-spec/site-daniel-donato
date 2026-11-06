@@ -100,6 +100,7 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 .chave{display:flex!important;gap:10px;align-items:flex-start;text-transform:none!important;letter-spacing:0!important;font-size:14px!important;font-weight:500!important;color:#C9BEA8!important;margin:0 0 14px!important;cursor:pointer}
 .chave input{width:18px;height:18px;accent-color:#C9A45C;flex:none;margin-top:2px}
 .opc{border:1px solid #2A251C;border-radius:12px;padding:12px;margin-bottom:10px}
+.motdesc{margin-top:14px}
 .acomp{display:block;margin-top:6px;color:#C9BEA8!important;font-size:12.5px!important}
 .visitas{display:grid;gap:10px}
 .visita{border:1px solid #2A251C;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.6;color:#C9BEA8}
@@ -120,9 +121,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261106a"></script>
-<script src="modelo.js?v=20261106a"></script>
-<script src="comum.js?v=20261106a"></script>
+<script src="/apresentacao/conteudo.js?v=20261106b"></script>
+<script src="modelo.js?v=20261106b"></script>
+<script src="comum.js?v=20261106b"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -453,6 +454,7 @@ function editor(){
     '<div id="modoOpcoes"' + (d.opcoes && d.opcoes.ativo ? '' : ' class="hidden"') + '>' + linhasOpcoes(d) + '</div>' +
     '<div id="modoItens"' + (d.opcoes && d.opcoes.ativo ? ' class="hidden"' : '') + '><div id="itens"></div><button class="add" data-acao="addItem">+ Item</button></div>' +
     '<div class="g3" style="margin-top:16px"><div id="caixaDesc"' + (d.opcoes && d.opcoes.ativo ? ' class="hidden"' : '') + '>' + inp('fDesc', 'Desconto (R$)', d.desconto || '', 'text', '', 'inputmode="decimal"') + '</div>' + inp('fForma', 'Forma de pagamento', d.formaPagamento) + inp('fVal', 'Validade (dias após enviar)', d.validadeDias || '', 'number') + '</div>' +
+    inp('fMotDesc', 'Motivo do desconto (aparece para o cliente)', d.motivoDesconto, 'text', 'motdesc', 'placeholder="Ex.: Condição especial para quem participou do Almoço Mágico"') +
     '<div class="tot" id="tot"></div>' +
     '<h2 style="margin-top:20px">Parcelas</h2><div id="parcelas"></div><button class="add" data-acao="addParc">+ Parcela</button><p class="dica" id="somaPct"></p>' +
     '<div style="margin-top:14px">' + area('fObs', 'Observações (opcional)', d.observacoes) + '</div></section>' +
@@ -547,7 +549,7 @@ function coleta(){
   d.pagamento = [].map.call(document.querySelectorAll('#parcelas .linha'), function(l){
     return { percentual: P.num(l.querySelector('[data-k=percentual]').value), quando: l.querySelector('[data-k=quando]').value.trim() };
   });
-  d.desconto = P.num(v('fDesc')); d.formaPagamento = v('fForma');
+  d.desconto = P.num(v('fDesc')); d.formaPagamento = v('fForma'); d.motivoDesconto = v('fMotDesc');
   if (opAtivo){ var vs = P.opcoesValidas(d); if (vs.length){ var o0 = vs.filter(function(o){ return o.recomendada; })[0] || vs[0];
     d.itens = [{ nome: o0.nome, descricao: [o0.carga_horaria, o0.participantes].filter(Boolean).join(' · '), valor: P.num(o0.valor) }]; d.desconto = P.num(o0.desconto);
     d.detalhes.carga_horaria = d.detalhes.carga_horaria || o0.carga_horaria || ''; d.detalhes.participantes = d.detalhes.participantes || o0.participantes || ''; } } d.validadeDias = P.num(v('fVal')); d.observacoes = v('fObs');
