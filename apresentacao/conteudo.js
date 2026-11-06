@@ -9,14 +9,15 @@ window.CONTEUDO = {
   /* ---------- CONTATO PADRÃO (usado quando o link não traz vendedor) ---------- */
   whatsapp: "559292383440",            // só números, com 55 + DDD
   email: "comercial@sinapseonline.com",
-  instagram: "danieldonato.mentor",
+  instagram: "danieldonato.mentor",     // só o usuário, sem @ (deixe vazio para esconder)
+  avisos: true,   // avisos da APRESENTAÇÃO no celular (app ntfy): "abriu agora" e "resumo". Quem recebe: variáveis NTFY_GERAL e NTFY_CONSULTORES na Vercel. false = desliga.
   avisoEmail: "comercial@sinapseonline.com",  // recebe os avisos "abriu agora" e "resumo da visita" (deixe vazio para desligar)
   avisarConsultores: true,    // true = o consultor do link recebe os avisos em cópia
   avisoTeste: true,           // true = links com "teste" no nome geram avisos [TESTE] só para o e-mail acima
   consultores: [              // nome exatamente como é digitado no gerador de link
     { nome: "Vanessa Matos", email: "vavamatos@hotmail.com" },
     { nome: "Rômulo Hora", email: "jrhora29@gmail.com" }
-  ],     // só o usuário, sem @ (deixe vazio para esconder)
+  ],
   telefoneExibido: "+55 92 98238-3440",
 
   /* ---------- 1 · CAPA ---------- */
