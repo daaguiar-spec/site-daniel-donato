@@ -1210,12 +1210,12 @@ document.addEventListener('click',function(e){var a=e.target.closest&&e.target.c
 </script>
 <script>
 /* =====================================================================
-   AVISOS POR E-MAIL (FormSubmit): "abriu agora" + "resumo da visita"
-   Só para links com nome de cliente. Configuração no conteudo.js.
+   AVISOS NO CELULAR (app ntfy, via /api/aviso): "abriu agora" + "resumo da visita"
+   Só para links com nome de cliente. Os canais de cada pessoa ficam na Vercel.
    ===================================================================== */
 (function(){
 var C=window.CONTEUDO||{},QS=new URLSearchParams(location.search),cli=(QS.get('cliente')||'').trim().slice(0,80);
-if(!cli||!C.avisoEmail)return;
+if(!cli||C.avisos===false)return;
 try{if(localStorage.getItem('dd_admin')==='1')return;}catch(e){}
 if(/^(localhost|127\.)/.test(location.hostname)||location.protocol==='file:')return;
 var ehTeste=/teste/i.test(cli); if(ehTeste&&!C.avisoTeste)return;
@@ -1227,10 +1227,13 @@ var pre=ehTeste?'[TESTE] ':'';
 function disp(){var w=Math.min(innerWidth,screen.width||innerWidth);return w<=680?'Celular':w<=1024?'Tablet':'Computador'}
 function agora(){return new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',dateStyle:'short',timeStyle:'short'})}
 function manda(campos){
-  var f=new URLSearchParams();f.append('_template','table');f.append('_captcha','false');if(cc)f.append('_cc',cc);
-  Object.keys(campos).forEach(function(k){f.append(k,campos[k])});
-  if(ehTeste)f.append('Modo de teste','Enviado só para '+C.avisoEmail+(cons&&cons.email?'. Com os avisos ligados, iria em cópia para '+cons.email:'. Consultor não encontrado na lista do conteudo.js'));
-  try{fetch('https://formsubmit.co/ajax/'+encodeURIComponent(C.avisoEmail),{method:'POST',mode:'no-cors',keepalive:true,body:f}).catch(function(){})}catch(e){}
+  var d={tipo:campos['Visita']?'resumo':'abriu',cliente:cli,vendedor:ven,aparelho:disp(),
+    visita:campos['Visita']||'',tempo:campos['Tempo na apresentação']||'',ate:campos['Chegou até']||'',
+    videos:campos['Vídeos assistidos (com som)']||'',abriu:campos['Abriu']||'',cliques:campos['Cliques']||'',
+    quis:/^✅/.test(campos['Interesse']||''),atualizacao:/Atualização/.test(campos._subject||'')};
+  var corpo=JSON.stringify(d);
+  try{if(navigator.sendBeacon&&navigator.sendBeacon('/api/aviso',new Blob([corpo],{type:'application/json'})))return}catch(e){}
+  try{fetch('/api/aviso',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:corpo}).catch(function(){})}catch(e){}
 }
 /* visitas deste aparelho a este cliente */
 var ch='dd_av_'+norm(cli).slice(0,60),nv=0;try{nv=(+localStorage.getItem(ch)||0)+1;localStorage.setItem(ch,String(nv))}catch(e){nv=1}
