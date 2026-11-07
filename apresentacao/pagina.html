@@ -1245,7 +1245,7 @@ var secs=[].slice.call(document.querySelectorAll('section.tela')).filter(functio
 var vistas={},cliques=[],abertos=[],vids={},ativo=0,marca=Date.now(),envios=0,assinatura='';
 if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.intersectionRect.height>=Math.min(e.boundingClientRect.height*.45,innerHeight*.5))vistas[e.target.id]=1})},{threshold:[0,.1,.2,.3,.45,.6]});secs.forEach(function(id){io.observe(document.getElementById(id))})}
 var visivel=document.visibilityState!=='hidden';
-function conta(){if(visivel){ativo+=Date.now()-marca}marca=Date.now()}
+var fora=0;function conta(){if(visivel&&!fora){ativo+=Date.now()-marca}marca=Date.now()}
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-rot],#insta,#player button,.item-v');if(!a)return;
   var r=a.dataset&&a.dataset.rot;if(!r&&a.id==='insta')r='Instagram';if(!r&&a.closest('#player'))r='Play no vídeo principal';if(!r)r='Vídeo da lista: '+(a.textContent||'').trim().slice(0,60);
   if(/^(Depoimento|Momento rápido|Play)/.test(r)){if(abertos.indexOf(r)<0)abertos.push(r)}else cliques.push(r)},true);
@@ -1258,7 +1258,7 @@ document.addEventListener('timeupdate',function(e){var v=e.target;if(!v||v.muted
 document.addEventListener('seeked',function(e){var v=e.target,k=rotulo(v.currentSrc||v.src);if(vids[k])vids[k].u=v.currentTime},true);
 function mmss(s){s=Math.round(s);return s<60?s+' s':Math.floor(s/60)+' min '+(s%60)+' s'}
 function resumo(){
-  if(visivel)conta();if(ativo<5000)return;
+  conta();if(ativo<5000)return;
   var vis=secs.filter(function(id){return vistas[id]}),ult=vis.length?vis[vis.length-1]:secs[0];
   var vl=Object.keys(vids).filter(function(k){return vids[k].s>=2}).map(function(k){var o=vids[k];return k+': '+mmss(o.s)+(o.d?' de '+mmss(o.d):'')});
   var zap=cliques.filter(function(c){return /WhatsApp|Fale conosco|Quero saber mais/.test(c)});
@@ -1286,6 +1286,9 @@ function grava(vis,ult,vl,zap){
 }
 document.addEventListener('visibilitychange',function(){conta();visivel=document.visibilityState!=='hidden';if(!visivel)resumo()});
 addEventListener('pagehide',resumo);
+/* computador: se a pessoa for para outra janela e ficar 30 s fora, manda o resumo (sem esperar fechar) */
+var tFora=0;addEventListener('blur',function(){conta();fora=1;clearTimeout(tFora);tFora=setTimeout(function(){if(!document.hasFocus())resumo()},30000)});
+addEventListener('focus',function(){conta();fora=0;clearTimeout(tFora)});
 })();
 </script>
 </body>
