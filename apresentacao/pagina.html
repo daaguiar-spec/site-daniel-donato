@@ -1282,7 +1282,9 @@ function grava(vis,ult,vl,zap){
     detalhe:{carga:carga,visita:nv,tempo:Math.round(ativo/1000),ate:secs.indexOf(ult)+1,total:secs.length,secoes:vis,videos:vids2,abriu:abertos.slice(0,20),cliques:cliques.slice(0,20)}};
   if(ven)d.vendedor=ven;
   try{d.visitante=localStorage.getItem('ddv')||''}catch(e){}
-  try{fetch('https://ouxzzduwjxmtixfftpsy.supabase.co/rest/v1/site_eventos',{method:'POST',keepalive:true,headers:{'apikey':'sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(d)}).catch(function(){})}catch(e){}
+  var corpo=JSON.stringify(d); /* pelo próprio site (sendBeacon): chega mesmo quando a aba é fechada */
+  try{if(navigator.sendBeacon&&navigator.sendBeacon('/api/registra',new Blob([corpo],{type:'application/json'})))return}catch(e){}
+  try{fetch('/api/registra',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:corpo}).catch(function(){})}catch(e){}
 }
 document.addEventListener('visibilitychange',function(){conta();visivel=document.visibilityState!=='hidden';if(!visivel)resumo()});
 addEventListener('pagehide',resumo);
