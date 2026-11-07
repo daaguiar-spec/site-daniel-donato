@@ -19,6 +19,17 @@ function canais(ven, teste) {
 }
 
 module.exports = async (req, res) => {
+  if (req.method === "GET" && "teste" in (req.query || {})) {   // diagnóstico: abre /api/aviso?teste no navegador
+    const tops = canais("", false), out = { canal_geral: !!process.env.NTFY_GERAL, canal_valido: tops.length > 0,
+      consultores: String(process.env.NTFY_CONSULTORES || "").split(";").filter(s => s.includes("=")).length };
+    try {
+      const r = await Promise.all(tops.map(topic => fetch("https://ntfy.sh/", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic, title: "Teste do site", message: "Os avisos da apresentação estão funcionando.", tags: ["tada"] }) })
+        .then(async x => x.status + " " + (await x.text()).slice(0, 120))));
+      out.ntfy = r;
+    } catch (e) { out.erro = String(e).slice(0, 200); }
+    res.status(200).json(out); return;
+  }
   if (req.method !== "POST") { res.status(405).end(); return; }
   const origem = String(req.headers.origin || req.headers.referer || "");
   if (origem && !/danieldonato\.com\.br|vercel\.app|localhost/.test(origem)) { res.status(403).end(); return; }
@@ -47,7 +58,7 @@ module.exports = async (req, res) => {
   const msg = linhas.join("\n") + (resumo ? "" : "\nVocê recebe o resumo quando ele sair da apresentação.");
 
   try {
-    await Promise.all(tops.map(topic => fetch("https://ntfy.sh/", {
+    const rs = await Promise.all(tops.map(topic => fetch("https://ntfy.sh/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -57,6 +68,8 @@ module.exports = async (req, res) => {
         click: "https://www.danieldonato.com.br/admin.html"
       })
     })));
+    rs.forEach(r => { if (!r.ok) console.error("ntfy", r.status); });
+    console.log("aviso", b.tipo, cliente, vendedor, tops.length, rs.map(r => r.status).join(","));
     res.status(200).json({ ok: true });
   } catch (e) { console.error(e); res.status(502).json({ ok: false }); }
 };
