@@ -25,18 +25,22 @@ small{color:var(--txt3);font-size:12px}
 .salvo{color:#9C8F78}
 .alerta{padding:12px 14px;border-radius:8px;border:1px solid #B8863B;background:rgba(201,162,74,.12);color:#E3C47A;font-size:13px;line-height:1.45}
 .hidden{display:none}
+.ob{color:#E3C47A;font-weight:800}
+input.falta{border-color:#B8863B;background:rgba(201,162,74,.08)}
+.acoes .off{opacity:.45}
+.saida.vazia{border-style:dashed;border-color:var(--line);color:var(--txt3);font-style:italic;word-break:normal}
 </style>
 </head>
 <body>
 <main class="box">
   <h1>Gerar link da apresentação</h1>
-  <p>Preencha e copie. Deixe tudo em branco para a versão geral.</p>
-  <label>Nome do cliente (aparece na capa)<input id="cliente" placeholder="Ex.: Mariana Costa"></label>
-  <label>Consultor de Experiência<input id="vendedor" autocomplete="name" placeholder="Ex.: João Silva"></label>
+  <p>Preencha e copie. Os campos com <b class="ob">*</b> são obrigatórios, para cada visita aparecer identificada nas estatísticas.</p>
+  <label><span>Nome do cliente (aparece na capa) <b class="ob">*</b></span><input id="cliente" required placeholder="Ex.: Mariana Costa"></label>
+  <label><span>Consultor de Experiência <b class="ob">*</b></span><input id="vendedor" required autocomplete="name" placeholder="Ex.: João Silva"></label>
   <label>WhatsApp do consultor (opcional)<input id="fone" inputmode="tel" placeholder="Ex.: (85) 98888-7777"></label>
   <small>Com o WhatsApp do consultor preenchido, o botão da apresentação leva para ele. Sem ele, vai para o comercial do Daniel.</small>
   <small class="salvo" id="salvo">Seu nome e WhatsApp ficam salvos neste aparelho. Nos próximos links, preencha só o nome do cliente.</small>
-  <div class="alerta hidden" id="alerta">Preencha o seu nome de Consultor de Experiência para o cliente falar com você e o envio aparecer no painel.</div>
+  <div class="alerta hidden" id="alerta"></div>
   <div class="saida" id="saida" aria-live="polite"></div>
   <div class="acoes">
     <button type="button" class="forte" id="copiar">Copiar link</button>
@@ -53,9 +57,13 @@ small{color:var(--txt3);font-size:12px}
     ids.forEach(function(k){ var v = document.getElementById(k).value.trim(); if (v) q.set(k, v); });
     var s = q.toString(); return base + (s ? '?' + s : '');
   }
+  function faltando(){ return ['cliente','vendedor'].filter(function(k){ return !document.getElementById(k).value.trim(); }); }
+  var NOMES = { cliente: 'o nome do cliente', vendedor: 'o nome do Consultor de Experiência' };
   function atualiza(){
-    var l = link(), c = document.getElementById('cliente').value.trim();
-    document.getElementById('saida').textContent = l;
+    var l = link(), c = document.getElementById('cliente').value.trim(), f = faltando(), sai = document.getElementById('saida');
+    sai.textContent = f.length ? 'Preencha ' + f.map(function(k){ return NOMES[k]; }).join(' e ') + ' para gerar o link.' : l;
+    sai.classList.toggle('vazia', !!f.length);
+    ['copiar','abrir','enviar'].forEach(function(id){ document.getElementById(id).classList.toggle('off', !!f.length); });
     document.getElementById('abrir').href = l;
     var m = 'Olá' + (c ? ' ' + c : '') + '!\nTudo bem? 😊\n\n' +
             'Quero apresentar o trabalho do Daniel Donato, palestrante e especialista em Cultura Disney aplicada aos negócios.\n\n' +
@@ -70,10 +78,24 @@ small{color:var(--txt3);font-size:12px}
     try { var v = localStorage.getItem('dd_gl_' + k); if (v && !el.value) el.value = v; } catch(e){}
     el.addEventListener('input', function(){ try { localStorage.setItem('dd_gl_' + k, el.value.trim()); } catch(e){} });
   });
-  function confere(){ document.getElementById('alerta').classList.toggle('hidden', !!document.getElementById('vendedor').value.trim()); }
+  var tentou = false;
+  function confere(){
+    var f = faltando(), al = document.getElementById('alerta');
+    ['cliente','vendedor'].forEach(function(k){ document.getElementById(k).classList.toggle('falta', tentou && f.indexOf(k) > -1); });
+    al.textContent = f.length ? 'Preencha ' + f.map(function(k){ return NOMES[k]; }).join(' e ') + '. Sem isso, a visita não aparece identificada nas estatísticas.' : '';
+    al.classList.toggle('hidden', !tentou || !f.length);
+  }
+  /* bloqueia copiar, ver e enviar enquanto faltar cliente ou consultor */
+  function barra(e){
+    var f = faltando(); if (!f.length) return true;
+    e.preventDefault(); tentou = true; confere(); document.getElementById(f[0]).focus(); return false;
+  }
+  document.getElementById('abrir').addEventListener('click', barra);
+  document.getElementById('enviar').addEventListener('click', barra);
   ids.forEach(function(k){ document.getElementById(k).addEventListener('input', function(){ atualiza(); confere(); }); });
   confere();
-  document.getElementById('copiar').onclick = function(){
+  document.getElementById('copiar').onclick = function(e){
+    if (!barra(e)) return;
     var b = this, l = link();
     (navigator.clipboard ? navigator.clipboard.writeText(l) : Promise.reject()).then(function(){
       b.textContent = 'Copiado!'; setTimeout(function(){ b.textContent = 'Copiar link'; }, 1800);
