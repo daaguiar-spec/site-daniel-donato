@@ -30,3 +30,6 @@ Quando você muda um campo de texto da proposta (solução, local, incluído, es
 
 ## Despesas de viagem
 Em **Valores**, escolha quem paga a viagem: **Por minha conta**, **Por conta do contratante**, **Dividido** (marque o que fica com o contratante) ou **Sem viagem**. O cliente vê a linha "Despesas de viagem" com o texto (editável) e o Parágrafo terceiro da cláusula de pagamento do contrato acompanha sozinho (em "Sem viagem" ele sai e os parágrafos seguintes são renumerados). Propostas sem opção escolhida continuam como antes.
+
+## Link de revisão interna
+No painel, **🔒 Link de revisão interna** gera um link (`/proposta/?p=CODIGO&r=TOKEN`) para a equipe ver a proposta antes do cliente: abre mesmo em rascunho, não conta visita, não deixa aceitar. Mostra a última versão salva. "Gerar link novo" invalida o anterior. SQL: `_fonte/supabase-propostas-revisao.sql`.

@@ -121,6 +121,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 .vck{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 10px 30px}
 .vck label{display:inline-block!important;margin:0!important;cursor:pointer;text-transform:none!important;letter-spacing:0!important;font-size:13px!important;font-weight:500!important;border:1px solid #3A3226;border-radius:99px;padding:5px 12px;color:#C9BEA8!important}
 .vck label.on{border-color:rgba(127,192,143,.6);color:#8FD19F!important;background:rgba(127,192,143,.08)}.vck input{position:absolute;opacity:0;pointer-events:none}
+.jrev{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:16px}
+.jrev-c{background:#15130F;border:1px solid #3A3226;border-radius:16px;padding:22px;max-width:520px;width:100%}.jrev-c h3{margin:0 0 8px;font-size:18px}
+.jrev-u{font-size:12.5px;word-break:break-all;background:#0B0A08;border:1px solid #2A251C;border-radius:10px;padding:10px 12px;margin:10px 0 12px;color:#C9BEA8}
 .sub2{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;margin:18px 0 10px}
 </style>
 </head>
@@ -132,9 +135,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261109b"></script>
-<script src="modelo.js?v=20261109b"></script>
-<script src="comum.js?v=20261109b"></script>
+<script src="/apresentacao/conteudo.js?v=20261109c"></script>
+<script src="modelo.js?v=20261109c"></script>
+<script src="comum.js?v=20261109c"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -592,6 +595,7 @@ function editor(){
   var h = '<div class="w painel"><button class="volta" id="volta">← Todas as propostas</button>' +
     '<div class="ed-cab"><div><p class="eb">Proposta · v' + p.versao + '</p><h1>' + esc(p.cliente) + '</h1><div style="margin-top:8px">' + chip(p.status) + '</div></div>' +
     '<div class="links">' + (p.status !== 'rascunho' ? '<button class="sec" data-copia="prop">Copiar link da proposta</button><button class="sec" data-copia="apres">Copiar link da apresentação</button><button class="sec" data-acao="zap">Mandar no WhatsApp</button>' : '') +
+    '<button class="sec" data-acao="revisao">🔒 Link de revisão interna</button>' +
     '<button class="sec" data-acao="irAcomp">📊 Acompanhamento</button>' + '<a class="sec" target="_blank" rel="noopener" href="/proposta/?p=' + esc(p.codigo) + (DEMO ? '&demo' : '') + '">Ver como o cliente</a></div></div>' +
     pedidosPendentes(p) +
 
@@ -805,6 +809,21 @@ function janelaEnvio(titulo, msg){
   f.querySelector('#mFec').onclick = function(){ f.remove(); };
   f.addEventListener('click', function(e){ if (e.target === f) f.remove(); });
 }
+function janelaRevisao(url, txt){
+  var j = document.createElement('div'); j.id = 'jRev'; j.className = 'jrev';
+  j.innerHTML = '<div class="jrev-c"><h3>🔒 Link de revisão interna</h3><p class="dica">Mande para a Vanessa (ou quem for revisar). Abre mesmo em rascunho, mostra exatamente o que o cliente vai ver, não conta visita e não deixa aceitar.</p>' +
+    '<div class="jrev-u">' + esc(url) + '</div><div class="links"><button class="sec" data-rv="copiar">Copiar link</button><a class="sec" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(txt) + '">Mandar no WhatsApp</a>' +
+    '<a class="sec" target="_blank" rel="noopener" href="' + esc(url) + '">Abrir</a></div>' +
+    '<p class="dica" style="margin-top:12px">O link mostra a última versão salva. <button class="mini" data-rv="novo">Gerar link novo</button> (o antigo deixa de funcionar)</p>' +
+    '<div style="text-align:right;margin-top:6px"><button class="sec" data-rv="fechar">Fechar</button></div></div>';
+  j.addEventListener('click', function(e){ var b = e.target.closest('[data-rv]'); if (e.target === j || (b && b.dataset.rv === 'fechar')) j.remove(); else if (b && b.dataset.rv === 'copiar') copia(url);
+    else if (b && b.dataset.rv === 'novo'){
+      if (!confirm('Gerar um link novo? O link de revisão antigo para de funcionar.')) return;
+      j.remove(); S.atual.revisao = null;
+      DB.atualizar(S.atual.id, { revisao: null }).then(function(){ var bt = document.querySelector('[data-acao="revisao"]'); if (bt) bt.click(); }).catch(function(e){ toast(erroTxt(e)); });
+    } });
+  document.body.appendChild(j);
+}
 function copia(t){
   (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function(){ toast('Copiado!'); })
     .catch(function(){ var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); toast('Copiado!'); }catch(e){ prompt('Copie:', t); } a.remove(); });
@@ -873,6 +892,18 @@ app.addEventListener('click', function(e){
   }
   else if (a === 'salvar' || a === 'enviar' || a === 'publicar' || a === 'liberar') guarda(a);
   else if (a === 'zap') janelaEnvio('Mandar no WhatsApp', mensagem(['contrato_liberado','contrato_em_ajuste','assinado'].indexOf(S.atual.status) > -1 ? 'contrato' : 'nova'));
+  else if (a === 'revisao'){
+    if (S.sujo) return toast('Salve antes (Salvar rascunho ou Salvar correção): o link mostra a versão salva.');
+    var pr = S.atual, tok = pr.revisao;
+    var gera = tok ? Promise.resolve(pr) : DB.atualizar(pr.id, { revisao: Array.from(crypto.getRandomValues(new Uint8Array(12)), function(x){ return ('0' + x.toString(16)).slice(-2); }).join('') });
+    gera.then(function(n){
+      if (!n || !n.revisao) throw new Error('revisao');
+      S.atual.revisao = n.revisao; if (S.salvo) S.salvo.revisao = n.revisao;
+      var url = ORIGEM + '/proposta/?p=' + n.codigo + '&r=' + n.revisao + (DEMO ? '&demo' : '');
+      var txt = 'Oi! Dá uma olhada na proposta para ' + n.cliente + ' antes de eu enviar ao cliente. É um link interno: não conta visita e não dá para aceitar.\n\n' + url;
+      janelaRevisao(url, txt);
+    }).catch(function(e){ toast(/revisao|column/i.test(String(e && (e.message || e))) ? 'Falta rodar no Supabase o SQL do link de revisão (eu te mandei).' : erroTxt(e)); });
+  }
   else if (a === 'duplicar'){ c = coleta(); var nome = prompt('Nome do cliente da cópia:', c.cliente + ' (cópia)'); if (!nome) return;
     DB.criar({ cliente: nome.trim().slice(0, 80), vendedor: c.vendedor, fone: c.fone, status: 'rascunho', dados: c.dados, contrato: c.contrato }).then(function(n){ abrir(n.id); toast('Cópia criada como rascunho.'); }).catch(function(e){ toast(erroTxt(e)); }); }
   else if (a === 'apagar'){ if (!confirm('Apagar este rascunho para sempre?')) return; DB.apagar(S.atual.id).then(lista).catch(function(e){ toast(erroTxt(e)); }); }

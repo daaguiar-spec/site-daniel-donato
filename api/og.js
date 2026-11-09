@@ -18,21 +18,21 @@ function meta(html, chave, valor, attr) {
 }
 
 // O WhatsApp espera alguns segundos pela prévia; se o banco demorar, tenta de novo uma vez.
-async function proposta(codigo) {
+async function proposta(codigo, rev) {
   for (let i = 0; i < 2; i++) {
-    const p = await propostaUmaVez(codigo, i ? 3500 : 3000);
+    const p = await propostaUmaVez(codigo, i ? 3500 : 3000, rev);
     if (p) return p;
   }
   return null;
 }
-async function propostaUmaVez(codigo, ms) {
+async function propostaUmaVez(codigo, ms, rev) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), ms);
   try {
-    const r = await fetch(`${SB}/rest/v1/rpc/proposta_ver`, {
+    const r = await fetch(`${SB}/rest/v1/rpc/${rev ? "proposta_revisao" : "proposta_ver"}`, {
       method: "POST", signal: ctrl.signal,
       headers: { apikey: KEY, "Content-Type": "application/json" },
-      body: JSON.stringify({ p_codigo: codigo, p_registrar: false })
+      body: JSON.stringify(rev ? { p_codigo: codigo, p_token: rev } : { p_codigo: codigo, p_registrar: false })
     });
     if (!r.ok) return null;
     return await r.json();
@@ -60,11 +60,12 @@ module.exports = async (req, res) => {
     let titulo = "", desc = "";
     if (nome === "proposta") {
       const cod = limpa(q.p || q.codigo, 40).replace(/[^a-z0-9]/gi, "");
-      const p = cod ? await proposta(cod) : null;
+      const rev = limpa(q.r, 40).replace(/[^a-z0-9]/gi, "");
+      const p = cod ? await proposta(cod, rev) : null;
       if (p && p.cliente) {
         const d = p.dados || {};
         const contato = limpa(d.contato, 60);
-        titulo = `Proposta para ${limpa(p.cliente, 80)} | Daniel Donato`;
+        titulo = (rev ? "Revisão interna · " : "") + `Proposta para ${limpa(p.cliente, 80)} | Daniel Donato`;
         desc = (contato ? `Olá, ${contato}! ` : "") + `Preparamos a proposta de ${limpa(d.solucao, 90).replace(/[.!;:,\s]+$/, "") || "palestra, treinamento ou imersão"} para ${limpa(p.cliente, 80)}. Toque para ver os valores e as condições e aceitar on-line.`;
       }
     } else {
