@@ -112,6 +112,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 .tags i.ok{border-color:rgba(127,192,143,.5);color:#8FD19F}
 .mini{white-space:nowrap;display:inline-block;width:auto;vertical-align:middle;background:none;border:1px solid #3A3226;color:#C9BEA8;border-radius:99px;padding:4px 12px!important;min-height:0!important;font:inherit;font-size:12px!important;line-height:1.5;cursor:pointer}.mini:hover{border-color:#C9A45C;color:#E8CF95}
 .hist input{width:16px;height:16px;accent-color:#C9A45C;flex:none;margin:2px 0 0}
+.pd{display:inline-flex;gap:6px;margin:-6px 0 -6px 8px;vertical-align:middle;text-transform:none;letter-spacing:0;font-weight:600}
+.pd button{background:none;border:1px solid #3A3226;color:#C9BEA8;border-radius:99px;padding:1px 9px;font-size:11px;line-height:16px;cursor:pointer;white-space:nowrap}
+.pd button.pdS{border-color:rgba(201,164,92,.6);color:#E8CF95}.pd button:hover{border-color:#C9A45C;color:#E8CF95}
 .sub2{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;margin:18px 0 10px}
 </style>
 </head>
@@ -123,9 +126,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261106c"></script>
-<script src="modelo.js?v=20261106c"></script>
-<script src="comum.js?v=20261106c"></script>
+<script src="/apresentacao/conteudo.js?v=20261109a"></script>
+<script src="modelo.js?v=20261109a"></script>
+<script src="comum.js?v=20261109a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -209,6 +212,14 @@ var DB = {
       var d = r.data.dados || {}; d.ocultarMudancas = false;
       return sb.from('propostas').update({ versao: 1, dados: d, atualizado_em: new Date().toISOString() }).eq('id', id); }).then(function(r){ if (r.error) throw r.error; });
   },
+  padroes: function(){
+    if (DEMO){ try{ return Promise.resolve(JSON.parse(localStorage.getItem('dd_demo_padroes') || '{}')); }catch(e){ return Promise.resolve({}); } }
+    return sb.from('proposta_padroes').select('valores').eq('id', 'geral').maybeSingle().then(function(r){ if (r.error) throw r.error; return (r.data && r.data.valores) || {}; });
+  },
+  salvaPadroes: function(v){
+    if (DEMO){ try{ localStorage.setItem('dd_demo_padroes', JSON.stringify(v)); }catch(e){} return Promise.resolve(); }
+    return sb.from('proposta_padroes').upsert({ id: 'geral', valores: v, atualizado_em: new Date().toISOString() }).then(function(r){ if (r.error) throw r.error; });
+  },
   apagarEventos: function(ids){
     if (DEMO){ var b = demoBase(); Object.keys(b.eventos).forEach(function(k){ b.eventos[k] = b.eventos[k].filter(function(e){ return ids.indexOf(e.id) < 0; }); }); DEMO_APAGADOS = DEMO_APAGADOS.concat(ids); return Promise.resolve(); }
     return sb.from('proposta_eventos').delete().in('id', ids).then(function(r){ if (r.error) throw r.error; });
@@ -241,8 +252,11 @@ function telaLogin(msg){
 }
 sair.addEventListener('click', function(){ if (S.sujo && !confirm('Há alterações não salvas. Sair mesmo assim?')) return; if (sb) sb.auth.signOut(); S.sujo = false; telaLogin(); });
 
+function carregaPadroes(){
+  return DB.padroes().then(function(v){ PADROES = v || {}; PADROES_OK = true; aplicaPadroes(); }).catch(function(e){ PADROES_OK = false; console.warn('padrões', e); });
+}
 function inicio(){
-  if (DEMO) return lista();
+  if (DEMO) return carregaPadroes().then(lista);
   sb.auth.getSession().then(function(r){
     var s = r.data && r.data.session; if (!s) return telaLogin();
     try{ localStorage.setItem('dd_admin', '1'); }catch(e){}
@@ -250,7 +264,7 @@ function inicio(){
     return sb.rpc('eh_admin_proposta').then(function(x){
       if (x.error){ app.innerHTML = '<div class="w painel"><div class="aviso">' + esc(erroTxt(x.error)) + '</div></div>'; return; }
       if (!x.data){ app.innerHTML = '<div class="w painel"><div class="aviso">O e-mail <b>' + esc(s.user.email) + '</b> ainda não pode ver as propostas. No SQL Editor do Supabase, rode:<br><br><code>insert into proposta_admins (email) values (\'' + esc(s.user.email) + '\');</code></div></div>'; return; }
-      lista();
+      return carregaPadroes().then(lista);
     });
   });
 }
@@ -398,6 +412,64 @@ function blocoAcompanhamento(p){
   h += '<div class="sub2">Apresentação</div><div id="acompApres"><p class="dica">Carregando…</p></div></section>';
   return h;
 }
+/* ---- padrões das propostas novas ("Tornar padrão") ---- */
+if (M.contrato && M.contrato.cidadeForo === undefined) M.contrato.cidadeForo = M.cidadeForo || '';
+var M_ORIG = P.copia({ dados: M.dados, contrato: M.contrato });
+var PADROES = {}, PADROES_OK = true;
+var CAMPOS_PADRAO = { fSol: 'dados.solucao', fAp: 'dados.apresentacao', fFor: 'dados.detalhes.formato', fData: 'dados.detalhes.data_evento', fLocal: 'dados.detalhes.local',
+  fCh: 'dados.detalhes.carga_horaria', fPart: 'dados.detalhes.participantes', fInc: 'dados.inclui', fNao: 'dados.naoInclui', fEst: 'dados.estrutura',
+  eTit: 'dados.experiencia.titulo', eTxt: 'dados.experiencia.texto', eViv: 'dados.experiencia.vivenciado', eFor: 'dados.experiencia.formato', fObj: 'dados.objetivos',
+  fForma: 'dados.formaPagamento', fVal: 'dados.validadeDias', fObs: 'dados.observacoes', fAbert: 'contrato.abertura', fForo: 'contrato.cidadeForo' };
+function pega(o, cam){ return cam.split('.').reduce(function(a, k){ return a == null ? undefined : a[k]; }, o); }
+function poe(o, cam, val){ var ks = cam.split('.'), u = ks.pop(); ks.forEach(function(k){ if (o[k] == null || typeof o[k] !== 'object') o[k] = {}; o = o[k]; }); o[u] = val; }
+function vazio(x){ return x == null || x === '' || (Array.isArray(x) && !x.length); }
+function mesmo(a, b){ return (vazio(a) && vazio(b)) || P.igual(a, b); }
+function aplicaPadroes(){
+  M.dados = P.copia(M_ORIG.dados); M.contrato = P.copia(M_ORIG.contrato);
+  Object.keys(PADROES).forEach(function(cam){ var raiz = cam.split('.')[0], resto = cam.slice(raiz.length + 1); poe(raiz === 'dados' ? M.dados : M.contrato, resto, P.copia(PADROES[cam])); });
+  if (PADROES['contrato.cidadeForo'] != null) M.cidadeForo = PADROES['contrato.cidadeForo'];
+}
+function padraoAtual(cam){ return pega({ dados: M.dados, contrato: M.contrato }, cam); }
+function padraoOriginal(cam){ return pega(M_ORIG, cam); }
+function poeBotoesPadrao(){
+  Object.keys(CAMPOS_PADRAO).forEach(function(id){ var l = document.querySelector('label[for="' + id + '"]'); if (l && !l.querySelector('.pd')) l.insertAdjacentHTML('beforeend', '<span class="pd" data-pd="' + CAMPOS_PADRAO[id] + '"></span>'); });
+}
+function atualizaPadroes(){
+  var pds = document.querySelectorAll('.pd[data-pd]'); if (!pds.length) return;
+  var c = coleta(), atual = { dados: c.dados, contrato: c.contrato };
+  [].forEach.call(pds, function(el){
+    var cam = el.dataset.pd, h = '';
+    if (!mesmo(pega(atual, cam), padraoAtual(cam))) h += '<button type="button" class="pdS" data-pdsalva="' + cam + '" title="As próximas propostas novas começam com o que está aqui agora">⭐ Tornar padrão</button>';
+    if (PADROES[cam] !== undefined && !mesmo(padraoAtual(cam), padraoOriginal(cam))) h += '<button type="button" data-pdvolta="' + cam + '" title="Volta este campo ao padrão original do sistema (só para propostas novas)">↺ Original</button>';
+    if (el.innerHTML !== h) el.innerHTML = h;
+  });
+}
+function gravaPadrao(cam, val){
+  if (!PADROES_OK) return toast('Falta rodar no Supabase o SQL dos padrões (eu te mandei). Depois recarregue o painel.');
+  return DB.padroes().then(function(atual){
+    atual = atual || {}; if (val === undefined) delete atual[cam]; else atual[cam] = val;
+    return DB.salvaPadroes(atual).then(function(){ PADROES = atual; aplicaPadroes(); atualizaPadroes(); });
+  }).catch(function(e){ toast(erroTxt(e)); throw e; });
+}
+document.addEventListener('click', function(e){
+  var b = e.target.closest && e.target.closest('[data-pdsalva],[data-pdvolta]'); if (!b || !S.atual) return;
+  e.preventDefault(); e.stopPropagation();
+  var c = coleta(), cam = b.dataset.pdsalva || b.dataset.pdvolta, nome = rotuloPadrao(cam);
+  if (b.dataset.pdsalva){
+    if (!confirm('Usar o que está em "' + nome + '" como padrão das próximas propostas novas?\n\nAs propostas que já existem não mudam.')) return;
+    gravaPadrao(cam, P.copia(pega({ dados: c.dados, contrato: c.contrato }, cam))).then(function(){ toast('Pronto: "' + nome + '" virou padrão.'); }, function(){});
+  } else {
+    if (!confirm('Voltar "' + nome + '" ao padrão original do sistema nas próximas propostas novas?\n\nEsta proposta não muda.')) return;
+    gravaPadrao(cam, undefined).then(function(){ toast('"' + nome + '" voltou ao padrão original.'); }, function(){});
+  }
+}, true);
+function rotuloPadrao(cam){
+  var esp = { 'dados.resultados': 'Ao final, seu time será provocado a', 'dados.pagamento': 'Parcelas', 'contrato.clausulas': 'Cláusulas do contrato' };
+  if (esp[cam]) return esp[cam];
+  var id = Object.keys(CAMPOS_PADRAO).filter(function(k){ return CAMPOS_PADRAO[k] === cam; })[0], l = id && document.querySelector('label[for="' + id + '"]');
+  return l ? (l.firstChild && l.firstChild.textContent || '').replace(/\s*\(.*$/, '').trim() : cam;
+}
+
 /* ---- visitas de teste: aparelho do Daniel e apagar ---- */
 var APAGAVEIS = { visualizou: 1, resumo: 1, abriu_contrato: 1, baixou_pdf_proposta: 1, baixou_pdf_contrato: 1, falou_whatsapp: 1 };
 function meuAparelho(){ try{ return localStorage.getItem('dd_admin') === '1'; }catch(e){ return false; } }
@@ -501,7 +573,7 @@ function editor(){
     '<section class="bloco"><h2>A experiência</h2><div class="g2">' + inp('eTit', 'Título (o trecho entre *asteriscos* fica dourado)', (d.experiencia || {}).titulo, 'text', 'full') + area('eTxt', 'Texto', (d.experiencia || {}).texto, 'full') +
     area('eViv', 'O que será vivenciado (um por linha)', ((d.experiencia || {}).vivenciado || []).join('\n')) + area('eFor', 'Formato (um por linha)', ((d.experiencia || {}).formato || []).join('\n')) + '</div></section>' +
     '<section class="bloco"><h2>O que queremos provocar</h2>' + area('fObj', 'Objetivos (um por linha)', (d.objetivos || []).join('\n')) + '</section>' +
-    '<section class="bloco"><h2>Ao final, seu time será provocado a</h2><div id="resultados"></div><button class="add" data-acao="addRes">+ Passo</button></section>' +
+    '<section class="bloco"><h2>Ao final, seu time será provocado a <span class="pd" data-pd="dados.resultados"></span></h2><div id="resultados"></div><button class="add" data-acao="addRes">+ Passo</button></section>' +
     '<section class="bloco"><h2>Valores</h2>' +
     '<label class="chave"><input type="checkbox" id="fOpAtivo"' + (d.opcoes && d.opcoes.ativo ? ' checked' : '') + '> <span><b>Proposta com opções</b> (Palestra, Treinamento, Imersão): o cliente compara e escolhe uma ao aceitar. Só aparecem as opções com nome e valor.</span></label>' +
     '<div id="modoOpcoes"' + (d.opcoes && d.opcoes.ativo ? '' : ' class="hidden"') + '>' + linhasOpcoes(d) + '</div>' +
@@ -509,14 +581,14 @@ function editor(){
     '<div class="g3" style="margin-top:16px"><div id="caixaDesc"' + (d.opcoes && d.opcoes.ativo ? ' class="hidden"' : '') + '>' + inp('fDesc', 'Desconto (R$)', d.desconto || '', 'text', '', 'inputmode="decimal"') + '</div>' + inp('fForma', 'Forma de pagamento', d.formaPagamento) + inp('fVal', 'Validade (dias após enviar)', d.validadeDias || '', 'number') + '</div>' +
     inp('fMotDesc', 'Motivo do desconto (aparece para o cliente)', d.motivoDesconto, 'text', 'motdesc', 'placeholder="Ex.: Condição especial para quem participou do Almoço Mágico"') +
     '<div class="tot" id="tot"></div>' +
-    '<h2 style="margin-top:20px">Parcelas</h2><div id="parcelas"></div><button class="add" data-acao="addParc">+ Parcela</button><p class="dica" id="somaPct"></p>' +
+    '<h2 style="margin-top:20px">Parcelas <span class="pd" data-pd="dados.pagamento"></span></h2><div id="parcelas"></div><button class="add" data-acao="addParc">+ Parcela</button><p class="dica" id="somaPct"></p>' +
     '<div style="margin-top:14px">' + area('fObs', 'Observações (opcional)', d.observacoes) + '</div></section>' +
 
     blocoPagamentos(p) +
     '<section class="bloco"><h2>Contrato · dados do contratante</h2><p class="dica" style="margin:-8px 0 14px">O cliente preenche ao aceitar. Você pode corrigir aqui.</p><div class="g2">' +
     inp('cRazao', 'Razão social', ct.razao) + inp('cCnpj', 'CNPJ / CPF', ct.cnpj) + inp('cEnd', 'Endereço', ct.endereco, 'text', 'full') + inp('cRep', 'Quem assina', ct.representante) + inp('cCpf', 'CPF de quem assina', ct.cpf) + '</div></section>' +
 
-    '<section class="bloco"><h2>Contrato · cláusulas</h2><p class="dica" style="margin:-8px 0 14px"><button class="sec" data-acao="contratoPadrao">Trocar pelo contrato padrão</button> substitui a abertura e todas as cláusulas desta proposta pelo modelo atual.</p>' +
+    '<section class="bloco"><h2>Contrato · cláusulas <span class="pd" data-pd="contrato.clausulas"></span></h2><p class="dica" style="margin:-8px 0 14px"><button class="sec" data-acao="contratoPadrao">Trocar pelo contrato padrão</button> substitui a abertura e todas as cláusulas desta proposta pelo modelo atual.</p>' +
     (['rascunho','enviada','visualizada','em_ajuste','aprovada'].indexOf(p.status) > -1 ? statusCompleto(d, p.status === 'aprovada') : '<div class="pedido" style="margin-bottom:14px;border-color:#3A3226;background:none">📄 Este contrato já foi liberado para o cliente. Mudanças aqui: use <b>Salvar correção</b> (sem aviso) ou <b>Publicar nova versão</b> (cliente vê o que mudou).</div>') +
     area('fAbert', 'Abertura (texto antes da Cláusula 1ª)', (p.contrato || {}).abertura) + '<div style="height:12px"></div><div id="clausulas"></div><button class="add" data-acao="addCl">+ Cláusula</button>' +
     '<div style="margin-top:14px;max-width:320px">' + inp('fForo', 'Foro (cidade/UF)', (p.contrato || {}).cidadeForo || M.cidadeForo) + '</div>' +
@@ -534,6 +606,7 @@ function editor(){
     '<div class="barra"><div class="w"><span class="st" id="estado">Tudo salvo</span>' + botoesBarra(p) + '</div></div>';
   app.innerHTML = h;
   desenhaItens(); desenhaParcelas(); desenhaResultados(); desenhaClausulas(); recalcula();
+  poeBotoesPadrao(); atualizaPadroes();
   carregaApresentacao(p);
 }
 function botoesBarra(p){
@@ -546,7 +619,7 @@ function botoesBarra(p){
   if (['contrato_liberado','contrato_em_ajuste'].indexOf(s) > -1) return corr + pub.replace('%c', 'sec') + '<button class="g" data-st="assinado">Marcar como assinado</button>';
   return corr;
 }
-function marcaSujo(e){ if (e && e.target && e.target.closest && !e.target.closest('.painel')) return; S.sujo = true; var el = document.getElementById('estado'); if (el) el.textContent = 'Alterações não salvas'; recalcula(); }
+function marcaSujo(e){ if (e && e.target && e.target.closest && !e.target.closest('.painel')) return; S.sujo = true; var el = document.getElementById('estado'); if (el) el.textContent = 'Alterações não salvas'; recalcula(); atualizaPadroes(); }
 app.addEventListener('input', function(e){ if (S.atual) marcaSujo(e); });
 app.addEventListener('change', function(e){
   if (!S.atual) return;

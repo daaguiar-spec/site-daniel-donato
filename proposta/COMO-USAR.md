@@ -24,3 +24,6 @@
 ## PDF
 Os botões "Baixar PDF" abrem a janela de impressão: escolha **Salvar como PDF**.
 No iPhone: Compartilhar → Imprimir → Salvar em Arquivos (ou "Salvar como PDF").
+
+## Tornar padrão
+Quando você muda um campo de texto da proposta (solução, local, incluído, estrutura, experiência, parcelas, cláusulas…), aparece ao lado do título o botão **⭐ Tornar padrão**. Tocando nele, as próximas propostas **novas** começam com esse texto (as que já existem não mudam). **↺ Original** volta aquele campo ao padrão do sistema. Valores (preços e descontos) não têm padrão. Os padrões ficam na tabela `proposta_padroes` (SQL em `_fonte/supabase-propostas-padroes.sql`).
