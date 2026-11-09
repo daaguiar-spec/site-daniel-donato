@@ -17,9 +17,17 @@ function meta(html, chave, valor, attr) {
   return re.test(html) ? html.replace(re, tag) : html.replace("</head>", tag + "\n</head>");
 }
 
+// O WhatsApp espera alguns segundos pela prévia; se o banco demorar, tenta de novo uma vez.
 async function proposta(codigo) {
+  for (let i = 0; i < 2; i++) {
+    const p = await propostaUmaVez(codigo, i ? 3500 : 3000);
+    if (p) return p;
+  }
+  return null;
+}
+async function propostaUmaVez(codigo, ms) {
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 2500);
+  const t = setTimeout(() => ctrl.abort(), ms);
   try {
     const r = await fetch(`${SB}/rest/v1/rpc/proposta_ver`, {
       method: "POST", signal: ctrl.signal,
