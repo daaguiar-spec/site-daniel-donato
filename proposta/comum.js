@@ -101,6 +101,48 @@ P.extenso = function(v){
   return out.length ? out.join(' e ') : 'zero real';
 };
 
+/* despesas de viagem: quem paga (minha conta / contratante / dividido / sem viagem) */
+P.VIAGEM_ITENS = [['passagens','passagens'],['hospedagem','hospedagem'],['alimentacao','alimentação'],['transporte','transporte local']];
+P.VIAGEM_LEGADO = 'Para serviços realizados fora de Fortaleza/CE, as despesas de deslocamento, hospedagem e alimentação da CONTRATADA ficarão a cargo da CONTRATANTE, salvo se previsto de outra forma na proposta comercial.';
+function listaPt(a){ return a.length > 1 ? a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1] : (a[0] || ''); }
+function maiusc(x){ return x ? x.charAt(0).toUpperCase() + x.slice(1) : x; }
+P.viagemModo = function(d){
+  var v = (d || {}).viagem; if (!v || !v.modo) return '';
+  if (v.modo !== 'dividido') return v.modo;
+  var n = (v.contratante || []).length; return !n ? 'minha' : n >= P.VIAGEM_ITENS.length ? 'contratante' : 'dividido';
+};
+P.viagemPartes = function(d){
+  var sel = ((d || {}).viagem || {}).contratante || [];
+  return { deles: P.VIAGEM_ITENS.filter(function(x){ return sel.indexOf(x[0]) > -1; }).map(function(x){ return x[1]; }),
+           meus: P.VIAGEM_ITENS.filter(function(x){ return sel.indexOf(x[0]) < 0; }).map(function(x){ return x[1]; }) };
+};
+P.viagemTextoCliente = function(d){
+  var m = P.viagemModo(d), pt = P.viagemPartes(d);
+  if (m === 'minha') return 'Já incluídas no valor: transporte, passagens, hospedagem e alimentação do palestrante, sem custo adicional para o contratante.';
+  if (m === 'contratante') return 'Passagens aéreas, hospedagem, alimentação e transporte local do palestrante ficam por conta do contratante.';
+  if (m === 'dividido') return maiusc(listaPt(pt.deles)) + ' do palestrante ' + (pt.deles.length > 1 ? 'ficam' : 'fica') + ' por conta do contratante. ' + maiusc(listaPt(pt.meus)) + (pt.meus.length > 1 ? ' já estão incluídos' : ' já está incluído') + ' no valor.';
+  return '';
+};
+P.viagemContrato = function(d){
+  var m = P.viagemModo(d), pt = P.viagemPartes(d);
+  if (m === 'minha') return 'As despesas de deslocamento, hospedagem e alimentação da CONTRATADA já estão incluídas no valor total, sem custo adicional para a CONTRATANTE.';
+  if (m === 'contratante') return 'As despesas de passagens, hospedagem, alimentação e transporte local da CONTRATADA ficarão a cargo da CONTRATANTE, que as providenciará com antecedência, em comum acordo com a CONTRATADA.';
+  if (m === 'dividido') return 'As despesas de ' + listaPt(pt.deles) + ' da CONTRATADA ficarão a cargo da CONTRATANTE, que as providenciará com antecedência, em comum acordo com a CONTRATADA. As demais despesas de viagem já estão incluídas no valor total.';
+  if (m === 'sem') return '';
+  return P.VIAGEM_LEGADO;
+};
+var ORD = ['primeiro','segundo','terceiro','quarto','quinto','sexto','sétimo','oitavo','nono','décimo'];
+/* ajusta o parágrafo de viagem no texto de uma cláusula (contratos antigos têm o texto fixo) */
+P.ajustaViagem = function(texto, d){
+  var t = String(texto || ''), m = P.viagemModo(d);
+  if (m) t = t.replace(/^(\s*Parágrafo\s+\S+\s*[–-]\s*)Para serviços realizados fora de .*$/mi, '$1{{despesas_viagem}}');
+  if (m === 'sem' && /\{\{\s*despesas_viagem\s*\}\}/.test(t)){
+    var ls = t.split('\n').filter(function(l){ return !/^\s*Parágrafo\s+\S+\s*[–-]\s*\{\{\s*despesas_viagem\s*\}\}\s*$/i.test(l); });
+    var n = 0; t = ls.map(function(l){ return l.replace(/^(\s*Parágrafo\s+)(\S+)(\s*[–-])/i, function(a, x, o, y){ if (ORD.indexOf(o.toLowerCase()) < 0) return a; return x + (ORD[n++] || o) + y; }); }).join('\n');
+  }
+  return t;
+};
+
 /* troca {{campos}} do contrato */
 P.campos = function(prop, modelo){
   var d = P.efetivo(prop), det = d.detalhes || {}, ct = prop.contratante || {}, cd = (modelo && modelo.contratada) || {}, pgc = (modelo && modelo.pagamento) || {};
@@ -120,7 +162,7 @@ P.campos = function(prop, modelo){
     solucao: d.solucao, data_evento: det.data_evento, local: det.local, carga_horaria: det.carga_horaria,
     participantes: det.participantes, formato: det.formato,
     valor_total: P.brl(P.total(d)), valor_extenso: P.extenso(P.total(d)), pagamento: pg, parcelas_lista: itens, forma_pagamento: d.formaPagamento,
-    dados_bancarios: banco,
+    dados_bancarios: banco, despesas_viagem: P.viagemContrato(d),
     inclui: (d.inclui || []).filter(Boolean).map(semPonto).join('; '),
     estrutura: (d.estrutura || []).filter(Boolean).map(semPonto).join('; '),
     cidade_foro: (prop.contrato && prop.contrato.cidadeForo) || (modelo && modelo.cidadeForo), data_hoje: P.hoje()
@@ -146,7 +188,7 @@ P.mudancas = function(atual, anterior){
     var velho = (b.itens || [])[i];
     if (!velho || !P.igual(it, velho)) { m.itens[i] = velho ? { antes: velho } : { novo: true }; m.alguma = true; }
   });
-  ['desconto','pagamento','formaPagamento','inclui','naoInclui','estrutura','experiencia','objetivos','resultados','opcoes','motivoDesconto','detalhes','solucao','apresentacao','observacoes'].forEach(function(k){
+  ['desconto','pagamento','formaPagamento','inclui','naoInclui','estrutura','experiencia','objetivos','resultados','opcoes','motivoDesconto','detalhes','solucao','apresentacao','observacoes','viagem'].forEach(function(k){
     if (!P.igual(a[k], b[k])) { m.campos[k] = true; m.alguma = true; }
   });
   if (P.total(a) !== P.total(b)) { m.campos.total = { antes: P.total(b) }; m.alguma = true; }

@@ -356,10 +356,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261109a"></script>
-<script src="modelo.js?v=20261109a"></script>
-<script src="comum.js?v=20261109a"></script>
-<script src="qrcode.js?v=20261109a"></script>
+<script src="/apresentacao/conteudo.js?v=20261109b"></script>
+<script src="modelo.js?v=20261109b"></script>
+<script src="comum.js?v=20261109b"></script>
+<script src="qrcode.js?v=20261109b"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -592,6 +592,7 @@ function vistaProposta(p, d, st, mud){
   if (parc.length) h += '<div class="parc">' + parc.map(function(x){ return '<div><small>' + x.percentual + '%' + (mud.campos.pagamento ? ' <span class="mudou">alterado</span>' : '') + '</small><b>' + P.brl(x.valor) + '</b><span>' + esc(x.quando) + '</span></div>'; }).join('') + '</div>';
   }
   h += '<div class="cond">' + (String(d.motivoDesconto || '').trim() && (P.num(d.desconto) || P.opcoesValidas(d).some(function(o){ return P.num(o.desconto); })) ? '<span><b>Condição especial:</b> ' + esc(d.motivoDesconto) + (mud.campos.motivoDesconto ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') + (d.formaPagamento ? '<span><b>Forma de pagamento:</b> ' + esc(d.formaPagamento) + (mud.campos.formaPagamento ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
+    (P.viagemModo(d) && P.viagemModo(d) !== 'sem' ? '<span><b>Despesas de viagem:</b> ' + esc((d.viagem.texto || '').trim() || P.viagemTextoCliente(d)) + (mud.campos.viagem ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
     ((d.naoInclui || []).filter(Boolean).length ? '<span><b>Não incluso no valor:</b> ' + d.naoInclui.filter(Boolean).map(esc).join(' · ') + (mud.campos.naoInclui ? '<span class="mudou">alterado</span>' : '') + '</span>' : '') +
     (val ? '<span><b>Validade da proposta:</b> ' + esc(val) + '</span>' : '') +
     (d.observacoes ? '<span>' + esc(d.observacoes).replace(/\n/g, '<br>') + '</span>' : '') + '</div></section>';
@@ -627,7 +628,7 @@ function acoesProposta(p){
 
 /* texto do contrato em parágrafos (cada linha vira um parágrafo, com espaço entre eles) */
 function paragrafos(texto, campos){
-  var t = String(texto || '').replace(/\{\{\s*parcelas_lista\s*\}\}/g, campos.parcelas_lista || '{{parcelas_lista}}');
+  var t = P.ajustaViagem(texto, P.efetivo(S.prop)).replace(/\{\{\s*parcelas_lista\s*\}\}/g, campos.parcelas_lista || '{{parcelas_lista}}');
   return t.split('\n').map(function(l){ return l.trim(); }).filter(Boolean).map(function(l){
     var cls = /^(•|-|[IVX]+\.\s)/.test(l) ? 'it' : /^\d+\.\d+\s*[–-]/.test(l) ? 'sub' : /^Parágrafo/i.test(l) ? 'par' : '';
     return '<p' + (cls ? ' class="' + cls + '"' : '') + '>' + P.preenche(l, campos, true) + '</p>';

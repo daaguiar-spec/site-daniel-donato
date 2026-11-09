@@ -115,6 +115,12 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 .pd{display:inline-flex;gap:6px;margin:-6px 0 -6px 8px;vertical-align:middle;text-transform:none;letter-spacing:0;font-weight:600}
 .pd button{background:none;border:1px solid #3A3226;color:#C9BEA8;border-radius:99px;padding:1px 9px;font-size:11px;line-height:16px;cursor:pointer;white-space:nowrap}
 .pd button.pdS{border-color:rgba(201,164,92,.6);color:#E8CF95}.pd button:hover{border-color:#C9A45C;color:#E8CF95}
+.vop{display:flex!important;gap:12px;align-items:flex-start;border:1px solid #2A251C;border-radius:12px;padding:11px 14px;margin:0 0 8px!important;cursor:pointer;text-transform:none!important;letter-spacing:0!important;font-size:14px!important;font-weight:500!important;color:#C9BEA8!important;line-height:1.45}
+.vop.on{border-color:#C9A45C;background:rgba(201,164,92,.08)}.vop input{width:18px;height:18px;accent-color:#C9A45C;flex:none;margin:1px 0 0}
+.vop b{display:block;color:#EDE6D8}.vop small{color:#9C8F78;font-size:12.5px}
+.vck{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 10px 30px}
+.vck label{display:inline-block!important;margin:0!important;cursor:pointer;text-transform:none!important;letter-spacing:0!important;font-size:13px!important;font-weight:500!important;border:1px solid #3A3226;border-radius:99px;padding:5px 12px;color:#C9BEA8!important}
+.vck label.on{border-color:rgba(127,192,143,.6);color:#8FD19F!important;background:rgba(127,192,143,.08)}.vck input{position:absolute;opacity:0;pointer-events:none}
 .sub2{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;margin:18px 0 10px}
 </style>
 </head>
@@ -126,9 +132,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261109a"></script>
-<script src="modelo.js?v=20261109a"></script>
-<script src="comum.js?v=20261109a"></script>
+<script src="/apresentacao/conteudo.js?v=20261109b"></script>
+<script src="modelo.js?v=20261109b"></script>
+<script src="comum.js?v=20261109b"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -412,6 +418,34 @@ function blocoAcompanhamento(p){
   h += '<div class="sub2">Apresentação</div><div id="acompApres"><p class="dica">Carregando…</p></div></section>';
   return h;
 }
+/* ---- despesas de viagem ---- */
+var VIA_OPS = [['minha','Por minha conta','Incluídas no valor da proposta'],['contratante','Por conta do contratante','Passagens, hospedagem, alimentação e transporte local'],
+  ['dividido','Dividido','Toque no que fica com o contratante:'],['sem','Sem viagem','Evento em Fortaleza: o assunto não aparece']];
+function blocoViagem(d){
+  var v = d.viagem || {}, sel = v.contratante || [];
+  return '<div class="via" id="via"><label style="margin-top:18px">Despesas de viagem <span class="pd" data-pd="dados.viagem"></span></label>' +
+    (!v.modo && (d.naoInclui || []).some(function(x){ return /passage|hosped|aliment|transporte/i.test(x); }) ? '<p class="dica" style="margin:0 0 8px">Esta proposta fala de viagem no campo "Não incluso". Ao escolher uma opção aqui, apague aquela linha lá para não repetir.</p>' : '') +
+    VIA_OPS.map(function(o){ return '<label class="vop' + (v.modo === o[0] ? ' on' : '') + '"><input type="radio" name="viaModo" value="' + o[0] + '"' + (v.modo === o[0] ? ' checked' : '') + '><span><b>' + o[1] + '</b><small>' + o[2] + '</small></span></label>' +
+      (o[0] === 'dividido' ? '<div class="vck' + (v.modo === 'dividido' ? '' : ' hidden') + '" id="viaCk">' + P.VIAGEM_ITENS.map(function(x){ return '<label class="' + (sel.indexOf(x[0]) > -1 ? 'on' : '') + '"><input type="checkbox" name="viaIt" value="' + x[0] + '"' + (sel.indexOf(x[0]) > -1 ? ' checked' : '') + '>' + (sel.indexOf(x[0]) > -1 ? '✓ ' : '') + P.esc(x[1].charAt(0).toUpperCase() + x[1].slice(1)) + '</label>'; }).join('') + '</div>' : ''); }).join('') +
+    '<div id="viaTxtCx"' + (v.modo && v.modo !== 'sem' ? '' : ' class="hidden"') + '>' + area('fViaTxt', 'Texto que o cliente vê (montado sozinho, pode editar)', v.texto || P.viagemTextoCliente(d)) +
+    '<p class="dica">O contrato (Parágrafo terceiro da cláusula de pagamento) acompanha a opção escolhida.</p></div></div>';
+}
+function coletaViagem(d){
+  var r = document.querySelector('input[name="viaModo"]:checked');
+  if (!r){ if (d.viagem && d.viagem.modo) {} else delete d.viagem; return; }
+  d.viagem = { modo: r.value, contratante: [].map.call(document.querySelectorAll('input[name="viaIt"]:checked'), function(x){ return x.value; }), texto: v('fViaTxt') };
+  if (d.viagem.modo !== 'dividido') d.viagem.contratante = [];
+}
+function mudouViagem(){
+  var r = document.querySelector('input[name="viaModo"]:checked'), modo = r ? r.value : '';
+  [].forEach.call(document.querySelectorAll('.vop'), function(l){ l.classList.toggle('on', !!l.querySelector('input:checked')); });
+  document.getElementById('viaCk').classList.toggle('hidden', modo !== 'dividido');
+  [].forEach.call(document.querySelectorAll('#viaCk label'), function(l){ var i = l.querySelector('input'); l.classList.toggle('on', i.checked); l.lastChild.textContent = (i.checked ? '✓ ' : '') + l.lastChild.textContent.replace(/^✓ /, ''); });
+  document.getElementById('viaTxtCx').classList.toggle('hidden', !modo || modo === 'sem');
+  var d = { viagem: { modo: modo, contratante: [].map.call(document.querySelectorAll('input[name="viaIt"]:checked'), function(x){ return x.value; }) } };
+  document.getElementById('fViaTxt').value = P.viagemTextoCliente(d);
+}
+
 /* ---- padrões das propostas novas ("Tornar padrão") ---- */
 if (M.contrato && M.contrato.cidadeForo === undefined) M.contrato.cidadeForo = M.cidadeForo || '';
 var M_ORIG = P.copia({ dados: M.dados, contrato: M.contrato });
@@ -464,7 +498,7 @@ document.addEventListener('click', function(e){
   }
 }, true);
 function rotuloPadrao(cam){
-  var esp = { 'dados.resultados': 'Ao final, seu time será provocado a', 'dados.pagamento': 'Parcelas', 'contrato.clausulas': 'Cláusulas do contrato' };
+  var esp = { 'dados.viagem': 'Despesas de viagem', 'dados.resultados': 'Ao final, seu time será provocado a', 'dados.pagamento': 'Parcelas', 'contrato.clausulas': 'Cláusulas do contrato' };
   if (esp[cam]) return esp[cam];
   var id = Object.keys(CAMPOS_PADRAO).filter(function(k){ return CAMPOS_PADRAO[k] === cam; })[0], l = id && document.querySelector('label[for="' + id + '"]');
   return l ? (l.firstChild && l.firstChild.textContent || '').replace(/\s*\(.*$/, '').trim() : cam;
@@ -567,7 +601,7 @@ function editor(){
 
     '<section class="bloco"><h2>Proposta</h2><div class="g2">' + inp('fSol', 'Solução', d.solucao, 'text', 'full') + area('fAp', 'Texto de apresentação', d.apresentacao, 'full') + '</div>' +
     '<div class="g3" style="margin-top:12px">' + inp('fFor', 'Formato', det.formato) + inp('fData', 'Data', det.data_evento) + inp('fLocal', 'Local', det.local) + inp('fCh', 'Carga horária', det.carga_horaria) + inp('fPart', 'Participantes', det.participantes) + '</div>' +
-    '<div class="g2" style="margin-top:12px">' + area('fInc', 'O que está incluído (um por linha)', (d.inclui || []).join('\n')) + area('fNao', 'Não incluso (um por linha)', (d.naoInclui || []).join('\n')) +
+    '<div class="g2" style="margin-top:12px">' + area('fInc', 'O que está incluído (um por linha)', (d.inclui || []).join('\n')) + area('fNao', 'Não incluso (um por linha) · viagem fica em Valores', (d.naoInclui || []).join('\n'), '', 'placeholder="Ex.: Coffee break dos participantes"') +
     area('fEst', 'Estrutura necessária (um por linha)', (d.estrutura || []).join('\n'), 'full', 'placeholder="Ex.: Projetor com HDMI"') + '</div></section>' +
 
     '<section class="bloco"><h2>A experiência</h2><div class="g2">' + inp('eTit', 'Título (o trecho entre *asteriscos* fica dourado)', (d.experiencia || {}).titulo, 'text', 'full') + area('eTxt', 'Texto', (d.experiencia || {}).texto, 'full') +
@@ -580,6 +614,7 @@ function editor(){
     '<div id="modoItens"' + (d.opcoes && d.opcoes.ativo ? ' class="hidden"' : '') + '><div id="itens"></div><button class="add" data-acao="addItem">+ Item</button></div>' +
     '<div class="g3" style="margin-top:16px"><div id="caixaDesc"' + (d.opcoes && d.opcoes.ativo ? ' class="hidden"' : '') + '>' + inp('fDesc', 'Desconto (R$)', d.desconto || '', 'text', '', 'inputmode="decimal"') + '</div>' + inp('fForma', 'Forma de pagamento', d.formaPagamento) + inp('fVal', 'Validade (dias após enviar)', d.validadeDias || '', 'number') + '</div>' +
     inp('fMotDesc', 'Motivo do desconto (aparece para o cliente)', d.motivoDesconto, 'text', 'motdesc', 'placeholder="Ex.: Condição especial para quem participou do Almoço Mágico"') +
+    blocoViagem(d) +
     '<div class="tot" id="tot"></div>' +
     '<h2 style="margin-top:20px">Parcelas <span class="pd" data-pd="dados.pagamento"></span></h2><div id="parcelas"></div><button class="add" data-acao="addParc">+ Parcela</button><p class="dica" id="somaPct"></p>' +
     '<div style="margin-top:14px">' + area('fObs', 'Observações (opcional)', d.observacoes) + '</div></section>' +
@@ -624,6 +659,7 @@ app.addEventListener('input', function(e){ if (S.atual) marcaSujo(e); });
 app.addEventListener('change', function(e){
   if (!S.atual) return;
   if (e.target.id === 'fOpAtivo'){ var on = e.target.checked; ['modoOpcoes'].forEach(function(id){ document.getElementById(id).classList.toggle('hidden', !on); }); ['modoItens','caixaDesc'].forEach(function(id){ document.getElementById(id).classList.toggle('hidden', on); }); }
+  if (e.target.name === 'viaModo' || e.target.name === 'viaIt'){ mudouViagem(); marcaSujo(e); }
   if (e.target.id === 'fOpAtivo' || e.target.name === 'opRec') marcaSujo(e);
 });
 addEventListener('beforeunload', function(e){ if (S.sujo){ e.preventDefault(); e.returnValue = ''; } });
@@ -665,7 +701,7 @@ function coleta(){
   d.experiencia = { titulo: v('eTit'), texto: v('eTxt'), vivenciado: linhas('eViv'), formato: linhas('eFor') };
   d.objetivos = linhas('fObj');
   d.resultados = [].map.call(document.querySelectorAll('#resultados .linha'), function(l){ return { titulo: l.querySelector('[data-k=titulo]').value.trim(), texto: l.querySelector('[data-k=texto]').value.trim() }; }).filter(function(r){ return r.titulo || r.texto; });
-  d.inclui = linhas('fInc'); d.naoInclui = linhas('fNao'); d.estrutura = linhas('fEst');
+  d.inclui = linhas('fInc'); d.naoInclui = linhas('fNao'); d.estrutura = linhas('fEst'); coletaViagem(d);
   var opAtivo = !!(document.getElementById('fOpAtivo') || {}).checked;
   var rec = document.querySelector('input[name="opRec"]:checked');
   d.opcoes = { ativo: opAtivo, lista: [0, 1, 2].map(function(i){ return { nome: v('o' + i + 'n'), carga_horaria: v('o' + i + 'c'), participantes: v('o' + i + 'p'), valor: P.num(v('o' + i + 'v')), desconto: P.num(v('o' + i + 'd')), descricao: v('o' + i + 'x'), recomendada: !!(rec && +rec.value === i) }; }) };
