@@ -19,14 +19,18 @@ function canais(ven, teste) {
 }
 
 module.exports = async (req, res) => {
-  if (req.method === "GET" && "teste" in (req.query || {})) {   // diagnóstico: abre /api/aviso?teste no navegador
-    const tops = canais("", false), out = { canal_geral: !!process.env.NTFY_GERAL, canal_valido: tops.length > 0,
-      consultores: String(process.env.NTFY_CONSULTORES || "").split(";").filter(s => s.includes("=")).length };
+  if (req.method === "GET" && "teste" in (req.query || {})) {
+    // diagnóstico: /api/aviso?teste (só o canal geral) ou /api/aviso?teste=Vanessa Matos (geral + canal dessa consultora)
+    const nome = limpa(req.query.teste, 60);
+    const pares = String(process.env.NTFY_CONSULTORES || "").split(";").filter(x => x.includes("="));
+    const doConsultor = nome ? canais(nome, false).filter(t => t !== String(process.env.NTFY_GERAL || "").trim()) : [];
+    const tops = [...new Set(canais("", false).concat(doConsultor))];
+    const out = { canal_geral: !!process.env.NTFY_GERAL, consultores_cadastrados: pares.map(x => x.slice(0, x.indexOf("=")).trim()),
+      testando_consultor: nome || null, canal_do_consultor_encontrado: nome ? doConsultor.length > 0 : null };
     try {
-      const r = await Promise.all(tops.map(topic => fetch("https://ntfy.sh/", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic, title: "Teste do site", message: "Os avisos da apresentação estão funcionando.", tags: ["tada"] }) })
-        .then(async x => x.status + " " + (await x.text()).slice(0, 120))));
-      out.ntfy = r;
+      out.envios = await Promise.all(tops.map(topic => fetch("https://ntfy.sh/", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic, title: "Teste do site" + (nome ? " · " + nome : ""), message: "Os avisos da apresentação estão funcionando.", tags: ["tada"] }) })
+        .then(x => x.ok ? "enviado" : "erro " + x.status)));
     } catch (e) { out.erro = String(e).slice(0, 200); }
     res.status(200).json(out); return;
   }
