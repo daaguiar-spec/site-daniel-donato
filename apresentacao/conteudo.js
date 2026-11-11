@@ -129,7 +129,7 @@ window.CONTEUDO = {
     texto: "Indústrias, escolas, órgãos públicos, hotéis e varejo que confiaram no Daniel para desenvolver pessoas e transformar o atendimento."
   },
 
-  estados: ["CE", "SP", "PR", "DF", "AM", "SE", "SC", "RN", "PI"],
+  estados: ["CE", "SP", "PA", "DF", "AM", "SE", "SC", "RN", "PI"],
 
   clientes: [
     { nome: "Caixa", logo: "/img/clientes/caixa.png" },
