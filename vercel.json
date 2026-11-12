@@ -179,6 +179,9 @@
   "functions": {
     "api/og.js": {
       "includeFiles": "{proposta,apresentacao}/pagina.html"
+    },
+    "api/gerar-texto.js": {
+      "maxDuration": 60
     }
   }
 }

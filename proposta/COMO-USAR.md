@@ -33,3 +33,6 @@ Em **Valores**, escolha quem paga a viagem: **Por minha conta**, **Por conta do 
 
 ## Link de revisão interna
 No painel, **🔒 Link de revisão interna** gera um link (`/proposta/?p=CODIGO&r=TOKEN`) para a equipe ver a proposta antes do cliente: abre mesmo em rascunho, não conta visita, não deixa aceitar. Mostra a última versão salva. "Gerar link novo" invalida o anterior. SQL: `_fonte/supabase-propostas-revisao.sql`.
+
+## ✨ Gerar com IA
+Preencha **Segmento do cliente** (seção Proposta; o cliente não vê) e toque em **✨ Gerar com IA** no Texto de apresentação, A experiência, O que queremos provocar ou Ao final… A IA (Claude, via `api/gerar-texto.js`) escreve 3 opções adaptadas ao segmento; "Usar esta" preenche o campo. Precisa da variável **ANTHROPIC_API_KEY** no projeto do site na Vercel. Só funciona logado no painel.

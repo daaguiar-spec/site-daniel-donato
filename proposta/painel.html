@@ -124,6 +124,12 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 .jrev{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:16px}
 .jrev-c{background:#15130F;border:1px solid #3A3226;border-radius:16px;padding:22px;max-width:520px;width:100%}.jrev-c h3{margin:0 0 8px;font-size:18px}
 .jrev-u{font-size:12.5px;word-break:break-all;background:#0B0A08;border:1px solid #2A251C;border-radius:10px;padding:10px 12px;margin:10px 0 12px;color:#C9BEA8}
+.ia{background:linear-gradient(135deg,rgba(201,164,92,.18),rgba(232,207,149,.08));border:1px solid rgba(201,164,92,.7);color:#F0D9A6;border-radius:99px;padding:2px 11px;font:inherit;font-size:11.5px;font-weight:700;letter-spacing:0;text-transform:none;line-height:18px;cursor:pointer;margin-left:8px;vertical-align:middle;white-space:nowrap}
+.painel input.falta,input.falta{border-color:#C9A45C!important;box-shadow:0 0 0 3px rgba(201,164,92,.2)}
+.ia:hover{background:rgba(201,164,92,.25)}
+.iaop{border:1px solid #2A251C;border-radius:12px;padding:14px;margin:0 0 10px;font-size:14px;line-height:1.5;color:#DCD3C2}
+.iaop b{color:#EDE6D8}.iaop ul,.iaop ol{margin:6px 0 0;padding-left:20px}.iaop .links{margin-top:10px}
+.iaesp{display:flex;gap:10px;align-items:center;color:#C9BEA8;padding:18px 4px}.iaesp i{width:16px;height:16px;border:2px solid #C9A45C;border-top-color:transparent;border-radius:50%;animation:gira .8s linear infinite}@keyframes gira{to{transform:rotate(360deg)}}
 .sub2{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;margin:18px 0 10px}
 </style>
 </head>
@@ -135,9 +141,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261111a"></script>
-<script src="modelo.js?v=20261111a"></script>
-<script src="comum.js?v=20261111a"></script>
+<script src="/apresentacao/conteudo.js?v=20261112a"></script>
+<script src="modelo.js?v=20261112a"></script>
+<script src="comum.js?v=20261112a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -421,6 +427,73 @@ function blocoAcompanhamento(p){
   h += '<div class="sub2">Apresentação</div><div id="acompApres"><p class="dica">Carregando…</p></div></section>';
   return h;
 }
+/* ---- ✨ Gerar com IA (segmento do cliente) ---- */
+var IA_NOME = { apresentacao: 'Texto de apresentação', experiencia: 'A experiência', objetivos: 'O que queremos provocar', resultados: 'Ao final, seu time será provocado a' };
+function iaContexto(campo, extra){
+  var c = coleta(), d = c.dados, det = d.detalhes || {};
+  var atual = campo === 'apresentacao' ? d.apresentacao : campo === 'experiencia' ? { titulo: d.experiencia.titulo, texto: d.experiencia.texto, vivenciado: d.experiencia.vivenciado } : campo === 'objetivos' ? d.objetivos : (S.atual.dados.resultados || []);
+  return { segmento: d.segmento, empresa: c.cliente, solucao: d.solucao, formato: det.formato, carga: det.carga_horaria, participantes: det.participantes, atual: atual, extra: extra || '' };
+}
+function iaDemo(campo, ctx){
+  var seg = ctx.segmento;
+  return new Promise(function(ok){ setTimeout(function(){ ok({ opcoes: [1, 2, 3].map(function(n){
+    if (campo === 'apresentacao') return 'Opção ' + n + ' (demonstração): uma experiência inspirada na Disney para o time de ' + seg + '.';
+    if (campo === 'experiencia') return { titulo: 'Opção ' + n + ': encantar *quem chega ao ' + seg + '.*', texto: 'Texto de demonstração para ' + seg + '.', vivenciado: ['Item A', 'Item B', 'Item C', 'Item D'] };
+    if (campo === 'objetivos') return ['Objetivo 1 (' + seg + ')', 'Objetivo 2', 'Objetivo 3', 'Objetivo 4', 'Objetivo 5'];
+    return ['Perceber', 'Assumir', 'Encantar', 'Comunicar', 'Agir'].map(function(t){ return { titulo: t, texto: 'Demonstração ' + n + ' para ' + seg + '.' }; });
+  }) }); }, 700); });
+}
+function iaPede(campo, extra){
+  var ctx = iaContexto(campo, extra);
+  if (DEMO) return iaDemo(campo, ctx);
+  return sb.auth.getSession().then(function(r){
+    var tk = r && r.data && r.data.session && r.data.session.access_token;
+    return fetch('/api/gerar-texto', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + (tk || '') }, body: JSON.stringify({ campo: campo, contexto: ctx }) });
+  }).then(function(r){ return r.json().catch(function(){ return { erro: 'Resposta inválida do servidor (' + r.status + ').' }; }); });
+}
+function iaMostra(campo, o){
+  if (campo === 'apresentacao') return '<p style="margin:0">' + esc(o) + '</p>';
+  if (campo === 'experiencia') return '<b>' + esc(o.titulo).replace(/\*([^*]+)\*/g, '<i style="color:#E8CF95">$1</i>') + '</b><p style="margin:6px 0 0">' + esc(o.texto) + '</p><ul>' + o.vivenciado.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+  if (campo === 'objetivos') return '<ul style="margin:0">' + o.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+  return '<ol style="margin:0">' + o.map(function(x){ return '<li><b>' + esc(x.titulo) + '</b> ' + esc(x.texto) + '</li>'; }).join('') + '</ol>';
+}
+function iaAplica(campo, o){
+  var por = function(id, val){ var el = document.getElementById(id); if (el) el.value = val; };
+  if (campo === 'apresentacao') por('fAp', o);
+  else if (campo === 'experiencia'){ por('eTit', o.titulo); por('eTxt', o.texto); por('eViv', o.vivenciado.join('\n')); }
+  else if (campo === 'objetivos') por('fObj', o.join('\n'));
+  else { S.atual.dados.resultados = o.map(function(x){ return { titulo: x.titulo, texto: x.texto }; }); desenhaResultados(); }
+  marcaSujo();
+}
+function iaJanela(campo){
+  var seg = (document.getElementById('fSeg') || {}).value || '';
+  if (!seg.trim()){ var f = document.getElementById('fSeg'); if (f){ f.focus(); f.scrollIntoView({ block: 'center' }); f.classList.add('falta'); } return toast('Preencha o "Segmento do cliente" (no início da seção Proposta) para a IA saber o tipo de negócio.'); }
+  var j = document.createElement('div'); j.className = 'jrev'; var ops = [];
+  j.innerHTML = '<div class="jrev-c" style="max-width:640px;max-height:88vh;overflow:auto"><h3>✨ ' + esc(IA_NOME[campo]) + '</h3><p class="dica">Segmento: <b>' + esc(seg) + '</b>. Escolha uma opção; depois você pode editar à vontade.</p>' +
+    '<div id="iaRes"></div><label for="iaExtra" style="margin-top:6px">Pedido extra (opcional)</label><input id="iaExtra" placeholder="Ex.: mais foco em vendas, linguagem mais leve, citar a recepção…">' +
+    '<div class="links" style="margin-top:12px;justify-content:space-between"><button class="sec" data-ia2="gerar">↻ Gerar outras</button><button class="sec" data-ia2="fechar">Fechar</button></div></div>';
+  document.body.appendChild(j);
+  function gera(){
+    var res = j.querySelector('#iaRes'); res.innerHTML = '<div class="iaesp"><i></i>Escrevendo 3 opções para ' + esc(seg) + '… (uns 10 a 20 segundos)</div>';
+    iaPede(campo, j.querySelector('#iaExtra').value).then(function(r){
+      if (!r || r.erro || !r.opcoes){ res.innerHTML = '<p class="dica" style="color:#F0C98F">' + esc((r && r.erro) || 'Não deu certo. Tente de novo.') + '</p>'; return; }
+      ops = r.opcoes;
+      res.innerHTML = ops.map(function(o, i){ return '<div class="iaop">' + iaMostra(campo, o) + '<div class="links"><button class="sec" data-ia2="usar" data-i="' + i + '">Usar esta</button></div></div>'; }).join('');
+    }).catch(function(){ res.innerHTML = '<p class="dica" style="color:#F0C98F">Sem conexão. Tente de novo.</p>'; });
+  }
+  j.addEventListener('click', function(e){
+    var b = e.target.closest('[data-ia2]');
+    if (b && b.dataset.ia2 === 'fechar') return j.remove();
+    if (b && b.dataset.ia2 === 'gerar') return gera();
+    if (b && b.dataset.ia2 === 'usar'){ iaAplica(campo, ops[+b.dataset.i]); j.remove(); toast('Pronto. Revise o texto e salve a proposta.'); }
+  });
+  gera();
+}
+document.addEventListener('click', function(e){
+  var b = e.target.closest && e.target.closest('[data-ia]'); if (!b || !S.atual) return;
+  e.preventDefault(); e.stopPropagation(); iaJanela(b.dataset.ia);
+}, true);
+
 /* ---- despesas de viagem ---- */
 var VIA_OPS = [['minha','Por minha conta','Incluídas no valor da proposta'],['contratante','Por conta do contratante','Passagens, hospedagem, alimentação e transporte local'],
   ['dividido','Dividido','Toque no que fica com o contratante:'],['sem','Sem viagem','Evento em Fortaleza: o assunto não aparece']];
@@ -603,15 +676,16 @@ function editor(){
     '<div><label for="fVend">Consultor de Experiência</label><input id="fVend" list="consList" value="' + esc(p.vendedor || '') + '"><datalist id="consList">' + cons.map(function(n){ return '<option value="' + esc(n) + '">'; }).join('') + '</datalist></div>' +
     inp('fFone', 'WhatsApp do consultor', p.fone, 'tel', '', 'placeholder="Vazio = número do comercial"') + '</div></section>' +
 
-    '<section class="bloco"><h2>Proposta</h2><div class="g2">' + inp('fSol', 'Solução', d.solucao, 'text', 'full') + area('fAp', 'Texto de apresentação', d.apresentacao, 'full') + '</div>' +
+    '<section class="bloco"><h2>Proposta</h2><div class="g2">' + inp('fSeg', 'Segmento do cliente · para a IA (o cliente não vê)', d.segmento, 'text', 'full', 'placeholder="Ex.: restaurante, hospital, rede de farmácias, concessionária"') +
+    inp('fSol', 'Solução', d.solucao, 'text', 'full') + area('fAp', 'Texto de apresentação <button type="button" class="ia" data-ia="apresentacao">✨ Gerar com IA</button>', d.apresentacao, 'full') + '</div>' +
     '<div class="g3" style="margin-top:12px">' + inp('fFor', 'Formato', det.formato) + inp('fData', 'Data', det.data_evento) + inp('fLocal', 'Local', det.local) + inp('fCh', 'Carga horária', det.carga_horaria) + inp('fPart', 'Participantes', det.participantes) + '</div>' +
     '<div class="g2" style="margin-top:12px">' + area('fInc', 'O que está incluído (um por linha)', (d.inclui || []).join('\n')) + area('fNao', 'Não incluso (um por linha) · viagem fica em Valores', (d.naoInclui || []).join('\n'), '', 'placeholder="Ex.: Coffee break dos participantes"') +
     area('fEst', 'Estrutura necessária (um por linha)', (d.estrutura || []).join('\n'), 'full', 'placeholder="Ex.: Projetor com HDMI"') + '</div></section>' +
 
-    '<section class="bloco"><h2>A experiência</h2><div class="g2">' + inp('eTit', 'Título (o trecho entre *asteriscos* fica dourado)', (d.experiencia || {}).titulo, 'text', 'full') + area('eTxt', 'Texto', (d.experiencia || {}).texto, 'full') +
+    '<section class="bloco"><h2>A experiência <button type="button" class="ia" data-ia="experiencia">✨ Gerar com IA</button></h2><div class="g2">' + inp('eTit', 'Título (o trecho entre *asteriscos* fica dourado)', (d.experiencia || {}).titulo, 'text', 'full') + area('eTxt', 'Texto', (d.experiencia || {}).texto, 'full') +
     area('eViv', 'O que será vivenciado (um por linha)', ((d.experiencia || {}).vivenciado || []).join('\n')) + area('eFor', 'Formato (um por linha)', ((d.experiencia || {}).formato || []).join('\n')) + '</div></section>' +
-    '<section class="bloco"><h2>O que queremos provocar</h2>' + area('fObj', 'Objetivos (um por linha)', (d.objetivos || []).join('\n')) + '</section>' +
-    '<section class="bloco"><h2>Ao final, seu time será provocado a <span class="pd" data-pd="dados.resultados"></span></h2><div id="resultados"></div><button class="add" data-acao="addRes">+ Passo</button></section>' +
+    '<section class="bloco"><h2>O que queremos provocar <button type="button" class="ia" data-ia="objetivos">✨ Gerar com IA</button></h2>' + area('fObj', 'Objetivos (um por linha)', (d.objetivos || []).join('\n')) + '</section>' +
+    '<section class="bloco"><h2>Ao final, seu time será provocado a <button type="button" class="ia" data-ia="resultados">✨ Gerar com IA</button> <span class="pd" data-pd="dados.resultados"></span></h2><div id="resultados"></div><button class="add" data-acao="addRes">+ Passo</button></section>' +
     '<section class="bloco"><h2>Valores</h2>' +
     '<label class="chave"><input type="checkbox" id="fOpAtivo"' + (d.opcoes && d.opcoes.ativo ? ' checked' : '') + '> <span><b>Proposta com opções</b> (Palestra, Treinamento, Imersão): o cliente compara e escolhe uma ao aceitar. Só aparecem as opções com nome e valor.</span></label>' +
     '<div id="modoOpcoes"' + (d.opcoes && d.opcoes.ativo ? '' : ' class="hidden"') + '>' + linhasOpcoes(d) + '</div>' +
@@ -700,7 +774,7 @@ function v(id){ var e = document.getElementById(id); return e ? e.value.trim() :
 function linhas(id){ return v(id).split('\n').map(function(x){ return x.trim(); }).filter(Boolean); }
 function coleta(){
   var p = S.atual, d = P.copia(p.dados);
-  d.contato = v('fContato'); d.solucao = v('fSol'); d.apresentacao = v('fAp');
+  d.contato = v('fContato'); d.solucao = v('fSol'); d.apresentacao = v('fAp'); d.segmento = v('fSeg');
   d.detalhes = { formato: v('fFor'), data_evento: v('fData'), local: v('fLocal'), carga_horaria: v('fCh'), participantes: v('fPart') };
   d.experiencia = { titulo: v('eTit'), texto: v('eTxt'), vivenciado: linhas('eViv'), formato: linhas('eFor') };
   d.objetivos = linhas('fObj');
