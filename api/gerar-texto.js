@@ -24,7 +24,7 @@ O ponto principal: adaptar ao SEGMENTO do cliente, com situações reais do dia 
 
 const PEDIDOS = {
   apresentacao: {
-    pede: `Escreva 3 opções diferentes de "Texto de apresentação" (1 a 2 frases, até 45 palavras cada) que aparece logo abaixo do nome da solução na capa da proposta.`,
+    pede: `Escreva 3 opções diferentes de "Texto de apresentação" (1 a 2 frases, até 45 palavras cada) que aparece logo abaixo do nome da solução na capa da proposta. Texto corrido, sem markdown; se quiser destacar um trecho curto em itálico dourado, use *asteriscos* uma única vez.`,
     formato: `{"opcoes":["texto 1","texto 2","texto 3"]}`,
     exemplo: "Uma experiência in company inspirada nos princípios Disney de encantamento, adaptada à realidade da sua equipe."
   },
