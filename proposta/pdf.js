@@ -8,8 +8,9 @@ function hl(t){ return P.destaque(t); }
 
 var CSS = '' +
 '.pdfp{position:fixed;left:-20000px;top:0;z-index:-1}' +
-'.pdfp .pg{width:' + W + 'px;height:' + H + 'px;background:#FFFDF9;position:relative;overflow:hidden;font-family:Manrope,system-ui,sans-serif;color:#2A2520;font-variant-ligatures:none;letter-spacing:0;word-spacing:normal;text-rendering:auto;-webkit-font-smoothing:antialiased;margin-bottom:20px}' +
-'.pdfp *{box-sizing:border-box;letter-spacing:0}' +
+'.pdfp .pg{width:' + W + 'px;height:' + H + 'px;background:#FFFDF9;position:relative;overflow:hidden;font-family:Manrope,system-ui,sans-serif;color:#2A2520;font-variant-ligatures:none;letter-spacing:.01px;word-spacing:normal;text-rendering:auto;-webkit-font-smoothing:antialiased;margin-bottom:20px}' +
+/* letter-spacing mínimo força o html2canvas a posicionar letra por letra: evita palavras grudadas em alguns Chrome/Windows */
+'.pdfp *{box-sizing:border-box;letter-spacing:.01px}' +
 '.pdfp .sr{font-family:"Playfair Display",Georgia,serif;font-weight:500}' +
 '.pdfp .eb{font-size:10.5px;font-weight:800;letter-spacing:.26em;text-transform:uppercase;color:#9A7A3C}' +
 '.pdfp .logo{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.3em;font-weight:700;color:#5E5548}' +
@@ -61,10 +62,12 @@ var CSS = '' +
 '.pdfp .op .hd{display:flex;justify-content:space-between;align-items:baseline;gap:16px}.pdfp .op h3{margin:0;font-family:"Playfair Display",serif;font-weight:500;font-size:19px}' +
 '.pdfp .op .val{font-family:"Playfair Display",serif;font-size:24px;color:#9A7A3C;white-space:nowrap}.pdfp .op .val s{font-family:Manrope,sans-serif;font-size:12px;color:#9A8F7E;margin-right:8px}' +
 '.pdfp .op p{font-size:12px;margin-top:4px}.pdfp .op ul{margin:8px 0 0;padding:0;list-style:none;font-size:11.5px;color:#5E5548;line-height:1.6}' +
-'.pdfp .prox{display:grid;grid-template-columns:1fr 150px;gap:26px;align-items:center;background:#2A2520;color:#EDE6D8;border-radius:14px;padding:24px 28px}' +
+'.pdfp .prox{display:flex;gap:24px;align-items:center;background:#2A2520;color:#EDE6D8;border-radius:14px;padding:22px 24px 22px 28px}.pdfp .prox>div:first-child{flex:1;min-width:0}' +
 '.pdfp .prox h3{margin:4px 0 0;font-family:"Playfair Display",serif;font-weight:500;font-size:22px;color:#fff}' +
-'.pdfp .prox ol{margin:10px 0 0;padding-left:18px;font-size:13px;line-height:1.9;color:#DCD3C2}.pdfp .prox ol b{color:#fff}' +
-'.pdfp .qr{background:#fff;border-radius:10px;padding:10px;text-align:center;font-size:9.5px;color:#5E5548}.pdfp .qr svg,.pdfp .qr img{width:130px!important;height:130px!important;display:block;margin:0 auto}';
+'.pdfp .prox ol{margin:12px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.5;color:#DCD3C2}.pdfp .prox ol b{color:#fff}' +
+'.pdfp .prox li{display:flex;align-items:center;gap:10px;margin-top:7px}.pdfp .prox li i{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid #C9A45C;color:#E8CF95;font-style:normal;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}' +
+'.pdfp .qr{flex:none;width:136px;height:154px;overflow:hidden;align-self:center;background:#fff;border-radius:10px;padding:8px 8px 7px;text-align:center;font-size:9.5px;color:#5E5548}.pdfp .qr img{width:120px;height:120px;max-width:120px;display:block;margin:0 auto 4px}' +
+'.pdfp .corpo.apertado .blk{padding-bottom:20px}.pdfp .corpo.apertado .lista li{padding:5px 0}.pdfp .corpo.apertado .inv{padding:18px 22px}';
 
 function el(html){ var d = document.createElement('div'); d.innerHTML = html; return d.firstChild; }
 
@@ -142,8 +145,8 @@ function blocos(p, d, info){
     (est.length ? '<div><div class="k">Estrutura necessária no local</div><ul class="lista">' + est.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>' : '<div></div>') + '</div></div>');
 
   out.push('<div class="blk"><div class="prox"><div><div class="eb" style="color:#C9A45C">Próximos passos</div><h3>Para confirmar, é simples:</h3><ol>' +
-    '<li>Aponte a câmera do celular para o código ao lado</li><li>Toque em <b>Aceitar a proposta</b></li><li>Receba o contrato e assine pelo gov.br, sem custo</li></ol></div>' +
-    '<div class="qr">' + info.qr + '<div style="margin-top:4px">Proposta online</div></div></div></div>');
+    '<li><i>1</i><span>Aponte a câmera do celular para o código ao lado</span></li><li><i>2</i><span>Toque em <b>Aceitar a proposta</b></span></li><li><i>3</i><span>Receba o contrato e assine pelo gov.br, sem custo</span></li></ol></div>' +
+    '<div class="qr">' + info.qr + '<div>Proposta online</div></div></div></div>');
   return out;
 }
 
@@ -166,7 +169,8 @@ function paginas(caixa, p, d, info){
   var corpo = nova();
   blocos(p, d, info).forEach(function(html){
     var b = el(html); corpo.appendChild(b);
-    if (corpo.scrollHeight > limite && corpo.children.length > 1){ corpo.removeChild(b); corpo = nova(); corpo.appendChild(b); }
+    if (corpo.scrollHeight > limite && corpo.children.length > 1){ corpo.classList.add('apertado'); }
+    if (corpo.scrollHeight > limite && corpo.children.length > 1){ corpo.classList.remove('apertado'); corpo.removeChild(b); corpo = nova(); corpo.appendChild(b); }
     if (corpo.scrollHeight > limite){ /* bloco maior que a página: reduz para caber */
       var f = limite / corpo.scrollHeight; corpo.style.transformOrigin = '0 0'; corpo.style.transform = 'scale(' + f + ')'; corpo.style.width = (100 / f) + '%';
     }
@@ -175,6 +179,7 @@ function paginas(caixa, p, d, info){
   pgs.forEach(function(pg, i){ pg.querySelector('.npg').textContent = (i + 2) + ' / ' + total; });
 }
 
+function qrImg(link){ try{ if (!link || !window.qrcode) return ''; var q = window.qrcode(0, 'M'); q.addData(link); q.make(); return '<img src="' + q.createDataURL(8, 2) + '" alt="QR Code">'; }catch(e){ return ''; } }
 function carregaImg(src){ return new Promise(function(ok){ var i = new Image(); i.onload = function(){ ok(true); }; i.onerror = function(){ ok(false); }; i.src = src; }); }
 
 window.PDF_PROPOSTA = function(p, d, opts){
@@ -182,7 +187,7 @@ window.PDF_PROPOSTA = function(p, d, opts){
   var caixa = document.createElement('div'); caixa.className = 'pdfp';
   var val = P.validade(d, p.publicado_em);
   var info = { foto: '/img/daniel-palco-2.webp', enviada: P.data(p.publicado_em) || P.data(new Date().toISOString()), validade: val,
-    qr: opts.qr || '', rodape: opts.rodape || 'Daniel Donato · Sinapse Brasil', cond: condicoes(p, d, val) };
+    qr: qrImg(opts.link) || opts.qr || '', rodape: opts.rodape || 'Daniel Donato · Sinapse Brasil', cond: condicoes(p, d, val) };
   caixa.innerHTML = capa(p, d, info);
   document.body.appendChild(caixa);
   return Promise.all([carregaImg(info.foto), document.fonts && document.fonts.load ? Promise.all([

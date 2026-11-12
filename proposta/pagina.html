@@ -356,10 +356,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261112b"></script>
-<script src="modelo.js?v=20261112b"></script>
-<script src="comum.js?v=20261112b"></script>
-<script src="qrcode.js?v=20261112b"></script>
+<script src="/apresentacao/conteudo.js?v=20261112c"></script>
+<script src="modelo.js?v=20261112c"></script>
+<script src="comum.js?v=20261112c"></script>
+<script src="qrcode.js?v=20261112c"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -932,13 +932,13 @@ function pdfProposta(){
   if (gerandoPdf) return; gerandoPdf = true;
   toast('Gerando o PDF da proposta…');
   responder('baixou_pdf_proposta', {}).catch(function(){});
-  var V = '?v=20261112b';
+  var V = '?v=20261112c';
   var libs = (window.html2canvas ? Promise.resolve() : carregaScript('vendor/html2canvas.min.js?v=1'))
     .then(function(){ return window.jspdf ? null : carregaScript('vendor/jspdf.umd.min.js?v=1'); })
     .then(function(){ return window.PDF_PROPOSTA ? null : carregaScript('pdf.js' + V); });
   var p = S.prop, link = location.origin + '/proposta/?p=' + p.codigo;
   libs.then(function(){
-    return window.PDF_PROPOSTA(p, P.efetivo(p), { qr: qrSvg(link), rodape: 'Daniel Donato · Sinapse Brasil · ' + foneExibido(p) + (C.email ? ' · ' + C.email : '') });
+    return window.PDF_PROPOSTA(p, P.efetivo(p), { link: link, qr: qrSvg(link), rodape: 'Daniel Donato · Sinapse Brasil · ' + foneExibido(p) + (C.email ? ' · ' + C.email : '') });
   }).then(function(doc){
     doc.save('Proposta - ' + p.cliente.replace(/[\\/:*?"<>|]+/g, ' ') + ' - Daniel Donato.pdf');
     gerandoPdf = false; toast('PDF baixado.');
