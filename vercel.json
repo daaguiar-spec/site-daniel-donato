@@ -94,6 +94,31 @@
       "source": "/post/:path*",
       "destination": "/blog",
       "permanent": true
+    },
+    {
+      "source": "/palestra-atendimento-magico",
+      "destination": "/palestra-atendimento-magico.html",
+      "permanent": true
+    },
+    {
+      "source": "/imersao-iam",
+      "destination": "/palestras.html",
+      "permanent": true
+    },
+    {
+      "source": "/palestra-lideranca-que-inspira",
+      "destination": "/palestra-lideranca-que-inspira.html",
+      "permanent": true
+    },
+    {
+      "source": "/imersao-magicday",
+      "destination": "/imersao-magicday.html",
+      "permanent": true
+    },
+    {
+      "source": "/palestra-walt-disney-area-da-saude",
+      "destination": "/palestra-walt-disney-area-da-saude.html",
+      "permanent": true
     }
   ],
   "rewrites": [
