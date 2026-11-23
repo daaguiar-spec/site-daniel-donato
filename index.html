@@ -1013,5 +1013,53 @@ env({tipo:'visita',origem:orig()});
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="whatsapp"],a[href*="wa.me"]');if(a)env({tipo:'whatsapp'})},true);
 })();
 </script>
+<!-- efeitos-v1: movimentos e brilhos (Claude) -->
+<style id="efx-css">
+@media (prefers-reduced-motion: no-preference){
+.efx-on .efx-r{opacity:0;transform:translate3d(0,28px,0);filter:blur(4px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1),filter .9s ease;transition-delay:var(--efx-d,0s);will-change:opacity,transform}
+.efx-on .efx-r.efx-in{opacity:1;transform:none;filter:none}
+.efx-on .efx-r.efx-zoom{transform:scale(.94)}
+.efx-on .efx-r.efx-zoom.efx-in{transform:none}
+.efx-w{display:inline-block;opacity:0;transform:translate3d(0,.45em,0);filter:blur(6px);animation:efxW .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--efx-d,0s)}
+em.efx-e{opacity:0;animation:efxE 1.2s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--efx-d,0s)}
+@keyframes efxE{from{opacity:0;filter:blur(8px) brightness(2.2)}to{opacity:1;filter:none}}
+@keyframes efxW{to{opacity:1;transform:none;filter:none}}
+.dd-gold,.m-btn{position:relative;overflow:hidden;isolation:isolate}
+.dd-gold::after,.m-btn::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-60%;width:40%;background:linear-gradient(100deg,transparent 0%,rgba(255,250,235,.0) 20%,rgba(255,250,235,.75) 50%,rgba(255,250,235,0) 80%,transparent 100%);transform:skewX(-18deg);animation:efxShine 4.2s ease-in-out infinite;pointer-events:none;z-index:1}
+@keyframes efxShine{0%,62%{left:-60%}100%{left:140%}}
+.dd-gold,.m-btn{animation:efxPulse 4.2s ease-in-out infinite}
+@keyframes efxPulse{0%,100%{box-shadow:0 10px 30px rgba(201,164,92,.22)}50%{box-shadow:0 10px 42px rgba(232,207,149,.55),0 0 0 1px rgba(232,207,149,.35)}}
+#palestras article,.m-card,#blog a,.jd-step,.pq-item{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s}
+#palestras article:hover,#blog a:hover,.jd-step:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(0,0,0,.45),0 0 0 1px rgba(201,164,92,.55),0 0 36px rgba(201,164,92,.18)}
+#palestras article img,#blog .cxn-cover{transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+#palestras article:hover img,#blog a:hover .cxn-cover{transform:scale(1.06)}
+.efx-ray{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2}
+.efx-ray::before{content:"";position:absolute;top:-30%;bottom:-30%;width:18%;left:-30%;background:linear-gradient(100deg,transparent,rgba(232,207,149,.10) 45%,rgba(255,240,200,.22) 50%,rgba(232,207,149,.10) 55%,transparent);transform:skewX(-20deg);animation:efxRay 9s ease-in-out infinite}
+@keyframes efxRay{0%,55%{left:-30%}100%{left:130%}}
+}
+</style>
+<script id="efx-js">
+(function(){
+if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var d=document;d.documentElement.classList.add('efx-on');
+/* 1. título da abertura aparece palavra por palavra */
+function words(el,base){var n=0;(function walk(node){[].slice.call(node.childNodes).forEach(function(c){
+ if(c.nodeType===3){var parts=c.textContent.split(/(\s+)/),f=d.createDocumentFragment();parts.forEach(function(p){if(!p)return;if(/^\s+$/.test(p)){f.appendChild(d.createTextNode(p));return}var s=d.createElement('span');s.className='efx-w';s.style.setProperty('--efx-d',(base+n*0.07).toFixed(2)+'s');s.textContent=p;n++;f.appendChild(s)});c.parentNode.replaceChild(f,c)}
+ else if(c.tagName==='EM'){c.classList.add('efx-e');c.style.setProperty('--efx-d',(base+n*0.07+0.1).toFixed(2)+'s')}else if(c.nodeType===1&&c.tagName!=='BR')walk(c)})})(el)}
+[].forEach.call(d.querySelectorAll('.hy-title2,.m-title2'),function(t){words(t,0.25)});
+/* 2. blocos surgem ao rolar */
+var sel=['section:not(#topo):not(.m-hero) h2','section:not(#topo):not(.m-hero) h3','section:not(#topo):not(.m-hero) p','#palestras article','.m-card','#blog a','.m-art','.jd-step','.m-jd-step','.pq-item','.cl-cell','.m-logo','.dd-stats .dd-statgrid > div','.m-stats > * > *','#sobre img','#m-sobre img','#livro img','#m-livro img','#consultoria img','#m-consultoria img','.pq-uf','.m-uf'];
+var els=[].slice.call(d.querySelectorAll(sel.join(','))).filter(function(e){return !e.closest('.efx-r')&&!e.closest('#topo')&&!e.closest('.m-hero')&&!e.closest('nav')&&!e.closest('footer')});
+var grupos=new Map();els.forEach(function(e){var p=e.parentElement;var i=(grupos.get(p)||0);grupos.set(p,i+1);e.classList.add('efx-r');if(e.tagName==='IMG'||e.tagName==='ARTICLE')e.classList.add('efx-zoom');e.style.setProperty('--efx-d',Math.min(i*0.09,0.6).toFixed(2)+'s')});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('efx-in');io.unobserve(x.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:0.08});els.forEach(function(e){io.observe(e)})}else els.forEach(function(e){e.classList.add('efx-in')});
+/* 3. números contam até o valor */
+function conta(el){var t=el.textContent.trim(),m=t.match(/^(\+?)(\d+)(.*)$/);if(!m)return;var fim=+m[2],ini=performance.now(),dur=1600;el.textContent=m[1]+'0'+m[3];
+ function passo(a){var k=Math.min(1,(a-ini)/dur),v=Math.round(fim*(1-Math.pow(1-k,3)));el.textContent=m[1]+v+m[3];if(k<1)requestAnimationFrame(passo)}requestAnimationFrame(passo)}
+var nums=[].slice.call(d.querySelectorAll('.dd-stats span,.m-stats span,.m-stats b,.m-stats strong')).filter(function(e){return e.children.length===0&&/^\+?\d+(\s?(mil|anos))?$/.test(e.textContent.trim())});
+if('IntersectionObserver' in window){var io2=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){conta(x.target);io2.unobserve(x.target)}})},{threshold:0.5});nums.forEach(function(n){io2.observe(n)})}
+/* 4. faixa de luz dourada passando pela seção Para quem é e pelo Método */
+[].forEach.call(d.querySelectorAll('.pq-sec,#metodo,.m-pq,#m-metodo'),function(s){if(getComputedStyle(s).position==='static')s.style.position='relative';var r=d.createElement('div');r.className='efx-ray';r.setAttribute('aria-hidden','true');s.appendChild(r)});
+})();
+</script>
 </body>
 </html>
