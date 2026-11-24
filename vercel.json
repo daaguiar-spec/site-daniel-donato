@@ -67,7 +67,7 @@
     },
     {
       "source": "/checklist-feliz-livro-digital",
-      "destination": "https://pay.kiwify.com.br/XVbQm0V",
+      "destination": "https://checklist-cliente-feliz.vercel.app/",
       "permanent": false
     },
     {
