@@ -1,6 +1,21 @@
 {
   "redirects": [
     {
+      "source": "/raiox/index.html",
+      "destination": "/raiox/",
+      "permanent": false
+    },
+    {
+      "source": "/raiox",
+      "destination": "/raiox/",
+      "permanent": false
+    },
+    {
+      "source": "/raiox/painel",
+      "destination": "/raiox/painel.html",
+      "permanent": false
+    },
+    {
       "source": "/apresentacao/index.html",
       "destination": "/apresentacao/",
       "permanent": false

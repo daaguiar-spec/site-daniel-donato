@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raio-X do Encantamento | Daniel Donato</title>
+<meta name="description" content="Responda a 10 perguntas rápidas e descubra pontos fortes e oportunidades na experiência que sua empresa oferece aos clientes.">
+<meta name="theme-color" content="#0B0A08">
+<meta property="og:title" content="Raio-X do Encantamento">
+<meta property="og:description" content="Sua empresa está preparada para encantar clientes? Faça o diagnóstico em 3 minutos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&family=Oswald:wght@500&display=swap" rel="stylesheet">
+<style>
+/* VOICE: elegante, cênico, premium — a mesma linguagem de danieldonato.com.br
+   IDEA: um espetáculo noturno: fundo quase preto, luzes douradas flutuando
+   PICTURE: anel dourado de pontuação e mapa de barras como o "raio-x"
+   COLOUR and TYPE: #0B0A08, dourado em degradê; Cormorant (itálico dourado) + Manrope + Oswald nos botões
+   LAYOUT: coluna única centralizada, pensada para o celular */
+:root{color-scheme:dark;--bg:#0b0a08;--card:#14120e;--ink:#f3efe6;--mute:#a59d8c;--gold:#d2b06a;--gold2:#b48a45;--line:rgba(210,176,106,.18);--grad:linear-gradient(180deg,#f3e2b3 0%,#d9b978 45%,#b58c4a 100%)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:radial-gradient(120% 60% at 50% 0%,#1d1a2e 0%,var(--bg) 60%) fixed,var(--bg);color:var(--ink);font:16px/1.6 Manrope,system-ui,sans-serif;overflow-x:clip;min-height:100vh}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.stars i{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff6dc 0%,rgba(230,200,130,.7) 35%,transparent 70%);animation:fl linear infinite,tw ease-in-out infinite alternate}
+@keyframes fl{from{transform:translateY(0)}to{transform:translateY(-110vh)}}
+@keyframes tw{from{opacity:.15}to{opacity:.85}}
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:22px 18px 44px}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;line-height:1.05;text-wrap:balance;margin:0;color:var(--ink)}
+h1{font-size:clamp(44px,11vw,58px)}h2{font-size:34px}
+h1 em,h2 em{font-style:italic;color:var(--gold)}
+.eyebrow{display:flex;align-items:center;gap:12px;color:var(--gold);font:600 12px Manrope,sans-serif;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold);flex:none}
+.eyebrow.two{align-items:flex-start;line-height:1.7}.eyebrow.two::before{margin-top:.85em}
+.hero{padding:34px 4px 10px}
+.hero .sub{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--gold);font-size:25px;line-height:1.25;margin:16px 0 12px}
+.hero p{color:#cfc8b8}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;border-radius:14px;font:500 15px Oswald,"Arial Narrow",sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;padding:12px 18px;margin-top:14px;transition:transform .15s,box-shadow .2s}
+.gold{background:var(--grad);color:#1b1508;border:0;box-shadow:0 8px 28px rgba(210,176,106,.28),inset 0 1px 0 rgba(255,255,255,.5)}
+.gold:active{transform:scale(.98)}
+.ghost{background:transparent;color:var(--ink);border:1px solid rgba(210,176,106,.45)}
+.btn:focus-visible,.opt:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.card{background:linear-gradient(180deg,rgba(28,25,20,.92),rgba(17,15,12,.92));border:1px solid var(--line);border-radius:20px;padding:26px 20px;margin-top:16px;backdrop-filter:blur(6px)}
+.bar{height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--grad);transition:width .45s}
+.meta{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin:12px 0 22px}
+.tag{color:var(--gold);font:600 12px Manrope,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.q{font-family:"Cormorant Garamond",serif;font-size:29px;font-weight:500;line-height:1.2;margin:10px 0 22px}
+.opt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.03);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:17px 16px;margin-bottom:10px;font:500 16px Manrope,sans-serif;cursor:pointer;min-height:56px;transition:border-color .2s,background .2s}
+.opt.on{border-color:var(--gold);background:rgba(210,176,106,.13);box-shadow:0 0 0 1px var(--gold) inset}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px}.nav .btn{margin-top:8px}
+label{display:block;font-weight:600;font-size:14px;margin:16px 0 6px;color:#e3dccb}
+input[type=text],input[type=tel]{width:100%;font:16px Manrope,sans-serif;padding:14px;border:1px solid var(--line);border-radius:12px;background:rgba(0,0,0,.35);color:var(--ink)}
+input::placeholder{color:#6f6858}
+.chk{display:flex;gap:12px;align-items:flex-start;font-weight:400;font-size:14px;color:var(--mute);margin-top:16px}.chk input{width:22px;height:22px;flex:none;accent-color:var(--gold)}
+.err{color:#e0735f;font-size:14px;min-height:20px;margin-top:8px}
+.small{font-size:13px;color:var(--mute)}
+.score{display:grid;place-items:center;margin:14px 0 6px}
+.ring{position:relative;width:190px;height:190px}.ring svg{width:100%;height:100%;transform:rotate(-90deg);filter:drop-shadow(0 0 14px rgba(210,176,106,.35))}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:600 46px Manrope,sans-serif;font-variant-numeric:lining-nums tabular-nums;letter-spacing:-1px}
+.ring b span{font-size:18px;color:var(--mute)}
+.ring b em{font-style:normal}
+.lvl{text-align:center;font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--gold);font-size:28px;margin-bottom:6px}
+.item{border-top:1px solid var(--line);padding:16px 0}.item:first-of-type{border-top:0}
+.item strong{display:block;margin-bottom:4px;color:var(--gold);font-weight:600}
+.quote{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:23px;line-height:1.35}
+.offer{background:radial-gradient(120% 90% at 50% 0%,rgba(210,176,106,.16),transparent 60%),#12100c;border-color:rgba(210,176,106,.5)}
+.offer p{color:#d6cfbf}
+.sign{text-align:center;margin-top:30px;font-size:14px;color:var(--mute)}
+.sign b{display:block;font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500;color:var(--ink)}
+.hide{display:none}
+.fade{animation:f .4s ease}@keyframes f{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.scan{background:#0e0c09;border:1px solid var(--line);color:var(--ink);border-radius:22px;padding:48px 24px;text-align:center;min-height:440px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden}
+.scan .beam{position:absolute;left:0;right:0;height:90px;top:-90px;background:linear-gradient(transparent,rgba(210,176,106,.35),transparent);animation:beam 1.3s linear infinite}
+@keyframes beam{to{top:100%}}
+.scan .eye{width:110px;height:110px;margin-bottom:22px;filter:drop-shadow(0 0 10px rgba(210,176,106,.5))}
+.scan p{color:var(--gold);font-weight:600;min-height:26px;margin:14px 0 0}
+.row{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr) 2.2em;gap:10px;align-items:center;padding:7px 0;font-size:14px}
+.track{height:10px;background:rgba(255,255,255,.07);border-radius:8px;overflow:hidden}
+.track i{display:block;height:100%;width:0;border-radius:8px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.row .v{text-align:right;font-weight:700;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--mute);margin-top:12px}.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--c)}
+@media(prefers-reduced-motion:reduce){.fade,.scan .beam,.stars{animation:none;display:none}.track i,.bar i{transition:none}}
+@media print{body{background:#fff!important;color:#111}.stars,.btn,#pdfmsg{display:none!important}.card,.offer,.scan{background:#fff!important;border:1px solid #d9c9a0;box-shadow:none;break-inside:avoid;backdrop-filter:none}h1,h2,.q,.quote,.sign b,.ring b,.row,p,label{color:#111!important}.wrap{max-width:none;padding:0}.offer p{color:#333!important}.track{background:#eee}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="stars" id="stars" aria-hidden="true"></div>
+<div class="wrap" id="app"></div>
+
+<script>
+{
+/* ===== CONFIGURAÇÃO (fácil de alterar) ===== */
+const CONFIG={sb:"https://ouxzzduwjxmtixfftpsy.supabase.co",key:"sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt",site:"https://www.danieldonato.com.br/raiox",whatsDaniel:"5585999711108", /* WhatsApp do Daniel (DDI+DDD+número) */
+  treinamento:"ATENDIMENTO MÁGICO | UM CASE DISNEY"};
+
+const OPCOES=[["Sim, consistentemente",2],["Às vezes",1],["Ainda não",0]];
+const P=[
+["Propósito","Sua equipe entende que seu trabalho é criar boas experiências para os clientes?",
+ "Sua equipe entende que o trabalho dela vai além da tarefa: é criar experiências. Mantenha esse propósito presente nas conversas do dia a dia.",
+ "Quando a equipe enxerga só tarefas, o cliente sente um atendimento mecânico. Conectar as pessoas ao propósito é o primeiro passo, e é por ele que o Atendimento Mágico começa."],
+["Cultura","Sua empresa tem valores claros que orientam o atendimento?",
+ "Os valores da empresa já orientam o atendimento. Continue reforçando esses valores com exemplos e reconhecimento.",
+ "Valores que ficam só no papel não mudam comportamentos. No treinamento, sua equipe aprende a transformar valores em atitudes práticas no dia a dia."],
+["Atenção aos detalhes","Sua equipe percebe pequenos detalhes que fazem diferença para o cliente?",
+ "Sua equipe percebe o que muitos não veem. Compartilhe esses bons exemplos para inspirar todos.",
+ "O cliente raramente reclama dos detalhes: ele simplesmente não volta. O Atendimento Mágico treina o olhar da equipe para perceber o que faz diferença."],
+["Personalização","Sua equipe procura entender as necessidades de cada cliente?",
+ "Sua equipe enxerga cada cliente como único. Registre preferências e informações para tornar isso cada vez mais natural.",
+ "Clientes que se sentem só mais um são facilmente conquistados pela concorrência. Sua equipe pode aprender técnicas para entender e surpreender cada cliente."],
+["Protagonismo","Sua equipe se sente responsável pela experiência do cliente?",
+ "Sua equipe assume a experiência do cliente como responsabilidade de todos. Reconheça publicamente essas atitudes.",
+ "Quando ninguém se sente dono da experiência, os problemas ficam sem resposta. Desenvolver o protagonismo da equipe é um dos pilares do Atendimento Mágico."],
+["Autonomia","Sua equipe tem liberdade para resolver problemas e surpreender clientes?",
+ "Sua equipe tem liberdade para resolver e surpreender. Mantenha limites claros para essa liberdade ser usada com segurança.",
+ "Cada “vou ver com meu gestor” custa tempo e paciência ao cliente. O treinamento mostra como dar liberdade à equipe com segurança e critério."],
+["Consistência","Todos os clientes recebem a mesma qualidade de experiência?",
+ "Seus clientes recebem a mesma qualidade em qualquer contato. Padronize o que funciona para manter esse nível.",
+ "Um único atendimento ruim pode apagar dez experiências boas. O Atendimento Mágico ajuda a criar padrões para que todos os clientes recebam o mesmo nível de excelência."],
+["Encantamento","Sua equipe busca superar as expectativas dos clientes?",
+ "Sua equipe busca ir além do esperado. Estimule e compartilhe os momentos de encantamento que acontecem.",
+ "Atender bem é o mínimo esperado, e o que fideliza é ir além. Sua equipe pode aprender, na prática, como as empresas referência criam momentos memoráveis."],
+["Liderança pelo exemplo","Os líderes praticam a cultura de atendimento que cobram da equipe?",
+ "Seus líderes praticam o que cobram, e isso gera credibilidade. Continue sendo a referência para a equipe.",
+ "A equipe reproduz o que vê nos líderes. O Atendimento Mágico também prepara a liderança para ser o exemplo da cultura que deseja construir."],
+["Desenvolvimento","Sua empresa prepara continuamente a equipe para encantar clientes?",
+ "Sua empresa investe na preparação da equipe. Mantenha esse desenvolvimento contínuo, e não apenas pontual.",
+ "Sem preparo contínuo, a qualidade do atendimento depende da sorte. Que tal dar à sua equipe uma experiência de desenvolvimento que transforma a forma de atender?"]
+];
+const NIVEIS=[
+ {max:7,nome:"Cultura em desenvolvimento",txt:"A empresa apresenta oportunidades importantes para fortalecer sua cultura de atendimento e experiência do cliente.",
+  passo:"Seus clientes podem estar recebendo uma experiência abaixo do que sua empresa é capaz de oferecer, e isso pesa diretamente nas vendas e na fidelização. Que tal preparar sua equipe para transformar cada atendimento em uma oportunidade de encantar e vender mais?"},
+ {max:14,nome:"Cultura em evolução",txt:"Existem iniciativas positivas, mas ainda há oportunidades para desenvolver comportamentos, fortalecer a cultura e aumentar a consistência das experiências.",
+  passo:"Sua empresa já faz coisas boas, mas a experiência ainda varia de cliente para cliente. Quando o encantamento se torna padrão, o cliente volta, compra mais e indica. Vamos levar sua equipe para esse próximo nível?"},
+ {max:20,nome:"Cultura fortalecida",txt:"A empresa demonstra uma boa percepção sobre os elementos de uma cultura de encantamento. O próximo desafio é manter a consistência e continuar desenvolvendo as pessoas.",
+  passo:"Sua empresa já tem uma boa base de encantamento. O desafio agora é manter a consistência e transformar a experiência em um diferencial que o cliente não encontra na concorrência. Que tal fortalecer ainda mais sua equipe?"}
+];
+
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const app=document.getElementById("app");
+let resp=Array(10).fill(null),i=0,dados={},revisando=false;
+
+const _star='<svg viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#c9a24a" stroke-width="1.5"><circle cx="100" cy="100" r="90"/><circle cx="100" cy="100" r="62"/><circle cx="100" cy="100" r="34"/><path d="M100 4v192M4 100h192M32 32l136 136M168 32L32 168"/></g></svg>';
+
+function inicio(){
+ app.innerHTML=`<div class="hero fade">
+  <div class="eyebrow two"><span>Diagnóstico<br>· Almoço Mágico</span></div>
+  <h1>Raio-X do <em>Encantamento</em></h1>
+  <p class="sub">Sua empresa está preparada para encantar clientes?</p>
+  <p>Responda a <strong>10 perguntas rápidas</strong> e descubra pontos fortes e oportunidades de melhoria na experiência que sua empresa oferece aos clientes.</p>
+  <button class="btn gold" id="go">Começar meu diagnóstico</button>
+  <p class="small" style="text-align:center;margin:14px 0 0">Leva cerca de 3 minutos</p></div>`;
+ document.getElementById("go").onclick=()=>{i=0;pergunta()};
+}
+
+function pergunta(){
+ const [tag,q]=P[i];
+ app.innerHTML=`<div class="card fade">
+  <div class="bar"><i style="width:${(i+1)*10}%"></i></div>
+  <div class="meta"><span>Pergunta ${i+1} de 10</span><span>${resp.filter(r=>r!==null).length} respondidas</span></div>
+  <div class="tag">${i+1}. ${esc(tag)}</div><div class="q">${esc(q)}</div>
+  ${OPCOES.map(([t,v])=>`<button class="opt${resp[i]===v?" on":""}" data-v="${v}">${t}</button>`).join("")}
+  <div class="nav"><button class="btn ghost" id="back">Voltar</button>
+  <button class="btn gold" id="next" ${resp[i]===null?"disabled":""}>${i===9?"Concluir":"Avançar"}</button></div>
+  ${revisando?`<button class="btn ghost" id="toCad">Voltar ao cadastro</button>`:""}</div>`;
+ if(revisando)document.getElementById("toCad").onclick=cadastro;
+ app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{resp[i]=+b.dataset.v;
+  if(i<9&&!revisando){setTimeout(()=>{i++;pergunta()},220)} pergunta_marcar(b)});
+ document.getElementById("back").onclick=()=>{if(i>0){i--;pergunta()}else inicio()};
+ document.getElementById("next").onclick=()=>{if(resp[i]===null)return;if(i<9){i++;pergunta()}else cadastro()};
+}
+function pergunta_marcar(b){app.querySelectorAll(".opt").forEach(o=>o.classList.remove("on"));b.classList.add("on");document.getElementById("next").disabled=false}
+
+function cadastro(){
+ if(resp.includes(null)){i=resp.indexOf(null);return pergunta()}
+ app.innerHTML=`<div class="card fade"><h2>Seu relatório está <em>pronto</em></h2>
+  <p class="small">Preencha seus dados para ver o resultado.</p>
+  <form id="f" novalidate>
+  <label for="nome">Nome completo</label><input type="text" id="nome" autocomplete="name" value="${esc(dados.nome||"")}">
+  <label for="emp">Empresa</label><input type="text" id="emp" autocomplete="organization" value="${esc(dados.empresa||"")}">
+  <label for="cargo">Cargo</label><input type="text" id="cargo" autocomplete="organization-title" value="${esc(dados.cargo||"")}">
+  <label for="wpp">WhatsApp (com DDD)</label><input type="tel" id="wpp" inputmode="tel" placeholder="(11) 99999-9999" value="${esc(dados.whats||"")}">
+  <label class="chk"><input type="checkbox" id="lgpd" ${dados.consent?"checked":""}> <span>Concordo que a Sinapse Brasil use estas informações para gerar meu diagnóstico. Meus dados não serão vendidos nem repassados a ninguém.</span></label>
+  <label class="chk"><input type="checkbox" id="mkt" ${dados.mkt?"checked":""}> <span>Autorizo a Sinapse Brasil a entrar em contato comigo pelo WhatsApp para apresentar oportunidades de desenvolvimento para minha empresa.</span></label>
+  <div class="err" id="err"></div>
+  <button class="btn gold" type="submit">VER MEU RAIO-X</button>
+  <button class="btn ghost" type="button" id="back">Revisar respostas</button></form></div>`;
+ revisando=true;
+ const v=id=>document.getElementById(id).value.trim();
+ const guardar=()=>{Object.assign(dados,{nome:v("nome"),empresa:v("emp"),cargo:v("cargo"),whats:v("wpp"),consent:document.getElementById("lgpd").checked,mkt:document.getElementById("mkt").checked})};
+ document.getElementById("f").addEventListener("input",guardar);
+ document.getElementById("f").addEventListener("change",guardar);
+ document.getElementById("back").onclick=()=>{guardar();i=0;pergunta()};
+ document.getElementById("f").onsubmit=e=>{e.preventDefault();guardar();
+  let tel=v("wpp").replace(/\D/g,"").replace(/^0+/,"");
+  if(tel.length>11&&tel.startsWith("55"))tel=tel.slice(2);
+  const err=document.getElementById("err");
+  if(!v("nome")||!v("emp")||!v("cargo"))return err.textContent="Preencha nome, empresa e cargo.";
+  if(tel.length<10||tel.length>11)return err.textContent="Informe um WhatsApp válido com DDD.";
+  if(!document.getElementById("lgpd").checked)return err.textContent="É preciso autorizar o uso dos dados para continuar.";
+  dados={id:novoId(),nome:v("nome"),empresa:v("emp"),cargo:v("cargo"),whats:tel,consent:true,mkt:document.getElementById("mkt").checked,data:new Date().toISOString(),respostas:[...resp]};
+  analisar();
+ };
+}
+
+function novoId(){try{return crypto.randomUUID()}catch(e){return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{const r=Math.random()*16|0;return (c=="x"?r:(r&3|8)).toString(16)})}}
+const ORIGEM=(()=>{try{return (new URLSearchParams(location.search).get("origem")||"site").replace(/[^\w-]/g,"").slice(0,40)||"site"}catch(e){return "site"}})();
+const FILA="raiox_pendentes";
+const lerFila=()=>{try{return JSON.parse(localStorage.getItem(FILA)||"[]")}catch(e){return []}};
+const gravarFila=f=>{try{localStorage.setItem(FILA,JSON.stringify(f))}catch(e){}};
+async function enviar(reg){
+ const r=await fetch(CONFIG.sb+"/rest/v1/raiox_diagnosticos",{method:"POST",headers:{apikey:CONFIG.key,Authorization:"Bearer "+CONFIG.key,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify(reg)});
+ if(!r.ok&&r.status!==409)throw new Error(r.status);
+}
+async function salvar(){
+ const reg={id:dados.id,nome:dados.nome,empresa:dados.empresa,cargo:dados.cargo,whatsapp:dados.whats,consentimento:true,contato_comercial:!!dados.mkt,respostas:dados.respostas,origem:ORIGEM};
+ try{await enviar(reg)}catch(e){const f=lerFila();if(!f.some(x=>x.id===reg.id))f.push(reg);gravarFila(f)}
+}
+async function reenviar(){
+ const f=lerFila();if(!f.length)return;const resta=[];
+ for(const reg of f){try{await enviar(reg)}catch(e){resta.push(reg)}}
+ gravarFila(resta);
+}
+function marcarInteresse(id){
+ try{fetch(CONFIG.sb+"/rest/v1/rpc/raiox_interesse",{method:"POST",keepalive:true,headers:{apikey:CONFIG.key,Authorization:"Bearer "+CONFIG.key,"Content-Type":"application/json"},body:JSON.stringify({p_id:id})})}catch(e){}
+}
+window.addEventListener("online",reenviar);
+
+function analisar(){
+ salvar();
+ window.scrollTo(0,0);
+ app.innerHTML=`<div class="scan fade"><div class="beam"></div>
+  <svg class="eye" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#d2b06a" stroke-width="2"><circle cx="100" cy="100" r="90"/><circle cx="100" cy="100" r="58"/><circle cx="100" cy="100" r="26"/><path d="M100 4v192M4 100h192"/></g></svg>
+  <h2>Gerando seu <em>Raio-X</em></h2><p id="etapa" aria-live="polite">Analisando propósito...</p></div>`;
+ const etapas=["Analisando propósito...","Analisando cultura...","Analisando atenção aos detalhes...","Analisando autonomia...","Analisando liderança...","Preparando seu relatório..."];
+ let k=0;const el=document.getElementById("etapa");
+ const t=setInterval(()=>{k++;if(k<etapas.length)el.textContent=etapas[k]},450);
+ setTimeout(()=>{clearInterval(t);relatorio()},2800);
+}
+
+function relatorio(){
+ const total=resp.reduce((a,b)=>a+b,0);
+ const n=NIVEIS.find(x=>total<=x.max);
+ dados.total=total;dados.nivel=n.nome;
+ const fortes=P.map((p,k)=>({p,k})).filter(o=>resp[o.k]===2).slice(0,3);
+ const atenc=[...P.map((p,k)=>({p,k})).filter(o=>resp[o.k]===0),...P.map((p,k)=>({p,k})).filter(o=>resp[o.k]===1)].slice(0,3);
+ const uniforme=resp.every(r=>r===resp[0]);
+ const C=2*Math.PI*78,pct=total/20;
+ const primeiro=esc(dados.nome.split(" ")[0]);
+ const msgDaniel=`Olá, Daniel! Fiz o Raio-X do Encantamento e tirei ${total}/20 (${n.nome}). Quero saber mais sobre o Atendimento Mágico.`;
+ const msgShare=`Fiz o Raio-X do Encantamento e minha empresa tirou ${total}/20: ${n.nome}. Faça o seu também: ${CONFIG.site}`;
+ const linkD=`https://wa.me/${CONFIG.whatsDaniel}?text=${encodeURIComponent(msgDaniel)}`;
+ const linkS=`https://wa.me/?text=${encodeURIComponent(msgShare)}`;
+ const lista=(arr,campo)=>arr.map(o=>`<div class="item"><strong>${esc(o.p[0])}</strong>${esc(o.p[campo])}</div>`).join("");
+ app.innerHTML=`<div class="fade">
+ <div class="card"><div class="eyebrow">${primeiro} · ${esc(dados.empresa)}</div><h2>Seu Raio-X do <em>Encantamento</em></h2>
+  <div class="score"><div class="ring"><svg viewBox="0 0 180 180"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3e2b3"/><stop offset="1" stop-color="#b58c4a"/></linearGradient></defs><circle cx="90" cy="90" r="78" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="10"/>
+  <circle id="arc" cx="90" cy="90" r="78" fill="none" stroke="url(#gg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" style="transition:stroke-dashoffset 1.2s ease"/></svg>
+  <b><span><em id="num" style="font-size:46px;color:var(--ink)">0</em>/20</span></b></div></div>
+  <div class="lvl">${n.nome}</div><p>${n.txt}</p>
+  <p class="small">Esta classificação é uma referência de autopercepção, não uma certificação ou avaliação oficial.</p></div>
+ <div class="card"><h2>Mapa do <em>encantamento</em></h2><p class="small">Como sua empresa se percebe em cada critério.</p>
+  ${P.map((p,k)=>{const c=resp[k]===2?"linear-gradient(90deg,#b58c4a,#f0d999)":resp[k]===1?"#8a8070":"#c8573f";
+   return `<div class="row"><span>${esc(p[0])}</span><div class="track"><i data-w="${resp[k]===0?6:resp[k]*50}" style="background:${c}"></i></div><span class="v">${resp[k]}/2</span></div>`}).join("")}
+  <div class="legend"><span style="--c:#d2b06a">Consistente</span><span style="--c:#8a8070">Às vezes</span><span style="--c:#c8573f">Ainda não</span></div></div>
+ ${uniforme?`<div class="card"><h2>Leitura geral</h2><p>Suas respostas mostram um padrão uniforme. Analise cada critério com sua equipe para identificar onde estão as maiores oportunidades.</p></div>`:""}
+ ${fortes.length&&!uniforme?`<div class="card"><h2>Pontos <em>fortes</em></h2>${lista(fortes,2)}</div>`:""}
+ ${atenc.length&&!uniforme?`<div class="card"><h2>O que merece <em>atenção</em></h2>${lista(atenc,3)}</div>`:""}
+ <div class="card"><div class="eyebrow">Reflexão</div><p class="quote">Uma empresa não encanta clientes apenas porque seus colaboradores são simpáticos. O encantamento acontece quando existe propósito, cultura, atenção aos detalhes, protagonismo e pessoas preparadas para transformar cada contato em uma experiência positiva.</p></div>
+ <div class="card offer"><div class="eyebrow">Próximo passo</div><p>${n.passo}</p>
+  <h2 style="font-size:30px;margin:6px 0 4px">Atendimento Mágico<br><em>Um Case Disney</em></h2>
+  <p>Uma experiência de desenvolvimento para transformar a maneira como as pessoas atendem, se relacionam e criam experiências para os clientes.</p>
+  <a class="btn gold" href="${linkD}" target="_blank" rel="noopener" id="cta">QUERO DESENVOLVER MINHA EQUIPE</a></div>
+ <a class="btn ghost" href="https://www.danieldonato.com.br/apresentacao/" target="_blank" rel="noopener">Conheça Daniel Donato</a>
+ <a class="btn ghost" href="${linkS}" target="_blank" rel="noopener">Compartilhar resultado no WhatsApp</a>
+ <button class="btn ghost" id="pdf">Salvar relatório em PDF</button>
+ <p class="small hide" id="pdfmsg" style="text-align:center">Se a janela não abrir, use o menu do navegador e escolha “Imprimir” → “Salvar como PDF”.</p>
+ <button class="btn ghost" id="novo">Fazer novo diagnóstico</button>
+ <div class="sign"><b>Daniel Donato</b>Sinapse Brasil<br>Atendimento Mágico | Um Case Disney<br><a href="https://www.danieldonato.com.br/apresentacao/" target="_blank" rel="noopener" style="color:var(--gold)">danieldonato.com.br</a></div>
+ <p class="small" style="text-align:center;margin-top:18px">Este é um diagnóstico inicial de autopercepção, baseado nas respostas do participante. Ele não substitui uma avaliação completa dos processos e da experiência do cliente.</p>
+ <p class="small" style="text-align:center">Seus dados são usados apenas para este diagnóstico e não são vendidos nem repassados. Para removê-los, fale com a Sinapse Brasil pelo WhatsApp (85) 99971-1108.</p></div>`;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  document.getElementById("arc").style.strokeDashoffset=C*(1-pct);
+  app.querySelectorAll(".track i").forEach((b,k)=>setTimeout(()=>{b.style.width=b.dataset.w+"%"},300+k*90));
+ }));
+ const num=document.getElementById("num"),ini=performance.now(),dur=1200;
+ const contar=now=>{const p=Math.min(1,(now-ini)/dur);num.textContent=Math.round(total*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(contar)};
+ requestAnimationFrame(contar);
+ document.getElementById("cta").onclick=()=>{if(!dados.interesse){dados.interesse=true;marcarInteresse(dados.id)}};
+ document.getElementById("pdf").onclick=()=>{try{window.print()}catch(e){document.getElementById("pdfmsg").classList.remove("hide")}};
+ document.getElementById("novo").onclick=()=>{resp=Array(10).fill(null);dados={};revisando=false;inicio()};
+ window.scrollTo(0,0);
+}
+
+{const st=document.getElementById("stars");let h="";for(let k=0;k<26;k++){const z=2+Math.random()*5;h+=`<i style="width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${20+Math.random()*100}%;animation-duration:${18+Math.random()*24}s,${2+Math.random()*3}s;animation-delay:-${Math.random()*30}s,-${Math.random()*3}s"></i>`}st.innerHTML=h}
+inicio();
+reenviar();
+}
+</script>
+</body>
+</html>

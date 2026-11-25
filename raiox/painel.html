@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B0A08">
+<title>Painel | Raio-X do Encantamento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Manrope:wght@400;500;600;700&family=Oswald:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0b0a08;--card:#14120e;--ink:#f3efe6;--mute:#a59d8c;--gold:#d2b06a;--line:rgba(210,176,106,.18);--grad:linear-gradient(180deg,#f3e2b3 0%,#d9b978 45%,#b58c4a 100%);--red:#c8573f;--gray:#8a8070}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Manrope,system-ui,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 16px 60px}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;line-height:1.1;margin:0}
+h1{font-size:34px}h1 em,h2 em{color:var(--gold)}h2{font-size:26px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.eyebrow{color:var(--gold);font:600 11px Manrope;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 18px;border-radius:12px;font:500 13px Oswald,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;text-decoration:none;border:1px solid rgba(210,176,106,.45);background:transparent;color:var(--ink)}
+.btn.gold{background:var(--grad);color:#1b1508;border:0}
+.btn.red{border-color:var(--red);color:#f0a594}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kpi b{display:block;font:600 28px Manrope;font-variant-numeric:tabular-nums}.kpi span{color:var(--mute);font-size:13px}
+.lv{display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:10px;background:rgba(255,255,255,.06)}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin:14px 0}
+input,select{width:100%;font:16px Manrope;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.35);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:14px;margin:-4px 0 14px;color:var(--mute);font-size:14px}.chips label{display:flex;gap:8px;align-items:center;cursor:pointer}.chips input{width:18px;height:18px;accent-color:var(--gold)}
+table{width:100%;border-collapse:collapse}
+th{font:600 11px Manrope;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle}
+tbody tr{cursor:pointer}tbody tr:hover{background:rgba(210,176,106,.06)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:700}
+.sub{color:var(--mute);font-size:13px}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap;margin:2px 4px 2px 0}
+.t-dev{background:rgba(200,87,63,.18);color:#f0a594}.t-evo{background:rgba(138,128,112,.25);color:#d8cfbd}.t-for{background:rgba(210,176,106,.2);color:var(--gold)}
+.t-ok{background:rgba(120,180,120,.16);color:#a9d8a1}.t-hot{background:var(--grad);color:#1b1508}
+.empty{text-align:center;color:var(--mute);padding:40px 10px}
+.login{max-width:400px;margin:10vh auto}.login label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+.err{color:#f0a594;min-height:20px;margin-top:10px;font-size:14px}
+dialog{width:min(640px,94vw);max-height:90vh;background:#12100c;color:var(--ink);border:1px solid rgba(210,176,106,.45);border-radius:18px;padding:0}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+.dlg{padding:22px}.dlg .row{display:grid;grid-template-columns:minmax(0,10em) minmax(0,1fr) 2.4em;gap:10px;align-items:center;padding:5px 0;font-size:14px}
+.track{height:9px;background:rgba(255,255,255,.07);border-radius:6px;overflow:hidden}.track i{display:block;height:100%;border-radius:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin:14px 0;font-size:14px}.grid2 span{color:var(--mute);display:block;font-size:12px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.hide{display:none!important}
+@media(max-width:720px){.filters{grid-template-columns:1fr 1fr}.filters .q{grid-column:1/-1}
+ thead{display:none}table,tbody,tr,td{display:block}tr{border-bottom:1px solid var(--line);padding:10px 0}td{border:0;padding:3px 4px}td.n{text-align:left}td.hm{display:none}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <section id="vLogin" class="login card hide">
+  <div class="eyebrow">Raio-X do Encantamento</div>
+  <h1>Painel <em>administrativo</em></h1>
+  <form id="fLogin" novalidate>
+   <label for="em">E-mail</label><input id="em" type="email" autocomplete="username" required>
+   <label for="se">Senha</label><input id="se" type="password" autocomplete="current-password" required>
+   <button class="btn gold" style="width:100%;margin-top:18px" type="submit">Entrar</button>
+   <div class="err" id="errLogin" role="alert"></div>
+   <p class="sub">Use o mesmo login do painel de Propostas.</p>
+  </form>
+ </section>
+
+ <section id="vApp" class="hide">
+  <div class="top">
+   <div><div class="eyebrow">Raio-X do Encantamento</div><h1>Painel de <em>diagnósticos</em></h1></div>
+   <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn" id="bAtualizar" type="button">Atualizar</button>
+    <button class="btn gold" id="bCsv" type="button">Exportar Excel/CSV</button>
+    <button class="btn" id="bSair" type="button">Sair</button>
+   </div>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="card">
+   <div class="filters">
+    <input class="q" id="fBusca" type="search" placeholder="Buscar nome, empresa, cargo ou WhatsApp">
+    <select id="fNivel" aria-label="Nível"><option value="">Todos os níveis</option><option>Cultura em desenvolvimento</option><option>Cultura em evolução</option><option>Cultura fortalecida</option></select>
+    <select id="fOrigem" aria-label="Origem"><option value="">Todas as origens</option></select>
+    <select id="fPeriodo" aria-label="Período"><option value="">Todo o período</option><option value="1">Hoje</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option></select>
+   </div>
+   <div class="chips">
+    <label><input type="checkbox" id="fContato"> Só quem autorizou contato</label>
+    <label><input type="checkbox" id="fInteresse"> Só quem clicou em “Quero desenvolver”</label>
+    <span id="contagem"></span>
+   </div>
+   <table>
+    <thead><tr><th>Participante</th><th>Empresa</th><th class="hm">Data</th><th>Pontos</th><th>Nível e status</th></tr></thead>
+    <tbody id="lista"></tbody>
+   </table>
+   <div class="empty hide" id="vazio">Nenhum diagnóstico encontrado.</div>
+  </div>
+ </section>
+</div>
+
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+{
+const SB="https://ouxzzduwjxmtixfftpsy.supabase.co",KEY="sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt";
+const sb=window.supabase?window.supabase.createClient(SB,KEY):null;
+const CRIT=["Propósito","Cultura","Atenção aos detalhes","Personalização","Protagonismo","Autonomia","Consistência","Encantamento","Liderança pelo exemplo","Desenvolvimento"];
+const RESP=["Ainda não","Às vezes","Sim, consistentemente"];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtData=d=>new Date(d).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+const fmtTel=t=>{t=String(t||"");return t.length===11?`(${t.slice(0,2)}) ${t.slice(2,7)}-${t.slice(7)}`:t.length===10?`(${t.slice(0,2)}) ${t.slice(2,6)}-${t.slice(6)}`:t};
+const classe=n=>/desenv/i.test(n)?"t-dev":/evolu/i.test(n)?"t-evo":"t-for";
+let todos=[],vis=[];
+
+function telaLogin(msg){$("vApp").classList.add("hide");$("vLogin").classList.remove("hide");$("errLogin").textContent=msg||""}
+$("fLogin").addEventListener("submit",async e=>{e.preventDefault();
+ if(!sb)return telaLogin("Não foi possível carregar o sistema. Verifique a internet.");
+ $("errLogin").textContent="Entrando...";
+ const {error}=await sb.auth.signInWithPassword({email:$("em").value.trim().toLowerCase(),password:$("se").value});
+ if(error)return telaLogin(/invalid login/i.test(error.message)?"E-mail ou senha incorretos.":"Não foi possível entrar. ("+error.message+")");
+ iniciar();
+});
+$("bSair").onclick=()=>{sb&&sb.auth.signOut();telaLogin()};
+$("bAtualizar").onclick=()=>carregar();
+
+async function iniciar(){$("vLogin").classList.add("hide");$("vApp").classList.remove("hide");await carregar()}
+
+async function carregar(){
+ $("lista").innerHTML=`<tr><td colspan="5" class="sub">Carregando...</td></tr>`;
+ const {data,error}=await sb.from("raiox_diagnosticos").select("*").order("criado_em",{ascending:false}).limit(5000);
+ if(error){if(/JWT|401|permission/i.test(error.message)){sb.auth.signOut();return telaLogin("Sua sessão expirou. Entre de novo.")}
+  $("lista").innerHTML=`<tr><td colspan="5" class="sub">Erro ao carregar: ${esc(error.message)}</td></tr>`;return}
+ todos=data||[];
+ const origens=[...new Set(todos.map(r=>r.origem||"site"))].sort();
+ const atual=$("fOrigem").value;
+ $("fOrigem").innerHTML=`<option value="">Todas as origens</option>`+origens.map(o=>`<option${o===atual?" selected":""}>${esc(o)}</option>`).join("");
+ filtrar();
+}
+
+function filtrar(){
+ const q=$("fBusca").value.trim().toLowerCase(),nv=$("fNivel").value,or=$("fOrigem").value,pd=+$("fPeriodo").value;
+ const lim=pd?(()=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-(pd-1));return d})():null;
+ vis=todos.filter(r=>(!q||[r.nome,r.empresa,r.cargo,r.whatsapp].join(" ").toLowerCase().includes(q))
+  &&(!nv||r.nivel===nv)&&(!or||(r.origem||"site")===or)&&(!lim||new Date(r.criado_em)>=lim)
+  &&(!$("fContato").checked||r.contato_comercial)&&(!$("fInteresse").checked||r.interesse));
+ kpis();lista();
+}
+["fBusca","fNivel","fOrigem","fPeriodo","fContato","fInteresse"].forEach(id=>$(id).addEventListener("input",filtrar));
+
+function kpis(){
+ const n=vis.length,media=n?(vis.reduce((a,r)=>a+r.pontuacao,0)/n).toFixed(1).replace(".",","):"–";
+ const c=k=>vis.filter(r=>r.nivel===k).length;
+ const d=c("Cultura em desenvolvimento"),e=c("Cultura em evolução"),f=c("Cultura fortalecida");
+ const pct=x=>n?x/n*100:0;
+ $("kpis").innerHTML=`
+ <div class="card kpi"><b>${n}</b><span>diagnósticos${n!==todos.length?` (de ${todos.length})`:""}</span></div>
+ <div class="card kpi"><b>${media}</b><span>pontuação média (de 20)</span></div>
+ <div class="card kpi"><b>${vis.filter(r=>r.interesse).length}</b><span>clicaram “Quero desenvolver”</span></div>
+ <div class="card kpi"><b>${vis.filter(r=>r.contato_comercial).length}</b><span>autorizaram contato</span></div>
+ <div class="card kpi" style="grid-column:1/-1"><span>Níveis: ${d} em desenvolvimento · ${e} em evolução · ${f} fortalecida</span>
+  <div class="lv"><i style="width:${pct(d)}%;background:var(--red)"></i><i style="width:${pct(e)}%;background:var(--gray)"></i><i style="width:${pct(f)}%;background:var(--gold)"></i></div></div>`;
+ $("contagem").textContent="";
+}
+
+function lista(){
+ $("vazio").classList.toggle("hide",vis.length>0);
+ $("lista").innerHTML=vis.map((r,k)=>`<tr data-k="${k}" tabindex="0">
+  <td><strong>${esc(r.nome)}</strong><div class="sub">${esc(r.cargo)} · ${esc(fmtTel(r.whatsapp))}</div></td>
+  <td>${esc(r.empresa)}</td>
+  <td class="hm sub">${esc(fmtData(r.criado_em))}</td>
+  <td class="n">${r.pontuacao}/20</td>
+  <td><span class="tag ${classe(r.nivel)}">${esc(r.nivel)}</span>${r.interesse?'<span class="tag t-hot">Quer desenvolver</span>':""}${r.contato_comercial?'<span class="tag t-ok">Autorizou contato</span>':""}</td></tr>`).join("");
+ $("lista").querySelectorAll("tr").forEach(tr=>{const abrir=()=>detalhe(vis[+tr.dataset.k]);tr.onclick=abrir;tr.onkeydown=e=>{if(e.key==="Enter")abrir()}});
+}
+
+function detalhe(r){
+ const resp=r.respostas||[];
+ const fortes=CRIT.filter((c,k)=>resp[k]===2),aten=CRIT.filter((c,k)=>resp[k]===0).concat(CRIT.filter((c,k)=>resp[k]===1));
+ const msg=`Olá, ${r.nome.split(" ")[0]}! Aqui é o Daniel Donato. Vi seu Raio-X do Encantamento (${r.pontuacao}/20) e gostaria de conversar sobre os resultados da ${r.empresa}.`;
+ $("dlgBody").innerHTML=`
+ <div class="eyebrow">${esc(fmtData(r.criado_em))} · origem: ${esc(r.origem||"site")}</div>
+ <h2>${esc(r.nome)}</h2>
+ <div class="grid2">
+  <div><span>Empresa</span>${esc(r.empresa)}</div><div><span>Cargo</span>${esc(r.cargo)}</div>
+  <div><span>WhatsApp</span>${esc(fmtTel(r.whatsapp))}</div><div><span>Pontuação</span><strong>${r.pontuacao}/20</strong> · ${esc(r.nivel)}</div>
+  <div><span>Contato comercial</span>${r.contato_comercial?"Autorizou":"Não autorizou"}</div><div><span>Clicou “Quero desenvolver minha equipe”</span>${r.interesse?"Sim":"Não"}</div>
+ </div>
+ ${CRIT.map((c,k)=>{const v=resp[k];const cor=v===2?"var(--gold)":v===1?"var(--gray)":"var(--red)";
+  return `<div class="row"><span>${c}</span><div class="track"><i style="width:${v===0?6:v*50}%;background:${cor}"></i></div><strong style="text-align:right">${v}/2</strong></div>`}).join("")}
+ <p class="sub" style="margin-top:12px">Respostas: ${resp.map((v,k)=>`${k+1}. ${RESP[v]}`).join(" · ")}</p>
+ <p><strong style="color:var(--gold)">Pontos fortes:</strong> ${esc(fortes.slice(0,3).join(", ")||"—")}<br>
+ <strong style="color:var(--gold)">Merece atenção:</strong> ${esc(aten.slice(0,3).join(", ")||"—")}</p>
+ <div class="acts">
+  ${r.contato_comercial?`<a class="btn gold" href="https://wa.me/55${esc(r.whatsapp)}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">Chamar no WhatsApp</a>`:`<span class="sub" style="align-self:center">Esta pessoa não autorizou contato comercial.</span>`}
+  <button class="btn" id="dFechar" type="button">Fechar</button>
+  <button class="btn red" id="dApagar" type="button">Apagar diagnóstico</button>
+ </div>
+ <div id="dConf" class="hide" style="margin-top:14px"><p>Apagar o diagnóstico de <strong>${esc(r.nome)}</strong>? Isso não pode ser desfeito.</p>
+  <div class="acts"><button class="btn red" id="dSim" type="button">Sim, apagar</button><button class="btn" id="dNao" type="button">Cancelar</button></div><div class="err" id="dErr"></div></div>`;
+ $("dFechar").onclick=()=>$("dlg").close();
+ $("dApagar").onclick=()=>$("dConf").classList.remove("hide");
+ $("dNao").onclick=()=>$("dConf").classList.add("hide");
+ $("dSim").onclick=async()=>{const {error}=await sb.from("raiox_diagnosticos").delete().eq("id",r.id);
+  if(error)return $("dErr").textContent="Não foi possível apagar: "+error.message;
+  $("dlg").close();todos=todos.filter(x=>x.id!==r.id);filtrar()};
+ $("dlg").showModal();
+}
+
+$("bCsv").onclick=()=>{
+ const cab=["Data","Nome","Empresa","Cargo","WhatsApp","Pontuação","Nível","Autorizou contato","Quer desenvolver equipe","Origem",...CRIT];
+ const linhas=vis.map(r=>[fmtData(r.criado_em),r.nome,r.empresa,r.cargo,fmtTel(r.whatsapp),r.pontuacao,r.nivel,r.contato_comercial?"Sim":"Não",r.interesse?"Sim":"Não",r.origem||"site",...(r.respostas||[])]);
+ const cel=v=>{v=String(v==null?"":v);if(/^[=+\-@]/.test(v))v="'"+v;return /[;"\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v};
+ const csv="﻿"+[cab,...linhas].map(l=>l.map(cel).join(";")).join("\r\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+ a.download=`raiox-diagnosticos-${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();
+ setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+};
+
+(async()=>{if(!sb)return telaLogin("Não foi possível carregar o sistema. Verifique a internet.");
+ const {data}=await sb.auth.getSession();data&&data.session?iniciar():telaLogin()})();
+}
+</script>
+</body>
+</html>
