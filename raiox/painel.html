@@ -47,6 +47,29 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin:14px 0;font-size:14px}.grid2 span{color:var(--mute);display:block;font-size:12px}
 .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .hide{display:none!important}
+#impressao{display:none}
+@media print{
+ @page{size:A4;margin:14mm}
+ body{background:#fff!important;color:#1a1712;font-size:12px}
+ .wrap,dialog{display:none!important}
+ #impressao{display:block}
+ .pr{font:12px/1.5 Manrope,Arial,sans-serif;color:#1a1712}
+ .pr h1{font:500 30px/1.1 "Cormorant Garamond",Georgia,serif;margin:4px 0}.pr h1 em{color:#9c7536}
+ .pr h2{font:500 20px "Cormorant Garamond",Georgia,serif;color:#9c7536;margin:16px 0 6px;border-bottom:1px solid #e6dcc4;padding-bottom:3px;break-after:avoid}
+ .pr-eb{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#9c7536;font-weight:700}
+ .pr-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:2px solid #b58c4a;padding-bottom:10px}
+ .pr-top p{margin:0;color:#6b6252}
+ .pr-nota{text-align:center;border:2px solid #b58c4a;border-radius:50%;width:84px;height:84px;display:flex;flex-direction:column;justify-content:center;flex:none}
+ .pr-nota b{font-size:30px;line-height:1}.pr-nota span{font-size:10px;color:#6b6252}
+ .pr-nivel{margin:12px 0;padding:10px 12px;background:#f7f1e3;border-radius:8px}.pr-nivel strong{color:#9c7536;display:block;font-size:14px}
+ .pr-mapa{width:100%;border-collapse:collapse}.pr-mapa td{padding:4px 6px;border-bottom:1px solid #efe8d8;font-size:11px}
+ .pr-bar{width:38%}.pr-bar i{display:block;height:8px;border-radius:4px}.pr-v{text-align:right;font-weight:700;white-space:nowrap}.pr-r{color:#6b6252;white-space:nowrap}
+ .pi{margin:6px 0;break-inside:avoid}.pi b{display:block;color:#1a1712}.pi span{color:#3d372c}
+ .pr p{margin:4px 0}.pr-q{font:italic 15px/1.4 "Cormorant Garamond",Georgia,serif}
+ .pr-sig{margin-top:16px;padding-top:8px;border-top:1px solid #e6dcc4;color:#6b6252}.pr-sig b{display:block;font:500 17px "Cormorant Garamond",Georgia,serif;color:#1a1712}
+ .pr-foot{margin-top:8px;font-size:9px;color:#8a8070}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 .voltar{display:inline-flex;align-items:center;min-height:40px;margin-bottom:10px;padding:6px 14px;border:1px solid var(--line);border-radius:99px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:600}.voltar:hover{border-color:var(--gold);color:var(--gold)}
 .acoes{display:flex;gap:8px;flex-wrap:wrap}.btn{white-space:nowrap}
 @media(max-width:720px){.top>div:first-child,.acoes{width:100%}.acoes{flex-wrap:nowrap}.acoes .btn{flex:1 1 auto;padding:10px 10px;font-size:12px;letter-spacing:.06em}.kpis{grid-template-columns:1fr 1fr}.kpi b{font-size:24px}}
@@ -99,14 +122,17 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
  </section>
 </div>
 
+<div id="impressao" aria-hidden="true"></div>
 <dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="conteudo.js?v=20261126"></script>
 <script>
 {
 const SB="https://ouxzzduwjxmtixfftpsy.supabase.co",KEY="sb_publishable_oWqksOTQBirkVbz2GQ7mKA_UUhttXlt";
 const sb=window.supabase?window.supabase.createClient(SB,KEY):null;
-const CRIT=["Propósito","Atenção aos detalhes","Personalização","Protagonismo","Autonomia","Liderança pelo exemplo","Desenvolvimento","Olhar do cliente","Clientes perdidos","Alinhamento da equipe"];
+const RX=window.RAIOX||{P:[],NIVEIS:[]};
+const CRIT=RX.P.length?RX.P.map(p=>p[0]):["Propósito","Atenção aos detalhes","Personalização","Protagonismo","Autonomia","Liderança pelo exemplo","Desenvolvimento","Olhar do cliente","Clientes perdidos","Alinhamento da equipe"];
 const RESP=["Ainda não","Às vezes","Sim, consistentemente"];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -195,18 +221,47 @@ function detalhe(r){
  <strong style="color:var(--gold)">Merece atenção:</strong> ${esc(aten.slice(0,3).join(", ")||"—")}</p>
  <div class="acts">
   ${r.contato_comercial?`<a class="btn gold" href="https://wa.me/55${esc(r.whatsapp)}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">Chamar no WhatsApp</a>`:`<span class="sub" style="align-self:center">Esta pessoa não autorizou contato comercial.</span>`}
+  <button class="btn gold" id="dImprimir" type="button">Imprimir relatório</button>
   <button class="btn" id="dFechar" type="button">Fechar</button>
   <button class="btn red" id="dApagar" type="button">Apagar diagnóstico</button>
  </div>
  <div id="dConf" class="hide" style="margin-top:14px"><p>Apagar o diagnóstico de <strong>${esc(r.nome)}</strong>? Isso não pode ser desfeito.</p>
   <div class="acts"><button class="btn red" id="dSim" type="button">Sim, apagar</button><button class="btn" id="dNao" type="button">Cancelar</button></div><div class="err" id="dErr"></div></div>`;
  $("dFechar").onclick=()=>$("dlg").close();
+ $("dImprimir").onclick=()=>imprimir(r);
  $("dApagar").onclick=()=>$("dConf").classList.remove("hide");
  $("dNao").onclick=()=>$("dConf").classList.add("hide");
  $("dSim").onclick=async()=>{const {error}=await sb.from("raiox_diagnosticos").delete().eq("id",r.id);
   if(error)return $("dErr").textContent="Não foi possível apagar: "+error.message;
   $("dlg").close();todos=todos.filter(x=>x.id!==r.id);filtrar()};
  $("dlg").showModal();
+}
+
+function imprimir(r){
+ const resp=r.respostas||[],P=RX.P,total=r.pontuacao;
+ const n=RX.NIVEIS.find(x=>total<=x.max)||{nome:r.nivel,txt:"",passo:""};
+ const idx=P.map((p,k)=>k);
+ const fortes=idx.filter(k=>resp[k]===2).slice(0,3);
+ const aten=idx.filter(k=>resp[k]===0).concat(idx.filter(k=>resp[k]===1)).slice(0,3);
+ const uniforme=resp.length&&resp.every(v=>v===resp[0]);
+ const item=(k,c)=>`<div class="pi"><b>${esc(P[k][0])}</b><span>${esc(P[k][c])}</span></div>`;
+ $("impressao").innerHTML=`<div class="pr">
+  <div class="pr-top"><div><div class="pr-eb">Raio-X do Encantamento</div><h1>Relatório de <em>${esc(r.nome)}</em></h1>
+   <p>${esc(r.empresa)} · ${esc(r.cargo)} · ${esc(fmtData(r.criado_em))}</p></div>
+   <div class="pr-nota"><b>${total}</b><span>de 20</span></div></div>
+  <div class="pr-nivel"><strong>${esc(n.nome)}</strong> ${esc(n.txt)}</div>
+  <h2>Mapa do encantamento</h2>
+  <table class="pr-mapa">${P.map((p,k)=>{const v=resp[k];const cor=v===2?"#b58c4a":v===1?"#9a917f":"#c8573f";
+   return `<tr><td>${esc(p[0])}</td><td class="pr-bar"><i style="width:${v===0?4:v*50}%;background:${cor}"></i></td><td class="pr-v">${v}/2</td><td class="pr-r">${RESP[v]||""}</td></tr>`}).join("")}</table>
+  ${uniforme?`<h2>Leitura geral</h2><p>Suas respostas mostram um padrão uniforme. Analise cada critério com sua equipe para identificar onde estão as maiores oportunidades.</p>`:
+   `${fortes.length?`<h2>Pontos fortes</h2>${fortes.map(k=>item(k,2)).join("")}`:""}${aten.length?`<h2>O que merece atenção</h2>${aten.map(k=>item(k,3)).join("")}`:""}`}
+  <h2>Reflexão</h2><p class="pr-q">Uma empresa não encanta clientes apenas porque seus colaboradores são simpáticos. O encantamento acontece quando existe propósito, cultura, atenção aos detalhes, protagonismo e pessoas preparadas para transformar cada contato em uma experiência positiva.</p>
+  <h2>Próximo passo</h2><p>${esc(n.passo)}</p>
+  <p><strong>Atendimento Mágico | Um Case Disney</strong>: uma experiência de desenvolvimento para transformar a maneira como as pessoas atendem, se relacionam e criam experiências para os clientes.</p>
+  <div class="pr-sig"><b>Daniel Donato</b>Sinapse Brasil · Atendimento Mágico | Um Case Disney · danieldonato.com.br · (85) 99971-1108</div>
+  <p class="pr-foot">Este é um diagnóstico inicial de autopercepção, baseado nas respostas do participante. Ele não substitui uma avaliação completa dos processos e da experiência do cliente.</p></div>`;
+ $("dlg").close();
+ setTimeout(()=>{try{window.print()}catch(e){}},150);
 }
 
 $("bCsv").onclick=()=>{
