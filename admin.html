@@ -67,7 +67,7 @@ tr.cli.tem{cursor:pointer}tr.cli.tem:hover td{background:#1C1912}.seta-det{displ
 .carreg{padding:80px 0;text-align:center;color:#9C8F78}
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:900px){.w{padding:0 18px}h1{font-size:34px}.kpis{grid-template-columns:1fr 1fr}.duas,.tres{grid-template-columns:1fr}.kpi b{font-size:38px}.painel{padding:30px 0 60px}}
-.sair{white-space:nowrap}@media (max-width:600px){.w{padding:0 22px}.top{height:auto;padding:14px 0}.top .w{flex-wrap:wrap;row-gap:14px}.top .w>div{width:100%}.top .w>div>.sair{flex:1;text-align:center;padding:11px 8px}}
+.sair{white-space:nowrap}.kpi,.kpis>*{min-width:0}.kpi small,.kpi span{overflow-wrap:break-word}@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:600px){.w{padding:0 22px}.kpi{padding:18px 16px}.top{height:auto;padding:14px 0}.top .w{flex-wrap:wrap;row-gap:14px}.top .w>div{width:100%}.top .w>div>.sair{flex:1;text-align:center;padding:11px 8px}}
 </style>
 </head>
 <body>
@@ -117,7 +117,7 @@ else{var mapa={};(st.por_dia||[]).forEach(function(d){mapa[d.dia]=d});var dias=[
 for(var i=nd-1;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var k=d.toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});dias.push(mapa[k]||{dia:k,visitas:0,visitantes:0,visitantes_rede:0})}
 var ppv=st.visitantes?(st.visitas/st.visitantes).toLocaleString('pt-BR',{maximumFractionDigits:1}):'—';
 corpo=(DEMO?'<div class="aviso"><b>Dados de exemplo.</b> Os números reais aparecem aqui assim que o site começar a registrar visitas.</div>':'')+
-'<div class="kpis"><div class="kpi"><span>Visitas</span><b>'+fmt(st.visitas)+'</b><small>páginas vistas</small></div><div class="kpi"><span>Visitantes · navegador</span><b>'+fmt(st.visitantes)+'</b><small>aparelhos/navegadores diferentes</small></div><div class="kpi"><span>Visitantes · rede</span><b>'+(st.com_rede?fmt(st.visitantes_rede):'—')+'</b><small>'+(st.com_rede?'rede + aparelho, contados por dia':'aguardando as primeiras visitas')+'</small></div><div class="kpi"><span>Páginas por visitante</span><b>'+ppv+'</b><small>média no período</small></div><div class="kpi"><span>Cliques no WhatsApp</span><b>'+fmt(st.whatsapp)+'</b><small>pedidos de contato</small></div></div>'+
+'<div class="kpis"><div class="kpi"><span>Visitas</span><b>'+fmt(st.visitas)+'</b><small>páginas vistas</small></div><div class="kpi"><span>Visitantes · navegador</span><b>'+fmt(st.visitantes)+'</b><small>aparelhos ou navegadores diferentes</small></div><div class="kpi"><span>Visitantes · rede</span><b>'+(st.com_rede?fmt(st.visitantes_rede):'—')+'</b><small>'+(st.com_rede?'rede + aparelho, contados por dia':'aguardando as primeiras visitas')+'</small></div><div class="kpi"><span>Páginas por visitante</span><b>'+ppv+'</b><small>média no período</small></div><div class="kpi"><span>Cliques no WhatsApp</span><b>'+fmt(st.whatsapp)+'</b><small>pedidos de contato</small></div></div>'+
 '<section class="bloco"><h2>Visitas por dia'+(S.dias>90?' (últimos 90 dias)':'')+'</h2>'+grafico(dias)+'</section>'+
 '<div class="duas"><section class="bloco"><h2>Páginas mais vistas</h2>'+lista(st.paginas,'pagina',nome)+'</section><section class="bloco"><h2>Aparelhos</h2>'+lista(st.dispositivos,'dispositivo')+'</section></div>'+
 '<div class="tres"><section class="bloco"><h2>De onde vieram</h2>'+lista(st.origens,'origem')+'</section><section class="bloco"><h2>Onde clicaram no WhatsApp</h2>'+lista(st.whatsapp_paginas,'pagina',nome)+'</section></div>'+
