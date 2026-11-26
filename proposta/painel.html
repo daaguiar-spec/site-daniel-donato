@@ -15,6 +15,7 @@ button,input,textarea,select{font:inherit;color:inherit}a{color:#E8CF95}
 .hidden{display:none!important}
 .w{max-width:1100px;margin:0 auto;padding:0 20px}
 @media (max-width:700px){.w{padding:0 26px}}
+@media (max-width:600px){.top{height:auto;padding:12px 0}.top .w{flex-wrap:wrap;row-gap:12px}.top nav{width:100%}.top nav .sec{flex:1;justify-content:center}}
 .top{height:66px;border-bottom:1px solid #2A251C;display:flex;align-items:center;position:sticky;top:0;background:rgba(11,10,8,.94);backdrop-filter:blur(8px);z-index:20}
 .top .w{display:flex;justify-content:space-between;align-items:center;width:100%;gap:12px}
 .logo{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.24em;font-size:11px;text-decoration:none;text-transform:uppercase;color:#EDE6D8}
@@ -38,7 +39,7 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 .erro{background:rgba(196,80,60,.12);border:1px solid rgba(196,80,60,.45);color:#F0B4A6;border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.5;margin:0 0 16px}
 .aviso{background:rgba(201,164,92,.1);border:1px solid rgba(201,164,92,.4);color:#E8CF95;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;margin:0 0 18px}
 .aviso code{background:#0B0A08;padding:2px 6px;border-radius:5px;font-size:12.5px}
-.painel{padding:32px 0 120px}
+.painel{padding-top:32px;padding-bottom:120px}
 .cab{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
 .filtro{display:inline-flex;border:1px solid #3A3226;border-radius:99px;overflow:hidden}
 .filtro button{border:0;background:none;color:#C9BEA8;padding:9px 15px;font-size:12px;font-weight:700;cursor:pointer}
