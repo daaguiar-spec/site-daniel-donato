@@ -67,6 +67,7 @@ input::placeholder{color:#6f6858}
 .sign{text-align:center;margin-top:30px;font-size:14px;color:var(--mute)}
 .sign b{display:block;font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500;color:var(--ink)}
 .hide{display:none}
+.bonus{margin:18px 0 4px;padding:16px 16px 16px 14px;border:1px solid rgba(210,176,106,.55);border-radius:14px;background:linear-gradient(135deg,rgba(243,226,179,.14),rgba(181,140,74,.08));display:flex;gap:12px;align-items:flex-start}.bonus .ic{font-size:22px;line-height:1;flex:none;width:30px;text-align:center}.bonus strong{display:block;color:var(--gold);font-size:15px;margin-bottom:4px}.bonus p{margin:0;font-size:14px;color:#e6dfcf}.bonus small{display:block;margin-top:6px;color:var(--mute);font-size:12px}
 .fade{animation:f .4s ease}@keyframes f{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .scan{background:#0e0c09;border:1px solid var(--line);color:var(--ink);border-radius:22px;padding:48px 24px;text-align:center;min-height:440px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden}
 .scan .beam{position:absolute;left:0;right:0;height:90px;top:-90px;background:linear-gradient(transparent,rgba(210,176,106,.35),transparent);animation:beam 1.3s linear infinite}
@@ -149,6 +150,7 @@ function inicio(){
   <h1>Raio-X do <em>Encantamento</em></h1>
   <p class="sub">Sua empresa está preparada para encantar clientes?</p>
   <p>Responda a <strong>10 perguntas rápidas</strong> e descubra pontos fortes e oportunidades de melhoria na experiência que sua empresa oferece aos clientes.</p>
+  ${BONUS?`<div class="bonus" style="margin:22px 0 0"><span class="ic">🎁</span><div><strong>Participantes do Almoço Mágico</strong><p>Ao concluir o diagnóstico, você recebe uma condição exclusiva para levar o treinamento Atendimento Mágico para sua empresa.</p></div></div>`:""}
   <button class="btn gold" id="go">Começar meu diagnóstico</button>
   <p class="small" style="text-align:center;margin:14px 0 0">Leva cerca de 3 minutos</p></div>`;
  document.getElementById("go").onclick=()=>{i=0;pergunta()};
@@ -207,6 +209,7 @@ function cadastro(){
 function novoId(){try{return crypto.randomUUID()}catch(e){return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,c=>{const r=Math.random()*16|0;return (c=="x"?r:(r&3|8)).toString(16)})}}
 const ORIGEM=(()=>{try{return (new URLSearchParams(location.search).get("origem")||"site").replace(/[^\w-]/g,"").slice(0,40)||"site"}catch(e){return "site"}})();
 const FILA="raiox_pendentes";
+const BONUS=ORIGEM==="almoco"&&Date.now()<Date.parse("2026-12-06T00:00:00-03:00"); /* condição especial do Almoço Mágico, válida até 05/12 */
 const lerFila=()=>{try{return JSON.parse(localStorage.getItem(FILA)||"[]")}catch(e){return []}};
 const gravarFila=f=>{try{localStorage.setItem(FILA,JSON.stringify(f))}catch(e){}};
 async function enviar(reg){
@@ -248,7 +251,7 @@ function relatorio(){
  const uniforme=resp.every(r=>r===resp[0]);
  const C=2*Math.PI*78,pct=total/20;
  const primeiro=esc(dados.nome.split(" ")[0]);
- const msgDaniel=`Olá, Daniel! Fiz o Raio-X do Encantamento e tirei ${total}/20 (${n.nome}). Quero saber mais sobre o Atendimento Mágico.`;
+ const msgDaniel=BONUS?`Olá, Daniel! Participei do Almoço Mágico, fiz o Raio-X do Encantamento e tirei ${total}/20 (${n.nome}). Quero saber da condição especial para levar o Atendimento Mágico para minha empresa.`:`Olá, Daniel! Fiz o Raio-X do Encantamento e tirei ${total}/20 (${n.nome}). Quero saber mais sobre o Atendimento Mágico.`;
  const msgShare=`Fiz o Raio-X do Encantamento e minha empresa tirou ${total}/20: ${n.nome}. Faça o seu também: ${CONFIG.site}`;
  const linkD=`https://wa.me/${CONFIG.whatsDaniel}?text=${encodeURIComponent(msgDaniel)}`;
  const linkS=`https://wa.me/?text=${encodeURIComponent(msgShare)}`;
@@ -271,6 +274,7 @@ function relatorio(){
  <div class="card offer"><div class="eyebrow">Próximo passo</div><p>${n.passo}</p>
   <h2 style="font-size:30px;margin:6px 0 4px">Atendimento Mágico<br><em>Um Case Disney</em></h2>
   <p>Uma experiência de desenvolvimento para transformar a maneira como as pessoas atendem, se relacionam e criam experiências para os clientes.</p>
+  ${BONUS?`<div class="bonus"><span class="ic">🎁</span><div><strong>Condição exclusiva · Almoço Mágico</strong><p>Por ter feito o seu Raio-X, você tem uma condição especial para levar o Atendimento Mágico para sua empresa. Toque no botão abaixo e fale com o Daniel.</p><small>Válida até 5 de dezembro.</small></div></div>`:""}
   <a class="btn gold" href="${linkD}" target="_blank" rel="noopener" id="cta">QUERO DESENVOLVER MINHA EQUIPE</a></div>
  <a class="btn ghost" href="https://www.danieldonato.com.br/apresentacao/" target="_blank" rel="noopener">Conheça Daniel Donato</a>
  <a class="btn ghost" href="${linkS}" target="_blank" rel="noopener">Compartilhar resultado no WhatsApp</a>
