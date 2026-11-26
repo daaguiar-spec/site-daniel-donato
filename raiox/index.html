@@ -97,9 +97,6 @@ const P=[
 ["Propósito","Sua equipe entende que seu trabalho é criar boas experiências para os clientes?",
  "Sua equipe entende que o trabalho dela vai além da tarefa: é criar experiências. Mantenha esse propósito presente nas conversas do dia a dia.",
  "Quando a equipe enxerga só tarefas, o cliente sente um atendimento mecânico. Conectar as pessoas ao propósito é o primeiro passo, e é por ele que o Atendimento Mágico começa."],
-["Cultura","Sua empresa tem valores claros que orientam o atendimento?",
- "Os valores da empresa já orientam o atendimento. Continue reforçando esses valores com exemplos e reconhecimento.",
- "Valores que ficam só no papel não mudam comportamentos. No treinamento, sua equipe aprende a transformar valores em atitudes práticas no dia a dia."],
 ["Atenção aos detalhes","Sua equipe percebe pequenos detalhes que fazem diferença para o cliente?",
  "Sua equipe percebe o que muitos não veem. Compartilhe esses bons exemplos para inspirar todos.",
  "O cliente raramente reclama dos detalhes: ele simplesmente não volta. O Atendimento Mágico treina o olhar da equipe para perceber o que faz diferença."],
@@ -112,18 +109,24 @@ const P=[
 ["Autonomia","Sua equipe tem liberdade para resolver problemas e surpreender clientes?",
  "Sua equipe tem liberdade para resolver e surpreender. Mantenha limites claros para essa liberdade ser usada com segurança.",
  "Cada “vou ver com meu gestor” custa tempo e paciência ao cliente. O treinamento mostra como dar liberdade à equipe com segurança e critério."],
-["Consistência","Todos os clientes recebem a mesma qualidade de experiência?",
- "Seus clientes recebem a mesma qualidade em qualquer contato. Padronize o que funciona para manter esse nível.",
- "Um único atendimento ruim pode apagar dez experiências boas. O Atendimento Mágico ajuda a criar padrões para que todos os clientes recebam o mesmo nível de excelência."],
-["Encantamento","Sua equipe busca superar as expectativas dos clientes?",
- "Sua equipe busca ir além do esperado. Estimule e compartilhe os momentos de encantamento que acontecem.",
- "Atender bem é o mínimo esperado, e o que fideliza é ir além. Sua equipe pode aprender, na prática, como as empresas referência criam momentos memoráveis."],
 ["Liderança pelo exemplo","Os líderes praticam a cultura de atendimento que cobram da equipe?",
  "Seus líderes praticam o que cobram, e isso gera credibilidade. Continue sendo a referência para a equipe.",
  "A equipe reproduz o que vê nos líderes. O Atendimento Mágico também prepara a liderança para ser o exemplo da cultura que deseja construir."],
 ["Desenvolvimento","Sua empresa prepara continuamente a equipe para encantar clientes?",
  "Sua empresa investe na preparação da equipe. Mantenha esse desenvolvimento contínuo, e não apenas pontual.",
- "Sem preparo contínuo, a qualidade do atendimento depende da sorte. Que tal dar à sua equipe uma experiência de desenvolvimento que transforma a forma de atender?"]
+ "Sem preparo contínuo, a qualidade do atendimento depende da sorte. Que tal dar à sua equipe uma experiência de desenvolvimento que transforma a forma de atender?"],
+["Olhar do cliente",
+ "Você já viveu a experiência da sua empresa como cliente, ligando, comprando ou sendo atendido sem se identificar?",
+ "Você conhece sua empresa pelos olhos do cliente. Mantenha esse hábito: ele revela o que nenhum relatório mostra.",
+ "Quem só conhece a empresa por dentro não enxerga o que o cliente realmente vive. No Atendimento Mágico, você aprende a olhar cada contato com os olhos do cliente."],
+["Clientes perdidos",
+ "Sua empresa sabe quantos clientes deixaram de voltar nos últimos meses e quanto isso representa em vendas perdidas?",
+ "Sua empresa acompanha quem deixa de voltar. Use esses dados para agir antes que o cliente vá embora.",
+ "A maioria dos clientes insatisfeitos não reclama: simplesmente não volta, e essa perda não aparece em nenhum relatório. O Atendimento Mágico mostra como fidelizar antes de perder."],
+["Alinhamento da equipe",
+ "Se você perguntasse hoje a três colaboradores qual experiência o cliente deve viver na sua empresa, eles dariam a mesma resposta?",
+ "Sua equipe fala a mesma língua sobre a experiência do cliente. Esse alinhamento é a base de um atendimento consistente.",
+ "Se cada colaborador entende a experiência de um jeito, o cliente recebe um atendimento diferente a cada contato. O treinamento alinha toda a equipe em torno de um mesmo padrão."]
 ];
 const NIVEIS=[
  {max:7,nome:"Cultura em desenvolvimento",txt:"A empresa apresenta oportunidades importantes para fortalecer sua cultura de atendimento e experiência do cliente.",
@@ -230,7 +233,7 @@ function analisar(){
  app.innerHTML=`<div class="scan fade"><div class="beam"></div>
   <svg class="eye" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#d2b06a" stroke-width="2"><circle cx="100" cy="100" r="90"/><circle cx="100" cy="100" r="58"/><circle cx="100" cy="100" r="26"/><path d="M100 4v192M4 100h192"/></g></svg>
   <h2>Gerando seu <em>Raio-X</em></h2><p id="etapa" aria-live="polite">Analisando propósito...</p></div>`;
- const etapas=["Analisando propósito...","Analisando cultura...","Analisando atenção aos detalhes...","Analisando autonomia...","Analisando liderança...","Preparando seu relatório..."];
+ const etapas=["Analisando propósito...","Analisando atenção aos detalhes...","Analisando autonomia...","Analisando liderança...","Analisando o olhar do cliente...","Preparando seu relatório..."];
  let k=0;const el=document.getElementById("etapa");
  const t=setInterval(()=>{k++;if(k<etapas.length)el.textContent=etapas[k]},450);
  setTimeout(()=>{clearInterval(t);relatorio()},2800);
