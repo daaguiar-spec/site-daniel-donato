@@ -47,6 +47,8 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin:14px 0;font-size:14px}.grid2 span{color:var(--mute);display:block;font-size:12px}
 .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .hide{display:none!important}
+.acoes{display:flex;gap:8px;flex-wrap:wrap}.btn{white-space:nowrap}
+@media(max-width:720px){.top>div:first-child,.acoes{width:100%}.acoes{flex-wrap:nowrap}.acoes .btn{flex:1 1 auto;padding:10px 10px;font-size:12px;letter-spacing:.06em}.kpis{grid-template-columns:1fr 1fr}.kpi b{font-size:24px}}
 @media(max-width:720px){.filters{grid-template-columns:1fr 1fr}.filters .q{grid-column:1/-1}
  thead{display:none}table,tbody,tr,td{display:block}tr{border-bottom:1px solid var(--line);padding:10px 0}td{border:0;padding:3px 4px}td.n{text-align:left}td.hm{display:none}.grid2{grid-template-columns:1fr}}
 </style>
@@ -68,7 +70,7 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
  <section id="vApp" class="hide">
   <div class="top">
    <div><div class="eyebrow">Raio-X do Encantamento</div><h1>Painel de <em>diagnósticos</em></h1></div>
-   <div style="display:flex;gap:8px;flex-wrap:wrap">
+   <div class="acoes">
     <button class="btn" id="bAtualizar" type="button">Atualizar</button>
     <button class="btn gold" id="bCsv" type="button">Exportar Excel/CSV</button>
     <button class="btn" id="bSair" type="button">Sair</button>
