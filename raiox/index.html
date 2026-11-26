@@ -251,7 +251,7 @@ function relatorio(){
  const uniforme=resp.every(r=>r===resp[0]);
  const C=2*Math.PI*78,pct=total/20;
  const primeiro=esc(dados.nome.split(" ")[0]);
- const msgDaniel=BONUS?`Olá, Daniel! Participei do Almoço Mágico, fiz o Raio-X do Encantamento e tirei ${total}/20 (${n.nome}). Quero saber da condição especial para levar o Atendimento Mágico para minha empresa.`:`Olá, Daniel! Fiz o Raio-X do Encantamento e tirei ${total}/20 (${n.nome}). Quero saber mais sobre o Atendimento Mágico.`;
+ const msgDaniel=BONUS?`Olá! Participei do Almoço Mágico, fiz o Raio-X do Encantamento e tirei ${total}/20 (${n.nome}). Quero saber da condição especial para levar o Atendimento Mágico para minha empresa.`:`Olá, Daniel! Fiz o Raio-X do Encantamento e tirei ${total}/20 (${n.nome}). Quero saber mais sobre o Atendimento Mágico.`;
  const msgShare=`Fiz o Raio-X do Encantamento e minha empresa tirou ${total}/20: ${n.nome}. Faça o seu também: ${CONFIG.site}`;
  const linkD=`https://wa.me/${CONFIG.whatsDaniel}?text=${encodeURIComponent(msgDaniel)}`;
  const linkS=`https://wa.me/?text=${encodeURIComponent(msgShare)}`;
