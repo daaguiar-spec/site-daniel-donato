@@ -134,6 +134,7 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 .dtipo{display:inline-flex;margin-left:8px;border:1px solid #3A3226;border-radius:99px;overflow:hidden;vertical-align:middle;text-transform:none;letter-spacing:0}
 .dtipo button{background:none;border:0;color:#9C8F78;font:inherit;font-size:11px;font-weight:800;padding:2px 10px;cursor:pointer;line-height:16px}.dtipo button.on{background:#C9A45C;color:#1A140A}
 .dcalc{display:block;color:#9C8F78;font-size:12px;margin-top:4px;min-height:16px}
+.ficha-l{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0 2px}.ficha-l span{font-size:12px;color:#DCD3C2;background:rgba(201,164,92,.08);border:1px solid #3A3226;border-radius:99px;padding:2px 10px;white-space:nowrap}
 .sub2{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9C8F78;margin:18px 0 10px}
 @media (max-width:600px){.top{height:auto;min-height:66px;padding:12px 0}.top .w{flex-wrap:wrap;row-gap:12px}.top nav{width:100%}.top nav .sec{flex:1;justify-content:center}}
 </style>
@@ -146,9 +147,9 @@ input:focus,textarea:focus,select:focus{border-color:#C9A45C;outline:none}
 <main id="app"><div class="carreg">Carregando…</div></main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/apresentacao/conteudo.js?v=20261123a"></script>
-<script src="modelo.js?v=20261123a"></script>
-<script src="comum.js?v=20261123a"></script>
+<script src="/apresentacao/conteudo.js?v=20261127a"></script>
+<script src="modelo.js?v=20261127a"></script>
+<script src="comum.js?v=20261127a"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {}, esc = P.esc;
@@ -310,6 +311,7 @@ function desenhaLista(){
     var d = p.dados || {};
     return '<button class="prop" data-id="' + esc(p.id) + '"><div><b>' + esc(p.cliente) + '</b>' + (PRECISA[p.status] ? '<span class="vez">' + PRECISA[p.status] + '</span>' : '') +
       '<br><small>' + esc(d.solucao || '') + (p.vendedor ? ' · ' + esc(p.vendedor) : '') + ' · v' + p.versao + ' · ' + P.dataHora(p.atualizado_em) + '</small>' +
+      fichaLista(p) +
       (p.status !== 'rascunho' && S.evLista ? resumoLinha(S.evLista[p.id] || []) : '') + '</div>' +
       '<div style="text-align:right"><div class="v">' + valorLista(p) + '</div>' + chip(p.status) + '</div></button>';
   }).join('') + '</div>';
@@ -659,6 +661,22 @@ function linhasOpcoes(d){
       '<div><label>Destaque</label><label class="chave" style="margin:0;padding:11px 0"><input type="radio" name="opRec" value="' + i + '"' + (o.recomendada ? ' checked' : '') + '> <span>Recomendada</span></label></div>' +
       '</div>' + inp('o' + i + 'x', 'Descrição curta (opcional)', o.descricao, 'text', 'full', 'placeholder="Ex.: Para toda a equipe, com dinâmicas e casos reais"') + '</div>';
   }).join('') + '<p class="dica">Opções sem valor não aparecem para o cliente. "Recomendada" é opcional e dá destaque a uma delas. <button class="sec" type="button" data-acao="semDestaque" style="padding:4px 10px">Tirar destaque</button></p>';
+}
+/* tipo, duração, participantes e data do evento na lista */
+function tipoDe(t){ var m = String(t || '').match(/palestra|treinamento|imers[aã]o|workshop|consultoria|mentoria|almo[cç]o m[aá]gico/i); return m ? m[0].charAt(0).toUpperCase() + m[0].slice(1).toLowerCase() : ''; }
+function fichaLista(p){
+  var d = p.dados || {}, det = d.detalhes || {}, vs = P.opcoesValidas(d), o = vs.length ? (P.opcaoDe(p) || (vs.length === 1 ? vs[0] : null)) : null, it = [];
+  if (vs.length > 1 && !o){
+    it.push(['🎤', vs.map(function(x){ return x.nome + (x.carga_horaria ? ' ' + x.carga_horaria : ''); }).join(' / ')]);
+    var parts = vs.map(function(x){ return x.participantes; }).filter(Boolean); it.push(['👥', parts.length ? parts.filter(function(x, i){ return parts.indexOf(x) === i; }).join(' / ') : det.participantes]);
+  } else {
+    it.push(['🎤', tipoDe(o && o.nome) || tipoDe(d.solucao) || tipoDe((d.itens || [])[0] && d.itens[0].nome)]);
+    it.push(['⏱', (o && o.carga_horaria) || det.carga_horaria]);
+    it.push(['👥', (o && o.participantes) || det.participantes]);
+  }
+  it.push(['📅', det.data_evento]);
+  it = it.filter(function(x){ return x[1] && String(x[1]).trim(); });
+  return it.length ? '<div class="ficha-l">' + it.map(function(x){ return '<span>' + x[0] + ' ' + esc(x[1]) + '</span>'; }).join('') + '</div>' : '';
 }
 function valorLista(p){
   var vs = P.opcoesValidas(p.dados);
