@@ -356,10 +356,10 @@ mark.falta{background:#FFE7B0;color:#7A5200;padding:0 4px;border-radius:3px}
 
 <main id="app"><div class="carreg">Carregando a sua proposta…</div></main>
 
-<script src="/apresentacao/conteudo.js?v=20261127a"></script>
-<script src="modelo.js?v=20261127a"></script>
-<script src="comum.js?v=20261127a"></script>
-<script src="qrcode.js?v=20261127a"></script>
+<script src="/apresentacao/conteudo.js?v=20261127b"></script>
+<script src="modelo.js?v=20261127b"></script>
+<script src="comum.js?v=20261127b"></script>
+<script src="qrcode.js?v=20261127b"></script>
 <script>
 (function(){
 var P = window.PROPOSTA_UTIL, C = window.CONTEUDO || {}, M = window.MODELO_PROPOSTA || {};
@@ -932,7 +932,7 @@ function pdfProposta(){
   if (gerandoPdf) return; gerandoPdf = true;
   toast('Gerando o PDF da proposta…');
   responder('baixou_pdf_proposta', {}).catch(function(){});
-  var V = '?v=20261127a';
+  var V = '?v=20261127b';
   var libs = (window.html2canvas ? Promise.resolve() : carregaScript('vendor/html2canvas.min.js?v=1'))
     .then(function(){ return window.jspdf ? null : carregaScript('vendor/jspdf.umd.min.js?v=1'); })
     .then(function(){ return window.PDF_PROPOSTA ? null : carregaScript('pdf.js' + V); });
